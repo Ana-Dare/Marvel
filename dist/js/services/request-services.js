@@ -18,7 +18,7 @@ export const statusResults = {
 };
 export function consumeAPI(tipo_1, termo_1, offset_1) {
     return __awaiter(this, arguments, void 0, function* (tipo, termo, offset, orderBy = '') {
-        const url = crateUrl('characters', 'sp', offset, statusResults.limit, orderBy);
+        let url = crateUrl('characters', 'sp', offset, statusResults.limit, orderBy);
         try {
             const res = yield fetch(url);
             const dados = yield res.json();

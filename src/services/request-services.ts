@@ -1,6 +1,7 @@
 import { crateUrl } from "../utils/createurl-utils.js";
 import { ContenType } from "../interfaces/request-interface.js";
 import { StatusResults } from "../interfaces/request-interface.js";
+import { obterOrderBy } from "../utils/orderby-utils.js"; 
 
 export const statusResults: StatusResults = {
   currentType: 'characters',
@@ -12,7 +13,8 @@ export const statusResults: StatusResults = {
 };
 
 export async function consumeAPI(tipo: ContenType, termo: string, offset: number, orderBy = ''): Promise<void> {
- const url = crateUrl ('characters', 'sp', offset, statusResults.limit, orderBy);
+
+    let url = crateUrl (tipo, termo, offset, statusResults.limit, orderBy);
   
   try {
     const res = await fetch(url);
