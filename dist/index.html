@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marvel</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+</head>
+<body>
+    <main>
+        <div class="divSearch">
+            <select id="ordenacao">
+                <option value="recente">Mais recente</option>
+                <option value="antigo">Mais antigo</option>
+            </select>
+                <input id="search" type="search" placeholder="Pesquisar">
+                <button id="buscar">Buscar</button>
+                <button class="filtro" data-tipo="characters" id="personagens">Personagens</button>
+                <button class="filtro" data-tipo="comics" id="series">Séries</button>
+                <button class="filtro" data-tipo="series" id="quadrinhos">Quadrinhos</button>
+            
+            </div>
+            <div id="exibir" class="content"> 
+
+            </div>
+    </main>
+    
+</body>
+    <script src="./js/index.js"></script>
+</html>

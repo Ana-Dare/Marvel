@@ -1,0 +1,28 @@
+{
+  "name": "marvel-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "lite-server --baseDir=dist",
+    "start": "concurrently \"npm run watch\" \"npm run server\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ana-Dare/Marvel.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Ana-Dare/Marvel/issues"
+  },
+  "homepage": "https://github.com/Ana-Dare/Marvel#readme",
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "lite-server": "^2.6.1",
+    "typescript": "^5.8.3"
+  }
+}

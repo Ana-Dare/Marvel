@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "outDir": "dist/js",
+        "module": "nodenext",
+        "moduleResolution": "nodenext",
+        "target": "ES6",
+        "noEmitHelpers": false,
+        "noImplicitAny": true,
+        "removeComments": true, 
+        "strictNullChecks": true,
+        "experimentalDecorators": true
+    },
+    "include": ["src/**/*"]
+}
