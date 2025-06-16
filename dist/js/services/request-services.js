@@ -10,10 +10,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { crateUrl } from "../utils/createurl-utils.js";
 export function consumeAPI(tipo_1, termo_1, offset_1, limit_1) {
     return __awaiter(this, arguments, void 0, function* (tipo, termo, offset, limit, orderBy = '', render) {
-        let url = crateUrl(tipo, termo, offset, 10, orderBy);
+        let url = crateUrl(tipo, termo, offset, limit, orderBy);
         try {
             const res = yield fetch(url);
             const dados = yield res.json();
+            const total = dados.data.total;
             const result = dados.data.results;
             console.log(url);
             console.log(result);
@@ -33,9 +34,11 @@ export function consumeAPI(tipo_1, termo_1, offset_1, limit_1) {
             if (offset === 0)
                 render.limpar();
             itens.forEach((item) => render.render(item));
+            return total;
         }
         catch (error) {
             console.error("Erro na requisição:", error);
+            return 0;
         }
     });
 }
