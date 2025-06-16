@@ -1,5 +1,6 @@
-const btnBuscar = document.querySelector('#buscar');
-const btnPersonagens = document.querySelector('#personagens');
-const btnSeries = document.querySelector('#series');
-const btnQuadrinhos = document.querySelector('#quadrinhos');
+const searchButton = document.querySelector('#buscar');
+const charactersButton = document.querySelector('#personagens');
+const seriesButton = document.querySelector('#series');
+const comicsButton = document.querySelector('#quadrinhos');
+const orderSelect = document.querySelector('#ordenacao');
 export {};
