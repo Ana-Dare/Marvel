@@ -8,10 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { crateUrl } from "../utils/createurl-utils.js";
-import { renderData } from "../views/render-data.js";
-const content = document.querySelector('#exibir');
-export function consumeAPI(tipo_1, termo_1, offset_1) {
-    return __awaiter(this, arguments, void 0, function* (tipo, termo, offset, orderBy = '') {
+export function consumeAPI(tipo_1, termo_1, offset_1, limit_1) {
+    return __awaiter(this, arguments, void 0, function* (tipo, termo, offset, limit, orderBy = '', render) {
         let url = crateUrl(tipo, termo, offset, 10, orderBy);
         try {
             const res = yield fetch(url);
@@ -32,7 +30,9 @@ export function consumeAPI(tipo_1, termo_1, offset_1) {
                     }
                 });
             });
-            itens.forEach((item) => renderData(item));
+            if (offset === 0)
+                render.limpar();
+            itens.forEach((item) => render.render(item));
         }
         catch (error) {
             console.error("Erro na requisição:", error);

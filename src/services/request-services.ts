@@ -1,11 +1,9 @@
 import { crateUrl } from "../utils/createurl-utils.js";
 import { ContenType } from "../interfaces/request-interface.js";
 import { DataApi } from "../interfaces/request-interface.js";
-import { renderData } from "../views/render-data.js";
+import { Renderer } from "../views/render-data.js";
 
-const content = document.querySelector('#exibir') as HTMLElement;
-
-export async function consumeAPI(tipo: ContenType, termo: string, offset: number, orderBy = ''): Promise<void> {
+export async function consumeAPI(tipo: ContenType, termo: string, offset: number, limit: number, orderBy = '', render: Renderer): Promise<void> {
     let url = crateUrl (tipo, termo, offset, 10, orderBy);
   try {
     const res = await fetch(url);
@@ -25,7 +23,9 @@ export async function consumeAPI(tipo: ContenType, termo: string, offset: number
       }
     }));
 
-    itens.forEach((item) => renderData(item));
+    if (offset === 0) render.limpar();
+   
+    itens.forEach((item) => render.render(item));
 
   } catch (error) {
     console.error("Erro na requisição:", error);
