@@ -9,13 +9,11 @@ export class FiltersController {
     private carregando: boolean = false;
     private fimDosDados: boolean = false;
     private resultadosPorPagina: number = 10;
-
     private renderer: Renderer;
     private termoAtual: string = '';
 
   constructor(container: HTMLElement, private tipoAtual: ContenType) {
-
-    this.renderer = new Renderer(container, tipoAtual);
+  this.renderer = new Renderer(container, tipoAtual);
   }
 
   inicializar() {
@@ -23,7 +21,7 @@ export class FiltersController {
     this.atualizarConteudo(this.tipoAtual, ''); 
 
      window.addEventListener('scroll', () => {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200) {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
       this.atualizarConteudo(this.tipoAtual, this.termoAtual);
     }
   });
@@ -59,18 +57,17 @@ export class FiltersController {
     if (this.carregando || this.fimDosDados) return;
 
     this.carregando = true;
-
-  if (limpar) {
-    this.renderer.limpar();
-    this.offset = 0;
-    this.fimDosDados = false;
-  }
+    if (limpar) {
+      this.renderer.limpar();
+      this.offset = 0;
+      this.fimDosDados = false;
+    }
 
   try {
     await consumeAPI(tipo, termo, 0, 10, '', this.renderer);
     const total = await consumeAPI(tipo, termo, this.offset, this.resultadosPorPagina, '', this.renderer);
-    this.offset += this.resultadosPorPagina;
 
+    this.offset += this.resultadosPorPagina;
     if (this.offset >= total) {
       this.fimDosDados = true;
     }
