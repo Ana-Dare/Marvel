@@ -1,10 +1,10 @@
-import { crateUrl } from "../utils/createurl-utils.js";
+import { createUrl } from "../utils/createurl-utils.js";
 import { ContenType } from "../interfaces/request-interface.js";
 import { DataApi } from "../interfaces/request-interface.js";
 import { Renderer } from "../views/render-data.js";
 
 export async function consumeAPI(tipo: ContenType, termo: string, offset: number, limit: number, orderBy = '', render: Renderer): Promise<number> {
-    let url = crateUrl (tipo, termo, offset, limit, orderBy);
+    let url = createUrl (tipo, termo, offset, limit, orderBy);
   try {
     const res = await fetch(url);
     const dados = await res.json();
@@ -34,6 +34,6 @@ export async function consumeAPI(tipo: ContenType, termo: string, offset: number
     return 0;
     }
 }
-
+//
 
 

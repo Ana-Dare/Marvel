@@ -7,10 +7,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { crateUrl } from "../utils/createurl-utils.js";
+import { createUrl } from "../utils/createurl-utils.js";
 export function consumeAPI(tipo_1, termo_1, offset_1, limit_1) {
     return __awaiter(this, arguments, void 0, function* (tipo, termo, offset, limit, orderBy = '', render) {
-        let url = crateUrl(tipo, termo, offset, limit, orderBy);
+        let url = createUrl(tipo, termo, offset, limit, orderBy);
         try {
             const res = yield fetch(url);
             const dados = yield res.json();
