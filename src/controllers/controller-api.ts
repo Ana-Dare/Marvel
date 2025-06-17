@@ -3,6 +3,7 @@ import { ContenType} from "../interfaces/request-interface.js";
 import { consumeAPI } from "../services/request-services.js";
 import { InfiniteScroll } from "../utils/infinitescroll-utils.js";
 import { obterOrderBy } from "../utils/orderby-utils.js";
+import { DataApi } from "../interfaces/request-interface.js";
 
 export class ControllerApi {
     private offset: number = 0;
@@ -14,6 +15,7 @@ export class ControllerApi {
     private termoAtual: string = '';
     private ordemAtual: string = '';
     private scroll: InfiniteScroll;
+    private cache: Record<string, DataApi[]> = {};
 
   constructor(
     public container: HTMLElement,
@@ -52,6 +54,20 @@ export class ControllerApi {
     });
   }
   public async atualizarConteudo(tipo: ContenType, termo: string, limpar: boolean = false) {
+    const cacheKey = `${tipo}-${termo}-${this.ordemAtual}`;
+
+    if (this.cache[cacheKey]) {
+      if (limpar) this.renderer.limpar();
+      
+      const dadosCacheados = this.cache[cacheKey].slice(this.offset, this.offset + this.resultadosPorPagina);
+      dadosCacheados.forEach(item => this.renderer.render(item));
+
+      this.offset += this.resultadosPorPagina;
+      this.fimDosDados = this.offset >= this.cache[cacheKey].length;
+      return;
+  }
+
+
     if (this.carregando || this.fimDosDados) return;
   
       if (limpar) {
@@ -65,6 +81,9 @@ export class ControllerApi {
       const total = await consumeAPI(tipo, termo, this.offset, this.resultadosPorPagina, this.ordemAtual, this.renderer);
       this.total = total;
       this.offset += this.resultadosPorPagina;
+
+      
+
       if (this.offset >= this.total) {
               this.fimDosDados = true;
       } else {

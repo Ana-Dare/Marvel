@@ -22,6 +22,7 @@ export class ControllerApi {
         this.resultadosPorPagina = 10;
         this.termoAtual = '';
         this.ordemAtual = '';
+        this.cache = {};
         this.renderer = new Renderer(container, tipoAtual);
     }
     adicionarEventos() {
@@ -53,6 +54,16 @@ export class ControllerApi {
     atualizarConteudo(tipo_1, termo_1) {
         return __awaiter(this, arguments, void 0, function* (tipo, termo, limpar = false) {
             var _a;
+            const cacheKey = `${tipo}-${termo}-${this.ordemAtual}`;
+            if (this.cache[cacheKey]) {
+                if (limpar)
+                    this.renderer.limpar();
+                const dadosCacheados = this.cache[cacheKey].slice(this.offset, this.offset + this.resultadosPorPagina);
+                dadosCacheados.forEach(item => this.renderer.render(item));
+                this.offset += this.resultadosPorPagina;
+                this.fimDosDados = this.offset >= this.cache[cacheKey].length;
+                return;
+            }
             if (this.carregando || this.fimDosDados)
                 return;
             if (limpar) {

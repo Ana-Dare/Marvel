@@ -3,3 +3,32 @@
     color: white;
     font-weight: bold;
 }
+
+.container {
+    display: grid;
+    grid-template-columns: auto auto auto ;
+    justify-content: space-evenly;
+    gap: 2rem;
+    
+}
+
+.item-container {
+    border: 1px;
+    border-color: black;
+    border-radius: 1rem;
+    background-color: rgb(231, 227, 170);
+    display: flex;
+    align-items: center;
+    width: 20rem;
+    height: 18rem;
+    flex-direction: column;
+}
+
+.titulo-item-container {
+    display: flex;
+    color: rgb(1, 0, 2);
+}
+.container-search {
+    display: flex;
+    padding-bottom: 3rem;
+}
