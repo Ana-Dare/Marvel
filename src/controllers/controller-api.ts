@@ -15,12 +15,12 @@ export class ControllerApi {
     private termoAtual: string = '';
     private ordemAtual: string = '';
     private scroll: InfiniteScroll;
-    private cache: Record<string, DataApi[]> = {};
 
   constructor(
     public container: HTMLElement,
     private tipoAtual: ContenType
-  ) {
+  ) 
+  {
   this.renderer = new Renderer(container, tipoAtual);
   }
 
@@ -54,20 +54,6 @@ export class ControllerApi {
     });
   }
   public async atualizarConteudo(tipo: ContenType, termo: string, limpar: boolean = false) {
-    const cacheKey = `${tipo}-${termo}-${this.ordemAtual}`;
-
-    if (this.cache[cacheKey]) {
-      if (limpar) this.renderer.limpar();
-      
-      const dadosCacheados = this.cache[cacheKey].slice(this.offset, this.offset + this.resultadosPorPagina);
-      dadosCacheados.forEach(item => this.renderer.render(item));
-
-      this.offset += this.resultadosPorPagina;
-      this.fimDosDados = this.offset >= this.cache[cacheKey].length;
-      return;
-  }
-
-
     if (this.carregando || this.fimDosDados) return;
   
       if (limpar) {

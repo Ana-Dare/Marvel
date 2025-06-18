@@ -2,7 +2,7 @@ import { DataApi } from "../interfaces/request-interface.js";
 import { ContenType } from "../interfaces/request-interface.js";
 
 export class Renderer {
-    constructor(private container: HTMLElement, private tipoAtual: ContenType) {}
+    constructor(protected container: HTMLElement, protected tipoAtual: ContenType) {}
 
     public render(item: DataApi) {
         const div = document.createElement('div');

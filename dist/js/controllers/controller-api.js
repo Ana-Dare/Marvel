@@ -22,7 +22,10 @@ export class ControllerApi {
         this.resultadosPorPagina = 10;
         this.termoAtual = '';
         this.ordemAtual = '';
+<<<<<<< HEAD
         this.cache = {};
+=======
+>>>>>>> ced43da5561967762e7542b73891772fd9589bd1
         this.renderer = new Renderer(container, tipoAtual);
     }
     adicionarEventos() {
@@ -54,6 +57,7 @@ export class ControllerApi {
     atualizarConteudo(tipo_1, termo_1) {
         return __awaiter(this, arguments, void 0, function* (tipo, termo, limpar = false) {
             var _a;
+<<<<<<< HEAD
             const cacheKey = `${tipo}-${termo}-${this.ordemAtual}`;
             if (this.cache[cacheKey]) {
                 if (limpar)
@@ -64,6 +68,8 @@ export class ControllerApi {
                 this.fimDosDados = this.offset >= this.cache[cacheKey].length;
                 return;
             }
+=======
+>>>>>>> ced43da5561967762e7542b73891772fd9589bd1
             if (this.carregando || this.fimDosDados)
                 return;
             if (limpar) {
