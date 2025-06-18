@@ -7,17 +7,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { crateUrl } from "../utils/createurl-utils.js";
+import { createUrl } from "../utils/createurl-utils.js";
+import { cacheService } from "./cache-service.js";
 export function consumeAPI(tipo_1, termo_1, offset_1, limit_1) {
     return __awaiter(this, arguments, void 0, function* (tipo, termo, offset, limit, orderBy = '', render) {
-        let url = crateUrl(tipo, termo, offset, limit, orderBy);
+        const url = createUrl(tipo, termo, offset, limit, orderBy);
+        const cachedResponse = cacheService.get(url);
+        if (cachedResponse) {
+            if (offset === 0)
+                render.limpar();
+            cachedResponse.itens.forEach((item) => render.render(item));
+            return cachedResponse.total;
+        }
         try {
             const res = yield fetch(url);
+            if (!res.ok) {
+                throw new Error(`Erro na API: ${res.status} ${res.statusText}`);
+            }
             const dados = yield res.json();
             const total = dados.data.total;
             const result = dados.data.results;
-            console.log(url);
-            console.log(result);
             const itens = result.map((item) => {
                 var _a, _b;
                 return ({
@@ -31,6 +40,7 @@ export function consumeAPI(tipo_1, termo_1, offset_1, limit_1) {
                     }
                 });
             });
+            cacheService.set(url, { itens, total });
             if (offset === 0)
                 render.limpar();
             itens.forEach((item) => render.render(item));
