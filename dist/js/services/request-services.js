@@ -8,12 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { createUrl } from "../utils/createurl-utils.js";
-<<<<<<< HEAD
-export function consumeAPI(tipo_1, termo_1, offset_1, limit_1) {
-    return __awaiter(this, arguments, void 0, function* (tipo, termo, offset, limit, orderBy = '', render) {
-        let url = createUrl(tipo, termo, offset, limit, orderBy);
-=======
-import { cacheService } from "./cache-service.js";
+import { cacheService } from "../models/cache.js";
 export function consumeAPI(tipo_1, termo_1, offset_1, limit_1) {
     return __awaiter(this, arguments, void 0, function* (tipo, termo, offset, limit, orderBy = '', render) {
         const url = createUrl(tipo, termo, offset, limit, orderBy);
@@ -24,7 +19,6 @@ export function consumeAPI(tipo_1, termo_1, offset_1, limit_1) {
             cachedResponse.itens.forEach((item) => render.render(item));
             return cachedResponse.total;
         }
->>>>>>> ced43da5561967762e7542b73891772fd9589bd1
         try {
             const res = yield fetch(url);
             if (!res.ok) {
@@ -33,6 +27,7 @@ export function consumeAPI(tipo_1, termo_1, offset_1, limit_1) {
             const dados = yield res.json();
             const total = dados.data.total;
             const result = dados.data.results;
+            console.log(result);
             const itens = result.map((item) => {
                 var _a, _b;
                 return ({
@@ -40,6 +35,7 @@ export function consumeAPI(tipo_1, termo_1, offset_1, limit_1) {
                     name: item.name,
                     title: item.title,
                     description: item.description,
+                    id: item.id,
                     thumbnail: {
                         path: ((_a = item.thumbnail) === null || _a === void 0 ? void 0 : _a.path) || null,
                         extension: ((_b = item.thumbnail) === null || _b === void 0 ? void 0 : _b.extension) || null

@@ -4,8 +4,8 @@ export class Renderer {
         this.tipoAtual = tipoAtual;
     }
     render(item) {
-        const div = document.createElement('div');
-        div.classList.add('item-container');
+        const cards = document.createElement('cards');
+        cards.classList.add('item-container');
         const titulo = document.createElement('h3');
         titulo.classList.add('titulo-item-container');
         titulo.textContent = item.currentType === 'characters'
@@ -18,9 +18,9 @@ export class Renderer {
         }
         img.alt = titulo.textContent || 'Imagem';
         img.width = 100;
-        div.appendChild(titulo);
-        div.appendChild(img);
-        this.container.appendChild(div);
+        cards.appendChild(titulo);
+        cards.appendChild(img);
+        this.container.appendChild(cards);
     }
     limpar() {
         this.container.innerHTML = '';

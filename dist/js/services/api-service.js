@@ -31,6 +31,7 @@ export class MarvelApiService {
     fetchContent(tipo_1, termo_1, offset_1, limit_1) {
         return __awaiter(this, arguments, void 0, function* (tipo, termo, offset, limit, orderBy = '') {
             const cacheKey = this._generateCacheKey(tipo, termo, offset, limit, orderBy);
+            console.log('oi');
             if (cacheService.has(cacheKey)) {
                 return Promise.resolve(cacheService.get(cacheKey));
             }

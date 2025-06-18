@@ -1,7 +1,5 @@
-import { ControllerApi } from './controllers/controller-api.js';
-import { Renderer } from './views/render-data.js';
-import { MarvelApiService } from './services/api-service.js';
-import { ContenType } from './interfaces/request-interface.js';
+import { ControllerApi } from './controllers/homeController.js'; 
+
 const content = document.querySelector('#exibir') as HTMLElement;
 const controller = new ControllerApi(content, 'characters');
 controller.inicializar();

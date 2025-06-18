@@ -3,7 +3,6 @@ import { ContenType} from "../interfaces/request-interface.js";
 import { consumeAPI } from "../services/request-services.js";
 import { InfiniteScroll } from "../utils/infinitescroll-utils.js";
 import { obterOrderBy } from "../utils/orderby-utils.js";
-import { DataApi } from "../interfaces/request-interface.js";
 
 export class ControllerApi {
     private offset: number = 0;
@@ -21,9 +20,8 @@ export class ControllerApi {
     private tipoAtual: ContenType
   ) 
   {
-  this.renderer = new Renderer(container, tipoAtual);
+    this.renderer = new Renderer(container, tipoAtual);
   }
-
   private adicionarEventos() {
     const btnFiltros = Array.from(document.querySelectorAll('.filtro')) as HTMLElement[];
     const btnBuscar = document.querySelector('#buscar') as HTMLButtonElement;
@@ -53,7 +51,20 @@ export class ControllerApi {
       }
     });
   }
+  private adicionarEventosDeCliqueNosCards() {
+  const cards = document.querySelectorAll('.cards');
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      const id = (card as HTMLElement).dataset.id;
+      if (id) {
+        window.location.href = `detail.html?id=${id}`;
+      }
+    });
+  });
+}
+
   public async atualizarConteudo(tipo: ContenType, termo: string, limpar: boolean = false) {
+    this.adicionarEventosDeCliqueNosCards();
     if (this.carregando || this.fimDosDados) return;
   
       if (limpar) {
@@ -67,8 +78,6 @@ export class ControllerApi {
       const total = await consumeAPI(tipo, termo, this.offset, this.resultadosPorPagina, this.ordemAtual, this.renderer);
       this.total = total;
       this.offset += this.resultadosPorPagina;
-
-      
 
       if (this.offset >= this.total) {
               this.fimDosDados = true;

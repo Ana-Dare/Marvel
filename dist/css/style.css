@@ -22,6 +22,8 @@
     width: 20rem;
     height: 18rem;
     flex-direction: column;
+    cursor: pointer;
+    
 }
 
 .titulo-item-container {

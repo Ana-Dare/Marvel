@@ -50,9 +50,21 @@ export class ControllerApi {
             }
         });
     }
+    adicionarEventosDeCliqueNosCards() {
+        const cards = document.querySelectorAll('.cards');
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                const id = card.dataset.id;
+                if (id) {
+                    window.location.href = `detail.html?id=${id}`;
+                }
+            });
+        });
+    }
     atualizarConteudo(tipo_1, termo_1) {
         return __awaiter(this, arguments, void 0, function* (tipo, termo, limpar = false) {
             var _a;
+            this.adicionarEventosDeCliqueNosCards();
             if (this.carregando || this.fimDosDados)
                 return;
             if (limpar) {

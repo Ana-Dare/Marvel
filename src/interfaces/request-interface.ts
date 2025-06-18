@@ -14,6 +14,7 @@ export interface DataApi{
   name: string | null;
   title: string | null;
   description: string | null;
+  id: string | null;
   thumbnail: {
     path: string | null;
     extension: string | null;
