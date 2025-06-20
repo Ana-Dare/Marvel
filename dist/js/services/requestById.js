@@ -11,7 +11,7 @@ import { hash, ts, apiKey, baseUrl } from "../constants/globais.js";
 export function buscarPersonagemPorId(id) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a, _b;
-        const url = `${baseUrl}/${id}?ts=${ts}&apikey=${apiKey}&hash=${hash}`;
+        const url = `${baseUrl}/characters/${id}?ts=${ts}&apikey=${apiKey}&hash=${hash}`;
         try {
             const response = yield fetch(url);
             if (!response.ok) {

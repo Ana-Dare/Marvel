@@ -9,7 +9,6 @@
     grid-template-columns: auto auto auto ;
     justify-content: space-evenly;
     gap: 2rem;
-    
 }
 
 .item-container {
@@ -23,7 +22,6 @@
     height: 18rem;
     flex-direction: column;
     cursor: pointer;
-    
 }
 
 .titulo-item-container {

@@ -4,8 +4,9 @@ export class Renderer {
         this.tipoAtual = tipoAtual;
     }
     render(item) {
-        const cards = document.createElement('cards');
+        const cards = document.createElement('div');
         cards.classList.add('item-container');
+        cards.dataset.id = item.id.toString();
         const titulo = document.createElement('h3');
         titulo.classList.add('titulo-item-container');
         titulo.textContent = item.currentType === 'characters'

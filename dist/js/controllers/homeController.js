@@ -57,20 +57,23 @@ export class ControllerApi {
         });
     }
     adicionarEventosDeCliqueNosCards() {
-        const cards = document.querySelectorAll('.cards');
-        cards.forEach(card => {
-            card.addEventListener('click', () => {
+        if (!this.container)
+            return;
+        this.container.addEventListener('click', (e) => {
+            const card = e.target.closest('.item-container');
+            if (card && card instanceof HTMLElement) {
                 const id = card.dataset.id;
                 if (id) {
+                    console.log('Card clicado!', card);
+                    console.log('ID do card:', id);
                     window.location.href = `detail.html?id=${id}`;
                 }
-            });
+            }
         });
     }
     atualizarConteudo(tipo_1, termo_1) {
         return __awaiter(this, arguments, void 0, function* (tipo, termo, limpar = false) {
             var _a;
-            this.adicionarEventosDeCliqueNosCards();
             if (this.carregando || this.fimDosDados)
                 return;
             if (limpar) {
@@ -108,6 +111,7 @@ export class ControllerApi {
             this.atualizarConteudo(this.tipoAtual, this.termoAtual);
         }, this.container);
         this.scroll.startEvent();
+        this.adicionarEventosDeCliqueNosCards();
         this.atualizarConteudo(this.tipoAtual, '');
     }
 }

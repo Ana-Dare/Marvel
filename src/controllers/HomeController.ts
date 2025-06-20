@@ -26,6 +26,7 @@ export class ControllerApi {
   {
     this.renderer = new Renderer(container, tipoAtual);
   }
+
   private adicionarEventos() {
     btnFiltros.forEach(btn => {
       btn.addEventListener('click', e => {
@@ -56,20 +57,24 @@ export class ControllerApi {
       }
     });
   }
-  private adicionarEventosDeCliqueNosCards() {
-  const cards = document.querySelectorAll('.cards');
-  cards.forEach(card => {
-    card.addEventListener('click', () => {
-      const id = (card as HTMLElement).dataset.id;
+
+private adicionarEventosDeCliqueNosCards() {
+  if (!this.container) return;
+
+  this.container.addEventListener('click', (e) => {
+    const card = (e.target as HTMLElement).closest('.item-container');
+    if (card && card instanceof HTMLElement) {
+      const id = card.dataset.id;
       if (id) {
+        console.log('Card clicado!', card);
+        console.log('ID do card:', id);
         window.location.href = `detail.html?id=${id}`;
       }
-    });
+    }
   });
 }
 
   public async atualizarConteudo(tipo: ContenType, termo: string, limpar: boolean = false) {
-    this.adicionarEventosDeCliqueNosCards();
     if (this.carregando || this.fimDosDados) return;
   
       if (limpar) {
@@ -106,6 +111,7 @@ export class ControllerApi {
     }, this.container);
 
     this.scroll.startEvent();
+    this.adicionarEventosDeCliqueNosCards();
     this.atualizarConteudo(this.tipoAtual, '');
   }
 }
