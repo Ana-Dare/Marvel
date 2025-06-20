@@ -11,6 +11,9 @@ import { Renderer } from "../views/render-data.js";
 import { consumeAPI } from "../services/request-services.js";
 import { InfiniteScroll } from "../utils/infinitescroll-utils.js";
 import { obterOrderBy } from "../utils/orderby-utils.js";
+const btnFiltros = Array.from(document.querySelectorAll('.filtro'));
+const btnBuscar = document.querySelector('#buscar');
+const inputBusca = document.querySelector('#search');
 export class ControllerApi {
     constructor(container, tipoAtual) {
         this.container = container;
@@ -25,9 +28,6 @@ export class ControllerApi {
         this.renderer = new Renderer(container, tipoAtual);
     }
     adicionarEventos() {
-        const btnFiltros = Array.from(document.querySelectorAll('.filtro'));
-        const btnBuscar = document.querySelector('#buscar');
-        const inputBusca = document.querySelector('#search');
         btnFiltros.forEach(btn => {
             btn.addEventListener('click', e => {
                 const target = e.currentTarget;
@@ -42,10 +42,16 @@ export class ControllerApi {
         });
         btnBuscar.addEventListener('click', () => {
             if (inputBusca) {
-                this.termoAtual = inputBusca.value.trim();
+                const termoDigitado = inputBusca.value.trim();
+                if (!termoDigitado) {
+                    alert('Digite algo!');
+                    return;
+                }
+                this.termoAtual = termoDigitado;
                 const selectOrdenacao = document.querySelector('#ordenacao');
                 const valorOrdenacao = (selectOrdenacao === null || selectOrdenacao === void 0 ? void 0 : selectOrdenacao.value) || '';
                 this.ordemAtual = obterOrderBy(this.tipoAtual, valorOrdenacao);
+                this.scroll.lock();
                 this.atualizarConteudo(this.tipoAtual, this.termoAtual, true);
             }
         });
@@ -74,6 +80,7 @@ export class ControllerApi {
                 this.scroll.unlock();
             }
             this.carregando = true;
+            this.scroll.lock();
             try {
                 const total = yield consumeAPI(tipo, termo, this.offset, this.resultadosPorPagina, this.ordemAtual, this.renderer);
                 this.total = total;
@@ -90,6 +97,8 @@ export class ControllerApi {
             }
             finally {
                 this.carregando = false;
+                this.scroll.unlock();
+                inputBusca.value = '';
             }
         });
     }

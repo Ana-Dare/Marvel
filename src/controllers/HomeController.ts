@@ -4,6 +4,10 @@ import { consumeAPI } from "../services/request-services.js";
 import { InfiniteScroll } from "../utils/infinitescroll-utils.js";
 import { obterOrderBy } from "../utils/orderby-utils.js";
 
+const btnFiltros = Array.from(document.querySelectorAll('.filtro')) as HTMLElement[];
+const btnBuscar = document.querySelector('#buscar') as HTMLButtonElement;
+const inputBusca = document.querySelector('#search') as HTMLInputElement;
+
 export class ControllerApi {
     private offset: number = 0;
     private total: number = 0;
@@ -23,10 +27,6 @@ export class ControllerApi {
     this.renderer = new Renderer(container, tipoAtual);
   }
   private adicionarEventos() {
-    const btnFiltros = Array.from(document.querySelectorAll('.filtro')) as HTMLElement[];
-    const btnBuscar = document.querySelector('#buscar') as HTMLButtonElement;
-    const inputBusca = document.querySelector('#search') as HTMLInputElement;
-
     btnFiltros.forEach(btn => {
       btn.addEventListener('click', e => {
         const target = e.currentTarget as HTMLElement; // retorna o elemento clicado
@@ -41,11 +41,16 @@ export class ControllerApi {
     });
     btnBuscar.addEventListener('click', () => {
       if (inputBusca) {
-          this.termoAtual = inputBusca.value.trim();
-
-          const selectOrdenacao = document.querySelector<HTMLSelectElement>('#ordenacao');
-          const valorOrdenacao = selectOrdenacao?.value || '';
-          this.ordemAtual = obterOrderBy(this.tipoAtual, valorOrdenacao);
+        const termoDigitado = inputBusca.value.trim();
+      if (!termoDigitado) {
+        alert('Digite algo!')
+        return;
+    }
+      this.termoAtual = termoDigitado;
+      const selectOrdenacao = document.querySelector<HTMLSelectElement>('#ordenacao');
+      const valorOrdenacao = selectOrdenacao?.value || '';
+      this.ordemAtual = obterOrderBy(this.tipoAtual, valorOrdenacao);
+      this.scroll.lock();
 
           this.atualizarConteudo(this.tipoAtual, this.termoAtual, true);
       }
@@ -74,6 +79,7 @@ export class ControllerApi {
         this.scroll.unlock();
       }
         this.carregando = true;
+        this.scroll.lock();
     try {
       const total = await consumeAPI(tipo, termo, this.offset, this.resultadosPorPagina, this.ordemAtual, this.renderer);
       this.total = total;
@@ -88,6 +94,8 @@ export class ControllerApi {
       console.error('Erro ao atualizar conteúdo:', error);
     } finally {
       this.carregando = false;
+      this.scroll.unlock();
+      inputBusca.value = '';
     }
   }
 

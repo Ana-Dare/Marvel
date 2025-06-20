@@ -34,3 +34,20 @@
     display: flex;
     padding-bottom: 3rem;
 }
+
+.loading{
+  position: fixed;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #111;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+footer {
+    padding: 2rem;
+}
