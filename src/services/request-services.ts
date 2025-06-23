@@ -1,7 +1,7 @@
 import { createUrl } from "../utils/createurl-utils.js";
 import { ContenType } from "../interfaces/request-interface.js";
 import { DataApi } from "../interfaces/request-interface.js";
-import { Renderer } from "../views/render-data.js";
+import { Renderer } from "../views/RenderData.js";
 import { cacheService } from "../models/cache.js";
 import { CachedResponse } from "../interfaces/cache-interface.js";
 

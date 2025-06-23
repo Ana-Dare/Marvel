@@ -1,3 +1,4 @@
+@import url(reset.css);
 .ativo {
     background-color: #d32f2f;
     color: white;
@@ -9,6 +10,7 @@
     grid-template-columns: auto auto auto ;
     justify-content: space-evenly;
     gap: 2rem;
+    padding: 3rem;
 }
 
 .item-container {
@@ -29,9 +31,12 @@
     color: rgb(1, 0, 2);
 }
 .container-search {
-    display: flex;
-    padding-bottom: 3rem;
+    position: fixed;
+    background-color: white; 
+    width: 100%;
+    height: 3rem;
 }
+
 
 .loading{
   position: fixed;

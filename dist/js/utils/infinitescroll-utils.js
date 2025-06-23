@@ -1,3 +1,12 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 export class InfiniteScroll {
     constructor(callback, container, scrollOffset = 100) {
         this.callback = callback;
@@ -12,15 +21,16 @@ export class InfiniteScroll {
         this.btnOrdenacao = document.querySelector('#ordenacao');
     }
     startEvent() {
-        window.addEventListener('scroll', () => {
+        window.addEventListener('scroll', () => __awaiter(this, void 0, void 0, function* () {
             if (this.isLoading)
                 return;
             const isNearPageEnd = (window.innerHeight + window.scrollY) >= (document.body.offsetHeight - this.scrollOffset);
             if (isNearPageEnd) {
                 this.isLoading = true;
-                this.callback();
+                yield this.callback();
+                this.isLoading = false;
             }
-        });
+        }));
     }
     toggleButtons(disabled) {
         this.btnSearch && (this.btnSearch.disabled = disabled);
