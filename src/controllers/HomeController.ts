@@ -1,10 +1,17 @@
-import { Renderer } from "../views/RenderData.js"; 
+import { Renderer } from "../views/renderData.js"; 
 import { ContenType} from "../interfaces/request-interface.js";
 import { consumeAPI } from "../services/request-services.js";
 import { obterOrderBy } from "../utils/orderby-utils.js";
 import { ScrollDetector } from "./ScrollDetector .js";
-import { ScrollView } from "../views/ScrollDetectorView.js";
-import { LoadingUI } from "../views/LoadingUI.js";
+import { ScrollView } from "../views/scrollView.js";
+import { LoadingUI } from "../views/loadingUI.js";
+import { mapApiResults } from "../mappers/mapHomeResults.js";
+import { fetchFromAPI } from "../services/requestApi.js";
+import { DataApi } from "../interfaces/request-interface.js";
+import { ResultsInfoView } from "../views/resultsInfo.js";
+import { cacheService } from "../models/cache.js";
+import { createUrl } from "../utils/createurl-utils.js";
+
 
 const btnFiltros = Array.from(document.querySelectorAll('.filtro')) as HTMLElement[];
 const btnBuscar = document.querySelector('#buscar') as HTMLButtonElement;
@@ -21,7 +28,7 @@ export class ControllerApi {
     private scroll: ScrollDetector;
     private scrollView: ScrollView;
     private loadingUI: LoadingUI;
-    private resultsInfo: HTMLElement;
+    private resultsInfoView: ResultsInfoView;
 
   constructor(
     public container: HTMLElement,
@@ -31,8 +38,7 @@ export class ControllerApi {
     this.renderer = new Renderer(container, tipoAtual);
     this.scrollView = new ScrollView();
     this.loadingUI = new LoadingUI();
-    this.resultsInfo = document.querySelector('#resultsInfo') as HTMLElement;
-
+    this.resultsInfoView = new ResultsInfoView();
     this.scroll = new ScrollDetector(async () => {
       if (this.fimDosDados) return;
 
@@ -74,7 +80,6 @@ export class ControllerApi {
       this.scroll.lock();
       this.scrollView.showLoading();
 
-        
       await this.atualizarConteudo(this.tipoAtual, this.termoAtual, true);
       }
     });
@@ -95,29 +100,48 @@ private adicionarEventosDeCliqueNosCards() {
   });
 }
 
+private async obterDados(tipo: ContenType, termo: string): Promise<{ itens: DataApi[]; total: number }> {
+  const url = createUrl(tipo, termo, this.offset, this.resultadosPorPagina, this.ordemAtual);
+  const cache = cacheService.get(url);
+
+  if (cache) return cache;
+
+  const { dados } = await fetchFromAPI(tipo, termo, this.offset, this.resultadosPorPagina, this.ordemAtual);
+  const total = dados.data.total;
+  const results:DataApi[] = dados.data.results;
+  const itens = mapApiResults(results, tipo);
+
+  cacheService.set(url, { itens, total });
+  return { itens, total };
+}
+
   public async atualizarConteudo(tipo: ContenType, termo: string, limpar: boolean = false) {
     this.loadingUI.disableUI();
     this.scrollView.HideEndResults();
+
       if (limpar) {
         this.renderer.limpar();
         this.offset = 0;
         this.fimDosDados = false;
       }
       if (this.fimDosDados) {
-        this.resultsInfo.textContent = `Showing all ${this.total} results.`;
+        this.resultsInfoView.showAllLoaded(this.total)
         this.loadingUI.enableUI();
         return;
       }
     try {
-      const total = await consumeAPI(tipo, termo, this.offset, this.resultadosPorPagina, this.ordemAtual, this.renderer);
-      this.total = total;
-      this.offset += this.resultadosPorPagina;
-      this.resultsInfo.textContent = `Showing ${Math.min(this.offset, this.total)} of ${this.total} results.`;
+    const { itens, total }= await this.obterDados(tipo, termo);
+    if (this.offset === 0) this.renderer.limpar();
+    itens.forEach(item => this.renderer.render(item));
+
+    this.total = total;
+    this.offset += this.resultadosPorPagina;
+    this.resultsInfoView.updateProgress(this.offset, this.total);
 
       if (this.offset >= this.total) {
             this.fimDosDados = true;
             this.scrollView.showEndResults();
-            this.resultsInfo.textContent = `All ${this.total} results loaded.`;
+            this.resultsInfoView.showAllresults(this.total);
       } 
     } catch (error) {
       console.error('Erro ao atualizar conteúdo:', error);

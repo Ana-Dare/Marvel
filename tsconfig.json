@@ -10,5 +10,5 @@
         "strictNullChecks": true,
         "experimentalDecorators": true
     },
-    "include": ["src/**/*"]
+    "include": ["src/**/*", "src/mappers/mapHomeResults.ts"]
 }

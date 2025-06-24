@@ -7,12 +7,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Renderer } from "../views/RenderData.js";
-import { consumeAPI } from "../services/request-services.js";
+import { Renderer } from "../views/renderData.js";
 import { obterOrderBy } from "../utils/orderby-utils.js";
 import { ScrollDetector } from "./ScrollDetector .js";
-import { ScrollView } from "../views/ScrollDetectorView.js";
-import { LoadingUI } from "../views/LoadingUI.js";
+import { ScrollView } from "../views/scrollView.js";
+import { LoadingUI } from "../views/loadingUI.js";
+import { mapApiResults } from "../mappers/mapHomeResults.js";
+import { fetchFromAPI } from "../services/requestApi.js";
+import { ResultsInfoView } from "../views/resultsInfo.js";
+import { cacheService } from "../models/cache.js";
+import { createUrl } from "../utils/createurl-utils.js";
 const btnFiltros = Array.from(document.querySelectorAll('.filtro'));
 const btnBuscar = document.querySelector('#buscar');
 const inputBusca = document.querySelector('#search');
@@ -29,7 +33,7 @@ export class ControllerApi {
         this.renderer = new Renderer(container, tipoAtual);
         this.scrollView = new ScrollView();
         this.loadingUI = new LoadingUI();
-        this.resultsInfo = document.querySelector('#resultsInfo');
+        this.resultsInfoView = new ResultsInfoView();
         this.scroll = new ScrollDetector(() => __awaiter(this, void 0, void 0, function* () {
             if (this.fimDosDados)
                 return;
@@ -85,6 +89,20 @@ export class ControllerApi {
             }
         });
     }
+    obterDados(tipo, termo) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const url = createUrl(tipo, termo, this.offset, this.resultadosPorPagina, this.ordemAtual);
+            const cache = cacheService.get(url);
+            if (cache)
+                return cache;
+            const { dados } = yield fetchFromAPI(tipo, termo, this.offset, this.resultadosPorPagina, this.ordemAtual);
+            const total = dados.data.total;
+            const results = dados.data.results;
+            const itens = mapApiResults(results, tipo);
+            cacheService.set(url, { itens, total });
+            return { itens, total };
+        });
+    }
     atualizarConteudo(tipo_1, termo_1) {
         return __awaiter(this, arguments, void 0, function* (tipo, termo, limpar = false) {
             this.loadingUI.disableUI();
@@ -95,19 +113,22 @@ export class ControllerApi {
                 this.fimDosDados = false;
             }
             if (this.fimDosDados) {
-                this.resultsInfo.textContent = `Showing all ${this.total} results.`;
+                this.resultsInfoView.showAllLoaded(this.total);
                 this.loadingUI.enableUI();
                 return;
             }
             try {
-                const total = yield consumeAPI(tipo, termo, this.offset, this.resultadosPorPagina, this.ordemAtual, this.renderer);
+                const { itens, total } = yield this.obterDados(tipo, termo);
+                if (this.offset === 0)
+                    this.renderer.limpar();
+                itens.forEach(item => this.renderer.render(item));
                 this.total = total;
                 this.offset += this.resultadosPorPagina;
-                this.resultsInfo.textContent = `Showing ${Math.min(this.offset, this.total)} of ${this.total} results.`;
+                this.resultsInfoView.updateProgress(this.offset, this.total);
                 if (this.offset >= this.total) {
                     this.fimDosDados = true;
                     this.scrollView.showEndResults();
-                    this.resultsInfo.textContent = `All ${this.total} results loaded.`;
+                    this.resultsInfoView.showAllresults(this.total);
                 }
             }
             catch (error) {
