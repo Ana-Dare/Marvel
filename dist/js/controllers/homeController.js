@@ -17,6 +17,9 @@ import { fetchFromAPI } from "../services/requestApi.js";
 import { ResultsInfoView } from "../views/resultsInfo.js";
 import { cacheService } from "../models/cache.js";
 import { createUrl } from "../utils/createurl-utils.js";
+import { ContentDataFetcher } from "../services/contentDataFetcher.js";
+import { PaginationController } from "../services/pagination.js";
+import { ContentDisplay } from "../views/contentDisplay.js";
 const btnFiltros = Array.from(document.querySelectorAll('.filtro'));
 const btnBuscar = document.querySelector('#buscar');
 const inputBusca = document.querySelector('#search');
@@ -27,13 +30,16 @@ export class ControllerApi {
         this.offset = 0;
         this.total = 0;
         this.fimDosDados = false;
-        this.resultadosPorPagina = 10;
+        this.limit = 10;
         this.termoAtual = '';
         this.ordemAtual = '';
         this.renderer = new Renderer(container, tipoAtual);
         this.scrollView = new ScrollView();
         this.loadingUI = new LoadingUI();
         this.resultsInfoView = new ResultsInfoView();
+        this.dataFetcher = new ContentDataFetcher(this.obterDados.bind(this));
+        this.paginationController = new PaginationController(this.limit);
+        this.displayContent = new ContentDisplay(this.renderer);
         this.scroll = new ScrollDetector(() => __awaiter(this, void 0, void 0, function* () {
             if (this.fimDosDados)
                 return;
@@ -82,8 +88,6 @@ export class ControllerApi {
             if (card && card instanceof HTMLElement) {
                 const id = card.dataset.id;
                 if (id) {
-                    console.log('Card clicado!', card);
-                    console.log('ID do card:', id);
                     window.location.href = `detail.html?id=${id}`;
                 }
             }
@@ -91,11 +95,11 @@ export class ControllerApi {
     }
     obterDados(tipo, termo) {
         return __awaiter(this, void 0, void 0, function* () {
-            const url = createUrl(tipo, termo, this.offset, this.resultadosPorPagina, this.ordemAtual);
+            const url = createUrl(tipo, termo, this.offset, this.limit, this.ordemAtual);
             const cache = cacheService.get(url);
             if (cache)
                 return cache;
-            const { dados } = yield fetchFromAPI(tipo, termo, this.offset, this.resultadosPorPagina, this.ordemAtual);
+            const { dados } = yield fetchFromAPI(tipo, termo, this.offset, this.limit, this.ordemAtual);
             const total = dados.data.total;
             const results = dados.data.results;
             const itens = mapApiResults(results, tipo);
@@ -105,10 +109,10 @@ export class ControllerApi {
     }
     atualizarConteudo(tipo_1, termo_1) {
         return __awaiter(this, arguments, void 0, function* (tipo, termo, limpar = false) {
+            console.log("testando se funcionou");
             this.loadingUI.disableUI();
             this.scrollView.HideEndResults();
             if (limpar) {
-                this.renderer.limpar();
                 this.offset = 0;
                 this.fimDosDados = false;
             }
@@ -118,14 +122,13 @@ export class ControllerApi {
                 return;
             }
             try {
-                const { itens, total } = yield this.obterDados(tipo, termo);
-                if (this.offset === 0)
-                    this.renderer.limpar();
-                itens.forEach(item => this.renderer.render(item));
+                const { itens, total } = yield this.dataFetcher.fetchContent(tipo, termo);
+                this.displayContent.clearIfFirstPage(this.offset);
+                this.displayContent.renderItems(itens);
                 this.total = total;
-                this.offset += this.resultadosPorPagina;
+                this.offset = this.paginationController.calculateNextOffset(this.offset);
                 this.resultsInfoView.updateProgress(this.offset, this.total);
-                if (this.offset >= this.total) {
+                if (this.paginationController.hasReachedEnd(this.offset, this.total)) {
                     this.fimDosDados = true;
                     this.scrollView.showEndResults();
                     this.resultsInfoView.showAllresults(this.total);
