@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Renderer } from "../views/renderData.js";
+import { Renderer } from "../views/RenderData.js";
 import { obterOrderBy } from "../utils/orderby-utils.js";
 import { ScrollDetector } from "./ScrollDetector .js";
 import { ScrollView } from "../views/scrollView.js";
@@ -23,6 +23,7 @@ import { ContentDisplay } from "../views/contentDisplay.js";
 const btnFiltros = Array.from(document.querySelectorAll('.filtro'));
 const btnBuscar = document.querySelector('#buscar');
 const inputBusca = document.querySelector('#search');
+const selectOrdenacao = document.querySelector('#ordenacao');
 export class ControllerApi {
     constructor(container, tipoAtual) {
         this.container = container;
@@ -52,16 +53,21 @@ export class ControllerApi {
     }
     adicionarEventos() {
         btnFiltros.forEach(btn => {
-            btn.addEventListener('click', e => {
+            btn.addEventListener('click', (e) => __awaiter(this, void 0, void 0, function* () {
                 const target = e.currentTarget;
                 btnFiltros.forEach(btn => btn.classList.remove('ativo'));
                 target.classList.add('ativo');
                 const tipo = target.dataset.tipo;
                 if (tipo) {
+                    const termoDigitado = inputBusca.value.trim();
+                    this.termoAtual = termoDigitado;
                     this.tipoAtual = tipo;
                     this.renderer.mudarTipo(tipo);
+                    const valorOrdenacao = (selectOrdenacao === null || selectOrdenacao === void 0 ? void 0 : selectOrdenacao.value) || '';
+                    this.ordemAtual = obterOrderBy(this.tipoAtual, valorOrdenacao);
+                    yield this.atualizarConteudo(this.tipoAtual, this.termoAtual, true);
                 }
-            });
+            }));
         });
         btnBuscar.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
             if (inputBusca) {
@@ -71,13 +77,37 @@ export class ControllerApi {
                     return;
                 }
                 this.termoAtual = termoDigitado;
-                const selectOrdenacao = document.querySelector('#ordenacao');
                 const valorOrdenacao = (selectOrdenacao === null || selectOrdenacao === void 0 ? void 0 : selectOrdenacao.value) || '';
                 this.ordemAtual = obterOrderBy(this.tipoAtual, valorOrdenacao);
                 this.scroll.lock();
                 this.scrollView.showLoading();
                 yield this.atualizarConteudo(this.tipoAtual, this.termoAtual, true);
             }
+        }));
+    }
+    marcarFiltroInicial(tipo) {
+        btnFiltros.forEach(btn => {
+            btn.classList.remove('ativo');
+            if (btn.dataset.tipo === tipo) {
+                btn.classList.add('ativo');
+            }
+        });
+    }
+    DeletarBusca() {
+        const BtnDeletarBusca = document.querySelector('#deletar');
+        BtnDeletarBusca.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            inputBusca.value = '';
+            this.termoAtual = '';
+            this.offset = 0;
+            this.fimDosDados = false;
+            this.tipoAtual = "characters";
+            this.renderer.mudarTipo("characters");
+            this.offset = 0;
+            this.limit = 10;
+            this.total = 0;
+            this.ordemAtual = '';
+            this.marcarFiltroInicial("characters");
+            yield this.atualizarConteudo("characters", '', true);
         }));
     }
     adicionarEventosDeCliqueNosCards() {
@@ -96,6 +126,7 @@ export class ControllerApi {
     obterDados(tipo, termo) {
         return __awaiter(this, void 0, void 0, function* () {
             const url = createUrl(tipo, termo, this.offset, this.limit, this.ordemAtual);
+            console.log(url);
             const cache = cacheService.get(url);
             if (cache)
                 return cache;
@@ -109,7 +140,6 @@ export class ControllerApi {
     }
     atualizarConteudo(tipo_1, termo_1) {
         return __awaiter(this, arguments, void 0, function* (tipo, termo, limpar = false) {
-            console.log("testando se funcionou");
             this.loadingUI.disableUI();
             this.scrollView.HideEndResults();
             if (limpar) {
@@ -148,6 +178,8 @@ export class ControllerApi {
         this.adicionarEventos();
         this.scroll.start();
         this.adicionarEventosDeCliqueNosCards();
+        this.marcarFiltroInicial(this.tipoAtual);
         this.atualizarConteudo(this.tipoAtual, '');
+        this.DeletarBusca();
     }
 }

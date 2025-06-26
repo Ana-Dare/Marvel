@@ -1,4 +1,4 @@
-import { Renderer } from "../views/renderData.js"; 
+import { Renderer } from "../views/RenderData.js"; 
 import { ContenType} from "../interfaces/request-interface.js";
 import { obterOrderBy } from "../utils/orderby-utils.js";
 import { ScrollDetector } from "./ScrollDetector .js";
@@ -13,159 +13,196 @@ import { createUrl } from "../utils/createurl-utils.js";
 import { ContentDataFetcher } from "../services/contentDataFetcher.js";
 import { PaginationController } from "../services/pagination.js";
 import { ContentDisplay } from "../views/contentDisplay.js";
-//import { obterDados } from "../interfaces/obterDados.js"
 
 const btnFiltros = Array.from(document.querySelectorAll('.filtro')) as HTMLElement[];
 const btnBuscar = document.querySelector('#buscar') as HTMLButtonElement;
 const inputBusca = document.querySelector('#search') as HTMLInputElement;
+const selectOrdenacao = document.querySelector('#ordenacao') as HTMLSelectElement;
 
 export class ControllerApi {
-    private offset: number = 0; // controla onde inicia os resultados
-    private total: number = 0; // controla o total de resultados
-    private fimDosDados: boolean = false; //controla se os dados chegaram ao fim
-    private limit: number = 10; // controla os resultados por página
-    private renderer: Renderer; // controla a renderização
-    private termoAtual: string = ''; // controla o termo atual digitado
-    private ordemAtual: string = ''; // controla a ordem atual selecionada
-    private scroll: ScrollDetector; // controla o scroll
-    private scrollView: ScrollView; // controla as mensagens do scroll
-    private loadingUI: LoadingUI; // controla a desabilitação dos botões
-    private resultsInfoView: ResultsInfoView; //controla as informações sobre a quantidade
+    private offset: number = 0; 
+    private total: number = 0; 
+    private fimDosDados: boolean = false; 
+    private limit: number = 10; 
+    private renderer: Renderer; 
+    private termoAtual: string = ''; 
+    private ordemAtual: string = ''; 
+    private scroll: ScrollDetector; 
+    private scrollView: ScrollView; 
+    private loadingUI: LoadingUI;
+    private resultsInfoView: ResultsInfoView;
     private dataFetcher: ContentDataFetcher;
     private paginationController: PaginationController;
     private displayContent: ContentDisplay;
 
   constructor(
-    public container: HTMLElement, // cria um container
-    private tipoAtual: ContenType // cria um termo atual
+    public container: HTMLElement, 
+    private tipoAtual: ContenType
   ) 
-  { // define o que vai ser ativado assim que a classe for instanciada
-    this.renderer = new Renderer(container, tipoAtual); // instancia o renderer
-    this.scrollView = new ScrollView(); //instancia o scroll view
-    this.loadingUI = new LoadingUI(); // instancia o controle de btn
-    this.resultsInfoView = new ResultsInfoView(); // instancia informações do resultado
+  {
+    this.renderer = new Renderer(container, tipoAtual);
+    this.scrollView = new ScrollView(); 
+    this.loadingUI = new LoadingUI();
+    this.resultsInfoView = new ResultsInfoView(); 
      this.dataFetcher = new ContentDataFetcher(this.obterDados.bind(this));
     this.paginationController = new PaginationController(this.limit);
     this.displayContent = new ContentDisplay(this.renderer);
-    this.scroll = new ScrollDetector(async () => { //instancia scroll com uma função aync no constructor
-      if (this.fimDosDados) return; // quando chegar ao final dos dados
+    this.scroll = new ScrollDetector(async () => { 
+      if (this.fimDosDados) return; 
 
-      this.scroll.lock(); //ativa o scroll
-      this.scrollView.showLoading(); //exibe carregando
+      this.scroll.lock(); 
+      this.scrollView.showLoading(); 
 
-      await this.atualizarConteudo(this.tipoAtual, this.termoAtual); //espera carregar e atualiza o conteudo
+      await this.atualizarConteudo(this.tipoAtual, this.termoAtual); 
 
-      this.scroll.unlock(); //bloqueia o scroll  
-      this.scrollView.hideLoading();// esconde carregando
+      this.scroll.unlock(); 
+      this.scrollView.hideLoading();
     });
   }
 
-  private adicionarEventos() { // adiciona clique aos botões ***
+  private adicionarEventos() { 
     btnFiltros.forEach(btn => {
-      btn.addEventListener('click', e => {
-        const target = e.currentTarget as HTMLElement; // retorna o elemento clicado
+      btn.addEventListener('click', async e => {
+        const target = e.currentTarget as HTMLElement; 
           btnFiltros.forEach(btn => btn.classList.remove('ativo'));
           target.classList.add('ativo');
-        const tipo = target.dataset.tipo as ContenType | undefined; //acessa o data-set e pega o valor do btn clicado
+
+        const tipo = target.dataset.tipo as ContenType | undefined; 
           if (tipo) {
-            this.tipoAtual = tipo; // atualiza tipo com o valor do btn clicado
-            this.renderer.mudarTipo(tipo); // passa para o render o novo tipo
+            const termoDigitado = inputBusca.value.trim();
+            this.termoAtual = termoDigitado;
+            this.tipoAtual = tipo; 
+            this.renderer.mudarTipo(tipo); 
+            const valorOrdenacao = selectOrdenacao?.value || ''; 
+            this.ordemAtual = obterOrderBy(this.tipoAtual, valorOrdenacao);
+            await this.atualizarConteudo(this.tipoAtual, this.termoAtual, true); 
           }
       });
     });
-    btnBuscar.addEventListener('click', async () => { // adiciona clique e funcionalidade ao btn de busca
+
+    btnBuscar.addEventListener('click', async () => { 
       if (inputBusca) {
-        const termoDigitado = inputBusca.value.trim(); // termo digitado igual ao que esta no input
+        const termoDigitado = inputBusca.value.trim(); 
       if (!termoDigitado) {
-        alert('Digite algo!') // caso não tenha nada escrito, não continua
+        alert('Digite algo!') 
         return;
     }
-      this.termoAtual = termoDigitado; // passa o valor do input para termo atual
-      const selectOrdenacao = document.querySelector<HTMLSelectElement>('#ordenacao'); //seleciona a ordenação
-      const valorOrdenacao = selectOrdenacao?.value || ''; // pega o valor da ordenação
-      this.ordemAtual = obterOrderBy(this.tipoAtual, valorOrdenacao); // passa para ordem atual o valor de orderBy
+      this.termoAtual = termoDigitado; 
+     
+      const valorOrdenacao = selectOrdenacao?.value || '';
+      this.ordemAtual = obterOrderBy(this.tipoAtual, valorOrdenacao); 
 
-      this.scroll.lock(); //desbloqueia o scroll
-      this.scrollView.showLoading(); //exibe carregando
+      this.scroll.lock(); 
+      this.scrollView.showLoading(); 
 
-      await this.atualizarConteudo(this.tipoAtual, this.termoAtual, true); // limpa e atualiza o conteudo com os parametros
+      await this.atualizarConteudo(this.tipoAtual, this.termoAtual, true); 
       }
     });
   }
 
-private adicionarEventosDeCliqueNosCards() { // adiciona clique aos cards
-  if (!this.container) return; // se não existir container não executa a função
-  this.container.addEventListener('click', (e) => { // adiciona clique ao container
-    const card = (e.target as HTMLElement).closest('.item-container'); // procura o elemento mais próximo com a classe item.conteiner
-    if (card && card instanceof HTMLElement) {  //verifica se card é realmente um elemento do DOM
-      const id = card.dataset.id; // define que id é o dataset.id do card
+private marcarFiltroInicial(tipo: ContenType) {
+  btnFiltros.forEach(btn => {
+    btn.classList.remove('ativo');
+    if (btn.dataset.tipo === tipo) {
+      btn.classList.add('ativo');
+    }
+  });
+}
+
+private DeletarBusca() {
+  const BtnDeletarBusca = document.querySelector('#deletar') as HTMLButtonElement;
+  BtnDeletarBusca.addEventListener('click' ,async () => {
+    inputBusca.value = '';
+    this.termoAtual = '';
+    this.offset = 0;
+    this.fimDosDados = false;
+
+    this.tipoAtual = "characters";
+    this.renderer.mudarTipo("characters");
+    this.offset = 0;
+    this.limit =  10;
+    this.total = 0;
+    this.ordemAtual = '';
+
+    this.marcarFiltroInicial("characters");
+
+    await this.atualizarConteudo("characters", '', true);
+  })
+}
+
+private adicionarEventosDeCliqueNosCards() { 
+  if (!this.container) return; 
+  this.container.addEventListener('click', (e) => { 
+    const card = (e.target as HTMLElement).closest('.item-container'); 
+    if (card && card instanceof HTMLElement) {  
+      const id = card.dataset.id; 
       if (id) {
-        window.location.href = `detail.html?id=${id}`; //redireciona para uma página html referente ao id do card
+        window.location.href = `detail.html?id=${id}`; 
       }
     }
   });
 }
 
-public async obterDados(tipo: ContenType, termo: string): Promise<{ itens: DataApi[]; total: number }> { //obtem os dados, cria a url e retrona os itens e total
-  const url = createUrl(tipo, termo, this.offset, this.limit, this.ordemAtual); // cria  aurl com os parametros necessários
-  const cache = cacheService.get(url); // guarda a url no cache
+public async obterDados(tipo: ContenType, termo: string): Promise<{ itens: DataApi[]; total: number }> { 
+  const url = createUrl(tipo, termo, this.offset, this.limit, this.ordemAtual); 
+  console.log(url);
 
-  if (cache) return cache; // se tiver cache retorna cache
+  const cache = cacheService.get(url); 
+  if (cache) return cache; 
 
-  const { dados } = await fetchFromAPI(tipo, termo, this.offset, this.limit, this.ordemAtual); // pega os dados vindos da fetch
-  const total = dados.data.total; //pega o total dentro dos dados
-  const results:DataApi[] = dados.data.results; // pega os resultados dentro de dados com a interface dataapi
-  const itens = mapApiResults(results, tipo); // cria um map com os resultados e tipo atual
+  const { dados } = await fetchFromAPI(tipo, termo, this.offset, this.limit, this.ordemAtual); 
+  const total = dados.data.total; 
+  const results:DataApi[] = dados.data.results;
+  const itens = mapApiResults(results, tipo); 
 
-  cacheService.set(url, { itens, total }); // armazena os resultados em cache
-  return { itens, total }; // retorna os dados salvos em cache
+  cacheService.set(url, { itens, total }); 
+  return { itens, total }; 
 }
 
   public async atualizarConteudo(tipo: ContenType, termo: string, limpar: boolean = false) {
-    console.log("testando se funcionou") // função para atualizar conteudo
-    this.loadingUI.disableUI(); //desabilita os btn qnd inicia a busca
-    this.scrollView.HideEndResults(); // esconde os resultados dos itens
+    this.loadingUI.disableUI(); 
+    this.scrollView.HideEndResults();
 
-      if (limpar) { // quando limpar for true
-        this.offset = 0//limpa se for primeira pagina
+      if (limpar) { 
+        this.offset = 0
         this.fimDosDados = false; 
-        // define que os dados não chegaram ao fim
       }
-      if (this.fimDosDados) { // quando fim dso dados for true
-        this.resultsInfoView.showAllLoaded(this.total) // exibe mensagem de fim
-        this.loadingUI.enableUI(); // desbloqueia os btn
-        return; // retorna
+      if (this.fimDosDados) { 
+        this.resultsInfoView.showAllLoaded(this.total) 
+        this.loadingUI.enableUI(); 
+        return;
       }
     try {
-    const { itens, total }= await this.dataFetcher.fetchContent(tipo, termo); // espera a resposta de obterdados
+    const { itens, total }= await this.dataFetcher.fetchContent(tipo, termo);
 
-    this.displayContent.clearIfFirstPage(this.offset);// limpa se for a primeira pagina
-    this.displayContent.renderItems(itens); //renderizar os itens pesquisados
-
-    this.total = total; //define o total retornado para o propriedade total
-    this.offset = this.paginationController.calculateNextOffset(this.offset); //soma o inicial ao resultado por página
-    this.resultsInfoView.updateProgress(this.offset, this.total); // exibe mensagem de progressp
+    this.displayContent.clearIfFirstPage(this.offset);
+    this.displayContent.renderItems(itens);
+    this.total = total; 
+    this.offset = this.paginationController.calculateNextOffset(this.offset); 
+    this.resultsInfoView.updateProgress(this.offset, this.total); 
 
     if(this.paginationController.hasReachedEnd(this.offset, this.total)) {
-      this.fimDosDados = true; //fim dos dados
-      this.scrollView.showEndResults(); //mensagem de fim
-      this.resultsInfoView.showAllresults(this.total); // total de resultados
+      this.fimDosDados = true; 
+      this.scrollView.showEndResults(); 
+      this.resultsInfoView.showAllresults(this.total); 
     }  
     
     
     } catch (error) {
-      console.error('Erro ao atualizar conteúdo:', error); // erro
-    } finally { // em qualquer situação
-      this.loadingUI.enableUI(); //desbloqueia os botões
-      this.scroll.unlock(); // desbloqueia o scroll
-      this.scrollView.hideLoading(); // esconde carregando
+      console.error('Erro ao atualizar conteúdo:', error); 
+    } finally { 
+      this.loadingUI.enableUI();
+      this.scroll.unlock(); 
+      this.scrollView.hideLoading(); 
     }
   }
 
   public inicializar() {
-    this.adicionarEventos(); //adiciona os clique ao header
-    this.scroll.start(); //ativa o scroll
-    this.adicionarEventosDeCliqueNosCards(); //adiciona clique aos cards
-    this.atualizarConteudo(this.tipoAtual, ''); //atualiza o conteudo com tipo atual e termo padrão.
+    this.adicionarEventos(); 
+    this.scroll.start();
+    this.adicionarEventosDeCliqueNosCards(); 
+    this.marcarFiltroInicial(this.tipoAtual);
+    this.atualizarConteudo(this.tipoAtual, ''); 
+    this.DeletarBusca();
   }
 }

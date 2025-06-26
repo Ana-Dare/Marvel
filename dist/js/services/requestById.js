@@ -38,3 +38,33 @@ export function buscarPersonagemPorId(id) {
         }
     });
 }
+export function buscarseriePorId(id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        var _a, _b;
+        const url = `${baseUrl}/series/${id}?ts=${ts}&apikey=${apiKey}&hash=${hash}`;
+        try {
+            const response = yield fetch(url);
+            if (!response.ok) {
+                throw new Error(`Erro ao buscar serie: ${response.status}`);
+            }
+            const json = yield response.json();
+            const result = json.data.results[0];
+            const series = {
+                currentType: "characters",
+                name: result.name,
+                title: result.title,
+                description: result.description,
+                id: result.id,
+                thumbnail: {
+                    path: ((_a = result.thumbnail) === null || _a === void 0 ? void 0 : _a.path) || null,
+                    extension: ((_b = result.thumbnail) === null || _b === void 0 ? void 0 : _b.extension) || null
+                }
+            };
+            return series;
+        }
+        catch (e) {
+            console.error("Erro ao buscar series por ID:", e);
+            return null;
+        }
+    });
+}
