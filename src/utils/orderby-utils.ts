@@ -1,6 +1,6 @@
-import { ContenType } from "../interfaces/request-interface.js";
+import { ContentType } from "../interfaces/requestInterface.js";
 
-export function obterOrderBy(tipo: ContenType, filtroOrdenacao: string): string {
+export function obterOrderBy(tipo: ContentType, filtroOrdenacao: string): string {
   switch (filtroOrdenacao) {
     case "Mais recente":
       return tipo === 'comics' ? '-onsaleDate' : '-modified';

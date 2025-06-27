@@ -1,8 +1,8 @@
-import { DataApi } from "../interfaces/request-interface.js";
-import { ContenType } from "../interfaces/request-interface.js";
+import { DataApi } from "../../interfaces/requestInterface.js";
+import { ContentType } from "../../interfaces/requestInterface.js";
 
 export class Renderer {
-    constructor(protected container: HTMLElement, protected tipoAtual: ContenType) {}
+    constructor(protected container: HTMLElement, protected tipoAtual: ContentType) {}
 
     public render(item: DataApi) {
         const cards = document.createElement('div');
@@ -15,9 +15,6 @@ export class Renderer {
             ? item.name || 'Nome indisponível.'
             : item.title || 'Título indisponível.';
 
-        //const descricao = document.createElement('p');
-        //descricao.textContent = item.description || 'Descrição indisponível.';
-
         const img = document.createElement('img');
         img.classList.add('img-item-container');
         if (item.thumbnail.path && item.thumbnail.extension) {
@@ -27,15 +24,13 @@ export class Renderer {
         img.width = 100;
 
         cards.appendChild(titulo);
-        //cards.appendChild(descricao);
         cards.appendChild(img);
-
         this.container.appendChild(cards);
     }
     public limpar() {
             this.container.innerHTML = '';
         }
-    public mudarTipo(novoTipo: ContenType) {
+    public mudarTipo(novoTipo: ContentType) {
             this.tipoAtual = novoTipo;
         }
 }   

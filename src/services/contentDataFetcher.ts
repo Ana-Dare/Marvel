@@ -1,13 +1,12 @@
-import { ContenType } from "../interfaces/request-interface.js";
-import { getData } from "../interfaces/getDataType.js";
+import { ContentType } from "../interfaces/requestInterface.js";
+import { getDataType } from "../interfaces/getDataType.js";
 
-export class ContentDataFetcher { // retorna os dados buscados
+export class ContentDataFetcher { 
   constructor (
-    private getData: getData // função usad apara getDatas
+    private getData: getDataType 
   ) {}
 
-  
-  fetchContent(type: ContenType, termo: string) { // dados que a função recebe
-    return this.getData(type, termo); // dados que ela retorna
+  async fetchContent(type: ContentType, termo: string) { 
+    return this.getData(type, termo); 
   }
 }

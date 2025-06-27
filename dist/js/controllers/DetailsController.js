@@ -7,36 +7,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { buscarPersonagemPorId } from "../services/requestById.js";
-export class DetailController {
-    constructor(containerId) {
-        const container = document.querySelector('#detail');
-        if (!container) {
-            throw new Error(`Container '${containerId}' não encontrado`);
-        }
+import { requestCharactersById } from "../services/requests/CharactersById.js";
+import { RenderCharacters } from "../views/Render/charactersRender.js";
+import { mapCharacters } from "../mappers/mapCharacters.js";
+export class CharactersController {
+    constructor(container) {
         this.container = container;
+        this.renderer = new RenderCharacters(container);
     }
-    inicializar() {
+    initialize(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const params = new URLSearchParams(window.location.search);
-            const id = params.get('id');
-            if (!id) {
-                this.container.innerHTML = `<p>Personagem não encontrado.</p>`;
-                return;
+            try {
+                const rawCharacter = yield requestCharactersById(id);
+                if (!rawCharacter) {
+                    this.container.innerHTML = "<p>Personagem não encontrado.</p>";
+                    return;
+                }
+                const [characters] = mapCharacters([rawCharacter]);
+                this.renderer.renderCharacters(characters);
             }
-            const personagem = yield buscarPersonagemPorId(id);
-            if (!personagem) {
-                this.container.innerHTML = `<p>Erro ao carregar personagem.</p>`;
-                return;
+            catch (error) {
+                console.error("Erro ao inicializar personagem:", error);
+                this.container.innerHTML = "<p>Erro ao carregar personagem.</p>";
             }
-            this.exibirDetalhes(personagem);
         });
-    }
-    exibirDetalhes(personagem) {
-        this.container.innerHTML = `
-      <h1>${personagem.name}</h1>
-      <img src="${personagem.thumbnail.path}.${personagem.thumbnail.extension}" />
-      <p>${personagem.description || "Sem descrição disponível"}</p>
-    `;
     }
 }

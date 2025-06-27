@@ -1,1 +1,1 @@
-import { ContenType} from "../interfaces/request-interface.js";
+import { ContentType} from "../interfaces/requestInterface.js";

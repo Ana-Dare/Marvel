@@ -1,40 +1,33 @@
-import { DataApi } from "../interfaces/request-interface.js";
-import { buscarPersonagemPorId } from "../services/requestById.js";
 
-export class DetailController {
-    private container: HTMLElement
+import { requestCharactersById } from "../services/requests/CharactersById.js";
+import { RenderCharacters } from "../views/Render/charactersRender.js";
+import { mapCharacters } from "../mappers/mapCharacters.js";
 
-    constructor(containerId: string) {
-    const container = document.querySelector('#detail') as HTMLElement;
-    if (!container) {
-      throw new Error(`Container '${containerId}' não encontrado`);
-    }
-    this.container = container;
+export class CharactersController {
+  private renderer: RenderCharacters;
+
+  constructor(private container: HTMLElement) {
+    this.renderer = new RenderCharacters(container);
   }
 
-  public async inicializar() {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
+  public async initialize(id: string) {
+    try {
+      // 1. Buscar personagem bruto
+      const rawCharacter = await requestCharactersById(id);
+      if (!rawCharacter) {
+        this.container.innerHTML = "<p>Personagem não encontrado.</p>";
+        return;
+      }
 
-    if (!id) {
-      this.container.innerHTML = `<p>Personagem não encontrado.</p>`;
-      return;
+      // 2. Mapear para seu tipo Characters
+      const [characters] = mapCharacters([rawCharacter]);
+
+      // 3. Renderizar o personagem
+      this.renderer.renderCharacters(characters);
+
+    } catch (error) {
+      console.error("Erro ao inicializar personagem:", error);
+      this.container.innerHTML = "<p>Erro ao carregar personagem.</p>";
     }
-
-    const personagem = await buscarPersonagemPorId(id);
-    if (!personagem) {
-      this.container.innerHTML = `<p>Erro ao carregar personagem.</p>`;
-      return;
-    }
-
-    this.exibirDetalhes(personagem);
-  }
-
-  private exibirDetalhes(personagem: DataApi) {
-    this.container.innerHTML = `
-      <h1>${personagem.name}</h1>
-      <img src="${personagem.thumbnail.path}.${personagem.thumbnail.extension}" />
-      <p>${personagem.description || "Sem descrição disponível"}</p>
-    `;
   }
 }

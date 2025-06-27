@@ -5,7 +5,6 @@ export function mapApiResults(results, tipo) {
             currentType: tipo,
             name: item.name,
             title: item.title,
-            description: item.description,
             id: item.id,
             thumbnail: {
                 path: ((_a = item.thumbnail) === null || _a === void 0 ? void 0 : _a.path) || null,

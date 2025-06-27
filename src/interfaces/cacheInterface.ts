@@ -1,4 +1,4 @@
-import { DataApi } from "./request-interface.js";
+import { DataApi } from "./requestInterface.js";
 
 export interface CachedResponse {
   itens: DataApi[];

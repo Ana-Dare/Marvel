@@ -1,4 +1,4 @@
-import { DataApi } from "../interfaces/request-interface.js";
+import { DataApi } from "../interfaces/requestInterface.js";
 
 export class ContentDisplay {
   constructor(private renderer: { // cria render e chama seus metodos

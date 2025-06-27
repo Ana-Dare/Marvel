@@ -1,7 +1,7 @@
 import { apiKey, ts, hash, baseUrl } from "../constants/globais.js";
-import { ContenType } from "../interfaces/request-interface.js";
+import { ContentType } from "../interfaces/requestInterface.js";
 
-export function createUrl(tipo: ContenType, termo: string, offset: number, limit: number, orderBy: string): string {
+export function createUrl(tipo: ContentType, termo: string, offset: number, limit: number, orderBy: string): string {
   let url = `${baseUrl}/${tipo}?ts=${ts}&apikey=${apiKey}&hash=${hash}&limit=${limit}&offset=${offset}`;
 
   if (orderBy) {

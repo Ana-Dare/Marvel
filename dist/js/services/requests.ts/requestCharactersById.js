@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { hash, ts, apiKey, baseUrl } from "../constants/globais.js";
+import { hash, ts, apiKey, baseUrl } from "../../constants/globais.js";
 export function buscarPersonagemPorId(id) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a, _b, _c, _d, _e, _f;
