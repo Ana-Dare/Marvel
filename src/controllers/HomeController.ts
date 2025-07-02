@@ -1,137 +1,212 @@
-import { Renderer } from "../views/RenderData.js"; 
-import { ContenType} from "../interfaces/request-interface.js";
-import { consumeAPI } from "../services/request-services.js";
+import { Renderer } from "../views/Render/homeRender.js"; 
+import { ContentType} from "../interfaces/requestInterface.js";
 import { obterOrderBy } from "../utils/orderby-utils.js";
 import { ScrollDetector } from "./ScrollDetector .js";
-import { ScrollView } from "../views/ScrollDetectorView.js";
-import { LoadingUI } from "../views/LoadingUI.js";
+import { ScrollView } from "../views/Scroll/scrollView.js";
+import { LoadingUI } from "../views/Scroll/LoadingUI.js";
+import { mapApiResults } from "../mappers/mapHomeResults.js";
+import { fetchFromAPI } from "../services/requests/Api.js"; 
+import { DataApi } from "../interfaces/requestInterface.js";
+import { ResultsInfoView } from "../views/Scroll/resultsInfo.js";
+import { cacheService } from "../models/cache.js";
+import { createUrl } from "../utils/createurl-utils.js";
+import { ContentDataFetcher } from "../services/contentDataFetcher.js";
+import { PaginationController } from "../services/pagination.js";
+import { ContentDisplay } from "../views/contentDisplay.js";
 
-const btnFiltros = Array.from(document.querySelectorAll('.filtro')) as HTMLElement[];
-const btnBuscar = document.querySelector('#buscar') as HTMLButtonElement;
-const inputBusca = document.querySelector('#search') as HTMLInputElement;
+const btnFilters = Array.from(document.querySelectorAll('.filtro')) as HTMLElement[];
+const btnSearch = document.querySelector('#buscar') as HTMLButtonElement;
+const inputSearch = document.querySelector('#search') as HTMLInputElement;
+const orderSelect = document.querySelector('#ordenacao') as HTMLSelectElement;
 
 export class ControllerApi {
-    private offset: number = 0;
-    private total: number = 0;
-    private fimDosDados: boolean = false;
-    private resultadosPorPagina: number = 10;
-    private renderer: Renderer;
-    private termoAtual: string = '';
-    private ordemAtual: string = '';
-    private scroll: ScrollDetector;
-    private scrollView: ScrollView;
+    private offset: number = 0; 
+    private total: number = 0; 
+    private isEndOfData: boolean = false; 
+    private limit: number = 10; 
+    private renderer: Renderer; 
+    private currentTerm: string = ''; 
+    private currentOrder: string = ''; 
+    private scroll: ScrollDetector; 
+    private scrollView: ScrollView; 
     private loadingUI: LoadingUI;
-    private resultsInfo: HTMLElement;
+    private resultsInfoView: ResultsInfoView;
+    private dataFetcher: ContentDataFetcher;
+    private paginationController: PaginationController;
+    private displayContent: ContentDisplay;
 
   constructor(
-    public container: HTMLElement,
-    private tipoAtual: ContenType
+    public container: HTMLElement, 
+    private currentType: ContentType
   ) 
   {
-    this.renderer = new Renderer(container, tipoAtual);
-    this.scrollView = new ScrollView();
+    this.renderer = new Renderer(container, currentType);
+    this.scrollView = new ScrollView(); 
     this.loadingUI = new LoadingUI();
-    this.resultsInfo = document.querySelector('#resultsInfo') as HTMLElement;
+    this.resultsInfoView = new ResultsInfoView(); 
+    this.dataFetcher = new ContentDataFetcher(this.getData.bind(this));
+    this.paginationController = new PaginationController(this.limit);
+    this.displayContent = new ContentDisplay(this.renderer);
+    this.scroll = new ScrollDetector(async () => { 
+      if (this.isEndOfData) return; 
 
-    this.scroll = new ScrollDetector(async () => {
-      if (this.fimDosDados) return;
+      this.scroll.lock(); 
+      this.scrollView.showLoading(); 
 
-      this.scroll.lock();
-      this.scrollView.showLoading();
+      await this.updateContent(this.currentType, this.currentTerm); 
 
-      await this.atualizarConteudo(this.tipoAtual, this.termoAtual);
-
-      this.scroll.unlock();      
+      this.scroll.unlock(); 
       this.scrollView.hideLoading();
     });
   }
 
-  private adicionarEventos() {
-    btnFiltros.forEach(btn => {
-      btn.addEventListener('click', e => {
-        const target = e.currentTarget as HTMLElement; // retorna o elemento clicado
-          btnFiltros.forEach(btn => btn.classList.remove('ativo'));
+  private enableEvents() { 
+    btnFilters.forEach(btn => {
+      btn.addEventListener('click', async e => {
+        const target = e.currentTarget as HTMLElement; 
+          btnFilters.forEach(btn => btn.classList.remove('ativo'));
           target.classList.add('ativo');
-        const tipo = target.dataset.tipo as ContenType | undefined; //acessa o data-set e pega o valor do btn clicado
+
+        const tipo = target.dataset.tipo as ContentType | undefined; 
           if (tipo) {
-            this.tipoAtual = tipo;
-            this.renderer.mudarTipo(tipo);
+            const inputTerm = inputSearch.value.trim();
+            this.currentTerm = inputTerm;
+            this.currentType = tipo; 
+            this.renderer.mudarTipo(tipo); 
+            const sortValue = orderSelect?.value || ''; 
+            this.currentOrder = obterOrderBy(this.currentType, sortValue);
+            await this.updateContent(this.currentType, this.currentTerm, true); 
           }
       });
     });
-    btnBuscar.addEventListener('click', async () => {
-      if (inputBusca) {
-        const termoDigitado = inputBusca.value.trim();
-      if (!termoDigitado) {
-        alert('Digite algo!')
+
+    btnSearch.addEventListener('click', async () => { 
+      if (inputSearch) {
+        const inputTerm = inputSearch.value.trim(); 
+      if (!inputTerm) {
+        alert('Digite algo!') 
         return;
     }
-      this.termoAtual = termoDigitado;
-      const selectOrdenacao = document.querySelector<HTMLSelectElement>('#ordenacao');
-      const valorOrdenacao = selectOrdenacao?.value || '';
-      this.ordemAtual = obterOrderBy(this.tipoAtual, valorOrdenacao);
+      this.currentTerm = inputTerm; 
+     
+      const sortValue = orderSelect?.value || '';
+      this.currentOrder = obterOrderBy(this.currentType, sortValue); 
 
-      this.scroll.lock();
-      this.scrollView.showLoading();
+      this.scroll.lock(); 
+      this.scrollView.showLoading(); 
 
-        
-      await this.atualizarConteudo(this.tipoAtual, this.termoAtual, true);
+      await this.updateContent(this.currentType, this.currentTerm, true); 
       }
     });
   }
 
-private adicionarEventosDeCliqueNosCards() {
-  if (!this.container) return;
-  this.container.addEventListener('click', (e) => {
-    const card = (e.target as HTMLElement).closest('.item-container');
-    if (card && card instanceof HTMLElement) {
-      const id = card.dataset.id;
-      if (id) {
-        console.log('Card clicado!', card);
-        console.log('ID do card:', id);
-        window.location.href = `detail.html?id=${id}`;
+private setInitialFilter(tipo: ContentType) {
+  btnFilters.forEach(btn => {
+    btn.classList.remove('ativo');
+    if (btn.dataset.tipo === tipo) {
+      btn.classList.add('ativo');
+    }
+  });
+}
+
+private resetSearch() {
+  const BtnResetSearch = document.querySelector('#deletar') as HTMLButtonElement;
+  BtnResetSearch.addEventListener('click' ,async () => {
+    inputSearch.value = '';
+    this.currentTerm = '';
+    this.offset = 0;
+    this.isEndOfData = false;
+    this.currentType = "characters";
+    this.renderer.mudarTipo("characters");
+    this.offset = 0;
+    this.limit =  10;
+    this.total = 0;
+    this.currentOrder = '';
+    this.setInitialFilter("characters");
+    await this.updateContent("characters", '', true);
+  })
+}
+
+private enableEventsDeCliqueNosCards() { 
+    if (!this.container) return; 
+    this.container.addEventListener('click', (e) => { 
+      const card = (e.target as HTMLElement).closest('.item-container'); 
+    if (card && card instanceof HTMLElement) {  
+      const id = card.dataset.id; 
+      const type = card.dataset.type;
+      if (id && type) {
+          window.location.href = `pages/${type}.html?type=${type}&id=${id}`;
       }
     }
   });
 }
 
-  public async atualizarConteudo(tipo: ContenType, termo: string, limpar: boolean = false) {
-    this.loadingUI.disableUI();
+public async getData(tipo: ContentType, termo: string): Promise<{ itens: DataApi[]; total: number }> { 
+  const url = createUrl(tipo, termo, this.offset, this.limit, this.currentOrder); 
+  console.log(url);
+
+  try {  
+  const cache = cacheService.get(url); 
+  if (cache) return cache; 
+
+  const { dados } = await fetchFromAPI(tipo, termo, this.offset, this.limit, this.currentOrder); 
+  const total = dados.data.total; 
+  const results:DataApi[] = dados.data.results;
+  const itens = mapApiResults(results, tipo); 
+
+  cacheService.set(url, { itens, total }); 
+  return { itens, total }; 
+
+  } catch  (error) {
+    console.error("Erro ao buscar dados:", error);
+    throw error; 
+  }
+}
+
+  public async updateContent(tipo: ContentType, termo: string, limpar: boolean = false) {
+    this.loadingUI.disableUI(); 
     this.scrollView.HideEndResults();
-      if (limpar) {
-        this.renderer.limpar();
-        this.offset = 0;
-        this.fimDosDados = false;
+
+      if (limpar) { 
+        this.offset = 0
+        this.isEndOfData = false; 
       }
-      if (this.fimDosDados) {
-        this.resultsInfo.textContent = `Showing all ${this.total} results.`;
-        this.loadingUI.enableUI();
+      if (this.isEndOfData) { 
+        this.resultsInfoView.showAllLoaded(this.total) 
+        this.loadingUI.enableUI(); 
         return;
       }
     try {
-      const total = await consumeAPI(tipo, termo, this.offset, this.resultadosPorPagina, this.ordemAtual, this.renderer);
-      this.total = total;
-      this.offset += this.resultadosPorPagina;
-      this.resultsInfo.textContent = `Showing ${Math.min(this.offset, this.total)} of ${this.total} results.`;
+    const { itens, total }= await this.dataFetcher.fetchContent(tipo, termo);
 
-      if (this.offset >= this.total) {
-            this.fimDosDados = true;
-            this.scrollView.showEndResults();
-            this.resultsInfo.textContent = `All ${this.total} results loaded.`;
-      } 
+    this.displayContent.clearIfFirstPage(this.offset);
+    this.displayContent.renderItems(itens);
+    this.total = total; 
+    this.offset = this.paginationController.calculateNextOffset(this.offset); 
+    this.resultsInfoView.updateProgress(this.offset, this.total); 
+
+    if(this.paginationController.hasReachedEnd(this.offset, this.total)) {
+      this.isEndOfData = true; 
+      this.scrollView.showEndResults(); 
+      this.resultsInfoView.showAllresults(this.total); 
+    }  
+    
+    
     } catch (error) {
-      console.error('Erro ao atualizar conteúdo:', error);
-    } finally {
+      console.error('Erro ao atualizar conteúdo:', error); 
+    } finally { 
       this.loadingUI.enableUI();
-      this.scroll.unlock();
-      this.scrollView.hideLoading();
+      this.scroll.unlock(); 
+      this.scrollView.hideLoading(); 
     }
   }
 
   public inicializar() {
-    this.adicionarEventos();
+    this.enableEvents(); 
     this.scroll.start();
-    this.adicionarEventosDeCliqueNosCards();
-    this.atualizarConteudo(this.tipoAtual, '');
+    this.enableEventsDeCliqueNosCards(); 
+    this.setInitialFilter(this.currentType);
+    this.updateContent(this.currentType, ''); 
+    this.resetSearch();
   }
 }

@@ -7,36 +7,48 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { buscarPersonagemPorId } from "../services/requestById.js";
+import { requestCharactersById } from "../services/requests/CharactersById.js";
+import { requestComicsById } from "../services/requests/ComicsById.js";
+import { requestSeriesById } from "../services/requests/SeriesById.js";
 export class DetailController {
-    constructor(containerId) {
-        const container = document.querySelector('#detail');
-        if (!container) {
-            throw new Error(`Container '${containerId}' não encontrado`);
-        }
-        this.container = container;
+    constructor(renderCharacters, renderComics, renderSeries) {
+        this.renderCharacters = renderCharacters;
+        this.renderComics = renderComics;
+        this.renderSeries = renderSeries;
     }
-    inicializar() {
+    initialize() {
         return __awaiter(this, void 0, void 0, function* () {
             const params = new URLSearchParams(window.location.search);
-            const id = params.get('id');
-            if (!id) {
-                this.container.innerHTML = `<p>Personagem não encontrado.</p>`;
-                return;
+            const type = params.get("type");
+            const id = params.get("id");
+            if (!type || !id) {
+                throw new Error("Parâmetros inválidos.");
             }
-            const personagem = yield buscarPersonagemPorId(id);
-            if (!personagem) {
-                this.container.innerHTML = `<p>Erro ao carregar personagem.</p>`;
-                return;
+            try {
+                switch (type) {
+                    case "characters":
+                        const character = yield requestCharactersById(id);
+                        if (character)
+                            this.renderCharacters.renderCharacters(character);
+                        console.log("Buscando comics por ID:", id);
+                        break;
+                    case "comics":
+                        const comics = yield requestComicsById(id);
+                        if (comics)
+                            this.renderComics.renderComics(comics);
+                        break;
+                    case "series":
+                        const series = yield requestSeriesById(id);
+                        if (series)
+                            this.renderSeries.renderSeries(series);
+                        break;
+                    default:
+                        console.warn("Tipo inválido:", type);
+                }
             }
-            this.exibirDetalhes(personagem);
+            catch (e) {
+                console.error("Erro ao carregar os dados:", e);
+            }
         });
-    }
-    exibirDetalhes(personagem) {
-        this.container.innerHTML = `
-      <h1>${personagem.name}</h1>
-      <img src="${personagem.thumbnail.path}.${personagem.thumbnail.extension}" />
-      <p>${personagem.description || "Sem descrição disponível"}</p>
-    `;
     }
 }

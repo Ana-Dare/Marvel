@@ -7,107 +7,168 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Renderer } from "../views/RenderData.js";
-import { consumeAPI } from "../services/request-services.js";
+import { Renderer } from "../views/Render/homeRender.js";
 import { obterOrderBy } from "../utils/orderby-utils.js";
 import { ScrollDetector } from "./ScrollDetector .js";
-import { ScrollView } from "../views/ScrollDetectorView.js";
-import { LoadingUI } from "../views/LoadingUI.js";
-const btnFiltros = Array.from(document.querySelectorAll('.filtro'));
-const btnBuscar = document.querySelector('#buscar');
-const inputBusca = document.querySelector('#search');
+import { ScrollView } from "../views/Scroll/scrollView.js";
+import { LoadingUI } from "../views/Scroll/LoadingUI.js";
+import { mapApiResults } from "../mappers/mapHomeResults.js";
+import { fetchFromAPI } from "../services/requests/Api.js";
+import { ResultsInfoView } from "../views/Scroll/resultsInfo.js";
+import { cacheService } from "../models/cache.js";
+import { createUrl } from "../utils/createurl-utils.js";
+import { ContentDataFetcher } from "../services/contentDataFetcher.js";
+import { PaginationController } from "../services/pagination.js";
+import { ContentDisplay } from "../views/contentDisplay.js";
+const btnFilters = Array.from(document.querySelectorAll('.filtro'));
+const btnSearch = document.querySelector('#buscar');
+const inputSearch = document.querySelector('#search');
+const orderSelect = document.querySelector('#ordenacao');
 export class ControllerApi {
-    constructor(container, tipoAtual) {
+    constructor(container, currentType) {
         this.container = container;
-        this.tipoAtual = tipoAtual;
+        this.currentType = currentType;
         this.offset = 0;
         this.total = 0;
-        this.fimDosDados = false;
-        this.resultadosPorPagina = 10;
-        this.termoAtual = '';
-        this.ordemAtual = '';
-        this.renderer = new Renderer(container, tipoAtual);
+        this.isEndOfData = false;
+        this.limit = 10;
+        this.currentTerm = '';
+        this.currentOrder = '';
+        this.renderer = new Renderer(container, currentType);
         this.scrollView = new ScrollView();
         this.loadingUI = new LoadingUI();
-        this.resultsInfo = document.querySelector('#resultsInfo');
+        this.resultsInfoView = new ResultsInfoView();
+        this.dataFetcher = new ContentDataFetcher(this.getData.bind(this));
+        this.paginationController = new PaginationController(this.limit);
+        this.displayContent = new ContentDisplay(this.renderer);
         this.scroll = new ScrollDetector(() => __awaiter(this, void 0, void 0, function* () {
-            if (this.fimDosDados)
+            if (this.isEndOfData)
                 return;
             this.scroll.lock();
             this.scrollView.showLoading();
-            yield this.atualizarConteudo(this.tipoAtual, this.termoAtual);
+            yield this.updateContent(this.currentType, this.currentTerm);
             this.scroll.unlock();
             this.scrollView.hideLoading();
         }));
     }
-    adicionarEventos() {
-        btnFiltros.forEach(btn => {
-            btn.addEventListener('click', e => {
+    enableEvents() {
+        btnFilters.forEach(btn => {
+            btn.addEventListener('click', (e) => __awaiter(this, void 0, void 0, function* () {
                 const target = e.currentTarget;
-                btnFiltros.forEach(btn => btn.classList.remove('ativo'));
+                btnFilters.forEach(btn => btn.classList.remove('ativo'));
                 target.classList.add('ativo');
                 const tipo = target.dataset.tipo;
                 if (tipo) {
-                    this.tipoAtual = tipo;
+                    const inputTerm = inputSearch.value.trim();
+                    this.currentTerm = inputTerm;
+                    this.currentType = tipo;
                     this.renderer.mudarTipo(tipo);
+                    const sortValue = (orderSelect === null || orderSelect === void 0 ? void 0 : orderSelect.value) || '';
+                    this.currentOrder = obterOrderBy(this.currentType, sortValue);
+                    yield this.updateContent(this.currentType, this.currentTerm, true);
                 }
-            });
+            }));
         });
-        btnBuscar.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
-            if (inputBusca) {
-                const termoDigitado = inputBusca.value.trim();
-                if (!termoDigitado) {
+        btnSearch.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            if (inputSearch) {
+                const inputTerm = inputSearch.value.trim();
+                if (!inputTerm) {
                     alert('Digite algo!');
                     return;
                 }
-                this.termoAtual = termoDigitado;
-                const selectOrdenacao = document.querySelector('#ordenacao');
-                const valorOrdenacao = (selectOrdenacao === null || selectOrdenacao === void 0 ? void 0 : selectOrdenacao.value) || '';
-                this.ordemAtual = obterOrderBy(this.tipoAtual, valorOrdenacao);
+                this.currentTerm = inputTerm;
+                const sortValue = (orderSelect === null || orderSelect === void 0 ? void 0 : orderSelect.value) || '';
+                this.currentOrder = obterOrderBy(this.currentType, sortValue);
                 this.scroll.lock();
                 this.scrollView.showLoading();
-                yield this.atualizarConteudo(this.tipoAtual, this.termoAtual, true);
+                yield this.updateContent(this.currentType, this.currentTerm, true);
             }
         }));
     }
-    adicionarEventosDeCliqueNosCards() {
+    setInitialFilter(tipo) {
+        btnFilters.forEach(btn => {
+            btn.classList.remove('ativo');
+            if (btn.dataset.tipo === tipo) {
+                btn.classList.add('ativo');
+            }
+        });
+    }
+    resetSearch() {
+        const BtnResetSearch = document.querySelector('#deletar');
+        BtnResetSearch.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            inputSearch.value = '';
+            this.currentTerm = '';
+            this.offset = 0;
+            this.isEndOfData = false;
+            this.currentType = "characters";
+            this.renderer.mudarTipo("characters");
+            this.offset = 0;
+            this.limit = 10;
+            this.total = 0;
+            this.currentOrder = '';
+            this.setInitialFilter("characters");
+            yield this.updateContent("characters", '', true);
+        }));
+    }
+    enableEventsDeCliqueNosCards() {
         if (!this.container)
             return;
         this.container.addEventListener('click', (e) => {
             const card = e.target.closest('.item-container');
             if (card && card instanceof HTMLElement) {
                 const id = card.dataset.id;
-                if (id) {
-                    console.log('Card clicado!', card);
-                    console.log('ID do card:', id);
-                    window.location.href = `detail.html?id=${id}`;
+                const type = card.dataset.type;
+                if (id && type) {
+                    window.location.href = `pages/${type}.html?type=${type}&id=${id}`;
                 }
             }
         });
     }
-    atualizarConteudo(tipo_1, termo_1) {
+    getData(tipo, termo) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const url = createUrl(tipo, termo, this.offset, this.limit, this.currentOrder);
+            console.log(url);
+            try {
+                const cache = cacheService.get(url);
+                if (cache)
+                    return cache;
+                const { dados } = yield fetchFromAPI(tipo, termo, this.offset, this.limit, this.currentOrder);
+                const total = dados.data.total;
+                const results = dados.data.results;
+                const itens = mapApiResults(results, tipo);
+                cacheService.set(url, { itens, total });
+                return { itens, total };
+            }
+            catch (error) {
+                console.error("Erro ao buscar dados:", error);
+                throw error;
+            }
+        });
+    }
+    updateContent(tipo_1, termo_1) {
         return __awaiter(this, arguments, void 0, function* (tipo, termo, limpar = false) {
             this.loadingUI.disableUI();
             this.scrollView.HideEndResults();
             if (limpar) {
-                this.renderer.limpar();
                 this.offset = 0;
-                this.fimDosDados = false;
+                this.isEndOfData = false;
             }
-            if (this.fimDosDados) {
-                this.resultsInfo.textContent = `Showing all ${this.total} results.`;
+            if (this.isEndOfData) {
+                this.resultsInfoView.showAllLoaded(this.total);
                 this.loadingUI.enableUI();
                 return;
             }
             try {
-                const total = yield consumeAPI(tipo, termo, this.offset, this.resultadosPorPagina, this.ordemAtual, this.renderer);
+                const { itens, total } = yield this.dataFetcher.fetchContent(tipo, termo);
+                this.displayContent.clearIfFirstPage(this.offset);
+                this.displayContent.renderItems(itens);
                 this.total = total;
-                this.offset += this.resultadosPorPagina;
-                this.resultsInfo.textContent = `Showing ${Math.min(this.offset, this.total)} of ${this.total} results.`;
-                if (this.offset >= this.total) {
-                    this.fimDosDados = true;
+                this.offset = this.paginationController.calculateNextOffset(this.offset);
+                this.resultsInfoView.updateProgress(this.offset, this.total);
+                if (this.paginationController.hasReachedEnd(this.offset, this.total)) {
+                    this.isEndOfData = true;
                     this.scrollView.showEndResults();
-                    this.resultsInfo.textContent = `All ${this.total} results loaded.`;
+                    this.resultsInfoView.showAllresults(this.total);
                 }
             }
             catch (error) {
@@ -121,9 +182,11 @@ export class ControllerApi {
         });
     }
     inicializar() {
-        this.adicionarEventos();
+        this.enableEvents();
         this.scroll.start();
-        this.adicionarEventosDeCliqueNosCards();
-        this.atualizarConteudo(this.tipoAtual, '');
+        this.enableEventsDeCliqueNosCards();
+        this.setInitialFilter(this.currentType);
+        this.updateContent(this.currentType, '');
+        this.resetSearch();
     }
 }

@@ -1,6 +1,7 @@
-import { apiKey, ts, hash, baseUrl } from "../constants/globais.js";
+import { ts, publicKey, hash } from "../gerarHash.js";
+export const urlBase = 'https://gateway.marvel.com/v1/public/';
 export function createUrl(tipo, termo, offset, limit, orderBy) {
-    let url = `${baseUrl}/${tipo}?ts=${ts}&apikey=${apiKey}&hash=${hash}&limit=${limit}&offset=${offset}`;
+    let url = `${urlBase}/${tipo}?ts=${ts}&apikey=${publicKey}&hash=${hash}&limit=${limit}&offset=${offset}`;
     if (orderBy) {
         url += `&orderBy=${orderBy}`;
     }

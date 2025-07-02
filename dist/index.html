@@ -12,8 +12,12 @@
             <select id="ordenacao">
                 <option value="Mais recente">Mais recente</option>
                 <option value="Mais antigo">Mais antigo</option>
+                <option value="A-Z">A-Z</option>
+                <option value="Z-A">Z-A</option>
+                
             </select>
                 <input id="search" type="search" placeholder="Pesquisar">
+                <button id="deletar">X</button>
                 <button id="buscar">Buscar</button>
                 <button class="filtro" data-tipo="characters" id="personagens">Personagens</button>
                 <button class="filtro" data-tipo="series" id="series">Séries</button>
@@ -33,5 +37,6 @@
 </footer>
     
 </body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script type="module" src="./js/index.js"></script>
 </html>
