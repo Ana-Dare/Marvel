@@ -30,7 +30,10 @@ export class Renderer {
         cards.appendChild(titulo);
         cards.appendChild(img);
         this.container.appendChild(cards);
+        console.log(item);    
+
     }
+
     private getFavoriteItem (id: string): boolean {
         let dataLocalStorage = [];
         try {
@@ -51,3 +54,4 @@ export class Renderer {
             this.tipoAtual = novoTipo;
         }
 }   
+

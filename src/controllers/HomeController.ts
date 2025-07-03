@@ -111,7 +111,6 @@ export class ControllerApi {
     const type = card?.dataset.type;
     id && type && btn && btn.classList.toggle('active')
     btn?.classList.contains('active') ? console.log('adiciona no localstorage') : console.log('retura do local storage');
-    
   });
 }
 

@@ -26,6 +26,7 @@ export class Renderer {
         cards.appendChild(titulo);
         cards.appendChild(img);
         this.container.appendChild(cards);
+        console.log(item);
     }
     getFavoriteItem(id) {
         let dataLocalStorage = [];

@@ -14,14 +14,16 @@
                 <option value="Mais antigo">Mais antigo</option>
                 <option value="A-Z">A-Z</option>
                 <option value="Z-A">Z-A</option>
-                
             </select>
+                <div class="logo-marvel">MARVEL</div>
                 <input id="search" type="search" placeholder="Pesquisar">
                 <button id="deletar">X</button>
                 <button id="buscar">Buscar</button>
-                <button class="filtro" data-tipo="characters" id="personagens">Personagens</button>
-                <button class="filtro" data-tipo="series" id="series">Séries</button>
-                <button class="filtro" data-tipo="comics" id="quadrinhos">Quadrinhos</button>
+                <div class="filters">
+                    <button class="filtro" data-tipo="characters" id="personagens">Personagens</button>
+                    <button class="filtro" data-tipo="series" id="series">Séries</button>
+                    <button class="filtro" data-tipo="comics" id="quadrinhos">Quadrinhos</button>
+                </div>
                 
               <div class="resultsInfo" id="resultsInfo"></div>
             </div>
@@ -32,7 +34,20 @@
           
     </main>
 <footer>
-    <div class="loading" id="messageLoading">Carregando</div>
+    <div class="spinner" id="messageLoading">
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+    </div>
     <div class="noMoreResults" id="noMoreResults">Não há mais resultados para esta busca.</div>
     <div class="resultsInfo" id="resultsInfo"></div>
 
