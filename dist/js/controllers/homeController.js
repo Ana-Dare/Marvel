@@ -85,6 +85,17 @@ export class ControllerApi {
             }
         }));
     }
+    enableEventsDeCliqueNosFavoritos() {
+        this.container && this.container.addEventListener('click', (e) => {
+            const target = e.target;
+            const btn = target.closest('.favorite');
+            const card = btn && btn.closest('.item-container');
+            const id = card === null || card === void 0 ? void 0 : card.dataset.id;
+            const type = card === null || card === void 0 ? void 0 : card.dataset.type;
+            id && type && btn && btn.classList.toggle('active');
+            (btn === null || btn === void 0 ? void 0 : btn.classList.contains('active')) ? console.log('adiciona no localstorage') : console.log('retura do local storage');
+        });
+    }
     setInitialFilter(tipo) {
         btnFilters.forEach(btn => {
             btn.classList.remove('ativo');
@@ -114,7 +125,10 @@ export class ControllerApi {
         if (!this.container)
             return;
         this.container.addEventListener('click', (e) => {
-            const card = e.target.closest('.item-container');
+            const target = e.target;
+            if (target.closest('.favorite'))
+                return;
+            const card = target.closest('.item-container');
             if (card && card instanceof HTMLElement) {
                 const id = card.dataset.id;
                 const type = card.dataset.type;
@@ -188,5 +202,6 @@ export class ControllerApi {
         this.setInitialFilter(this.currentType);
         this.updateContent(this.currentType, '');
         this.resetSearch();
+        this.enableEventsDeCliqueNosFavoritos();
     }
 }

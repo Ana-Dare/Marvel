@@ -19,6 +19,7 @@ const btnSearch = document.querySelector('#buscar') as HTMLButtonElement;
 const inputSearch = document.querySelector('#search') as HTMLInputElement;
 const orderSelect = document.querySelector('#ordenacao') as HTMLSelectElement;
 
+
 export class ControllerApi {
     private offset: number = 0; 
     private total: number = 0; 
@@ -37,7 +38,7 @@ export class ControllerApi {
 
   constructor(
     public container: HTMLElement, 
-    private currentType: ContentType
+    private currentType: ContentType,
   ) 
   {
     this.renderer = new Renderer(container, currentType);
@@ -98,7 +99,21 @@ export class ControllerApi {
       await this.updateContent(this.currentType, this.currentTerm, true); 
       }
     });
+
   }
+
+  private enableEventsDeCliqueNosFavoritos() {
+  this.container && this.container.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    const btn = target.closest('.favorite');
+    const card = btn && btn.closest('.item-container') as HTMLElement;
+    const id = card?.dataset.id;
+    const type = card?.dataset.type;
+    id && type && btn && btn.classList.toggle('active')
+    btn?.classList.contains('active') ? console.log('adiciona no localstorage') : console.log('retura do local storage');
+    
+  });
+}
 
 private setInitialFilter(tipo: ContentType) {
   btnFilters.forEach(btn => {
@@ -108,6 +123,7 @@ private setInitialFilter(tipo: ContentType) {
     }
   });
 }
+
 
 private resetSearch() {
   const BtnResetSearch = document.querySelector('#deletar') as HTMLButtonElement;
@@ -130,15 +146,17 @@ private resetSearch() {
 private enableEventsDeCliqueNosCards() { 
     if (!this.container) return; 
     this.container.addEventListener('click', (e) => { 
-      const card = (e.target as HTMLElement).closest('.item-container'); 
-    if (card && card instanceof HTMLElement) {  
-      const id = card.dataset.id; 
-      const type = card.dataset.type;
-      if (id && type) {
-          window.location.href = `pages/${type}.html?type=${type}&id=${id}`;
+      const target = e.target as HTMLElement;
+      if (target.closest('.favorite')) return;
+      const card = target.closest('.item-container'); 
+      if (card && card instanceof HTMLElement) {  
+        const id = card.dataset.id; 
+        const type = card.dataset.type;
+        if (id && type) {
+            window.location.href = `pages/${type}.html?type=${type}&id=${id}`;
+        }
       }
-    }
-  });
+    });
 }
 
 public async getData(tipo: ContentType, termo: string): Promise<{ itens: DataApi[]; total: number }> { 
@@ -177,7 +195,7 @@ public async getData(tipo: ContentType, termo: string): Promise<{ itens: DataApi
         return;
       }
     try {
-    const { itens, total }= await this.dataFetcher.fetchContent(tipo, termo);
+    const { itens, total } = await this.dataFetcher.fetchContent(tipo, termo);
 
     this.displayContent.clearIfFirstPage(this.offset);
     this.displayContent.renderItems(itens);
@@ -202,11 +220,12 @@ public async getData(tipo: ContentType, termo: string): Promise<{ itens: DataApi
   }
 
   public inicializar() {
-    this.enableEvents(); 
+    this.enableEvents();
     this.scroll.start();
     this.enableEventsDeCliqueNosCards(); 
     this.setInitialFilter(this.currentType);
     this.updateContent(this.currentType, ''); 
     this.resetSearch();
+    this.enableEventsDeCliqueNosFavoritos();
   }
 }

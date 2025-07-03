@@ -19,16 +19,25 @@
     border-radius: 1rem;
     background-color: rgb(231, 227, 170);
     display: flex;
-    align-items: center;
     width: 20rem;
     height: 18rem;
     flex-direction: column;
     cursor: pointer;
+    padding: 1.5rem;
 }
 
 .titulo-item-container {
     display: flex;
     color: rgb(1, 0, 2);
+    align-self: center;
+}
+
+.img-item-container {
+  flex-direction: column;
+  justify-content: center;    
+  align-self: center;     
+  display: flex;  
+  padding: 1rem;
 }
 .container-search {
     position: fixed;
@@ -53,4 +62,31 @@
 
 footer {
     padding: 2rem;
+}
+
+.favorite {
+    display: flex;
+    justify-content: flex-end;
+    align-self: flex-end;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background-color: red;  
+    border: 0.5px;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.active{
+    display: flex;
+    justify-content: flex-end;
+    align-self: flex-end;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background-color: blue;  
+    border: 0.5px;
+    cursor: pointer;
+    box-sizing: border-box;
+
 }
