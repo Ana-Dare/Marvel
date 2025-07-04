@@ -92,10 +92,39 @@ export class ControllerApi {
             const card = btn && btn.closest('.item-container');
             const id = card === null || card === void 0 ? void 0 : card.dataset.id;
             const type = card === null || card === void 0 ? void 0 : card.dataset.type;
+            const name = card === null || card === void 0 ? void 0 : card.dataset.name;
+            const title = card === null || card === void 0 ? void 0 : card.dataset.title;
+            const imagem = `${card === null || card === void 0 ? void 0 : card.dataset.thumbnailPath}.${card === null || card === void 0 ? void 0 : card.dataset.thumbnailExtension}`;
             id && type && btn && btn.classList.toggle('active');
-            (btn === null || btn === void 0 ? void 0 : btn.classList.contains('active')) ? console.log('adiciona no localstorage') : console.log('retura do local storage');
+            if (btn === null || btn === void 0 ? void 0 : btn.classList.contains('active')) {
+                const id = card === null || card === void 0 ? void 0 : card.dataset.id;
+                const type = card === null || card === void 0 ? void 0 : card.dataset.type;
+                const name = card === null || card === void 0 ? void 0 : card.dataset.name;
+                const title = card === null || card === void 0 ? void 0 : card.dataset.title;
+                const imagem = `${card === null || card === void 0 ? void 0 : card.dataset.thumbnailPath}.${card === null || card === void 0 ? void 0 : card.dataset.thumbnailExtension}`;
+                const objectFavorite = {
+                    [type]: {
+                        [id]: {
+                            name,
+                            title,
+                            imagem
+                        }
+                    }
+                };
+                let favorites = {};
+                try {
+                    favorites = JSON.parse(localStorage.getItem('favorites') || '{}');
+                }
+                catch (error) {
+                    favorites = {};
+                }
+                favorites[type] = objectFavorite[type];
+                localStorage.setItem('favorites', JSON.stringify(favorites));
+                console.log('Novo favorito adicionado:', favorites[type]);
+            }
         });
     }
+    ;
     setInitialFilter(tipo) {
         btnFilters.forEach(btn => {
             btn.classList.remove('ativo');

@@ -9,6 +9,10 @@ export class Renderer {
         cards.classList.add('item-container');
         cards.dataset.id = item.id.toString();
         cards.dataset.type = item.currentType;
+        cards.dataset.name = item.name || '';
+        cards.dataset.title = item.title || '';
+        cards.dataset.thumbnailPath = item.thumbnail?.path || '';
+        cards.dataset.thumbnailExtension = item.thumbnail?.extension || '';
         const titulo = document.createElement('h3');
         titulo.classList.add('titulo-item-container');
         titulo.textContent = item.currentType === 'characters'
@@ -44,7 +48,6 @@ export class Renderer {
 
         const characters: Array<{}> =  dataLocalStorage;
         return characters.includes(id)
-
     }
 
     public limpar() {

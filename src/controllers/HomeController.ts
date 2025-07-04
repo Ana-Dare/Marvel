@@ -13,6 +13,7 @@ import { createUrl } from "../utils/createurl-utils.js";
 import { ContentDataFetcher } from "../services/contentDataFetcher.js";
 import { PaginationController } from "../services/pagination.js";
 import { ContentDisplay } from "../views/contentDisplay.js";
+import { FavoriteItem } from "../utils/getFavoriteItem.js";
 
 const btnFilters = Array.from(document.querySelectorAll('.filtro')) as HTMLElement[];
 const btnSearch = document.querySelector('#buscar') as HTMLButtonElement;
@@ -109,10 +110,46 @@ export class ControllerApi {
     const card = btn && btn.closest('.item-container') as HTMLElement;
     const id = card?.dataset.id;
     const type = card?.dataset.type;
-    id && type && btn && btn.classList.toggle('active')
-    btn?.classList.contains('active') ? console.log('adiciona no localstorage') : console.log('retura do local storage');
-  });
-}
+    const name = card?.dataset.name;
+    const title = card?.dataset.title;
+    const imagem = `${card?.dataset.thumbnailPath}.${card?.dataset.thumbnailExtension}` as string;
+    id && type && btn && btn.classList.toggle('active') //? console.log('adiciona no localstorage') : console.log('retura do local storage');
+    if ( btn?.classList.contains('active')) {
+    const id = card?.dataset.id as ContentType;
+    const type = card?.dataset.type as string;
+    const name = card?.dataset.name as string;
+    const title = card?.dataset.title as string;
+    const imagem = `${card?.dataset.thumbnailPath}.${card?.dataset.thumbnailExtension}`;
+
+    const objectFavorite = {
+        [type]: {
+          [id]: {
+          name,
+          title,
+          imagem
+          }
+        }
+    };
+    let favorites: Record<string, Record<string, { name: string; title: string; imagem: string }>> = {};
+      try {
+      favorites = JSON.parse(localStorage.getItem('favorites') || '{}');
+      } catch (error) {
+        favorites = {};
+      }
+      favorites[type] = objectFavorite[type];
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+      console.log('Novo favorito adicionado:', favorites[type]);
+    }
+  /*
+      localStorage.setItem('objectFavorite', JSON.stringify(objectFavorite));
+      console.log('Salvo na localstorage');
+    } else {
+      localStorage.removeItem('objectFavorite');
+    }};
+    */
+  }
+  )};
+
 
 private setInitialFilter(tipo: ContentType) {
   btnFilters.forEach(btn => {

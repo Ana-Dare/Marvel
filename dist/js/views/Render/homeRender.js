@@ -4,10 +4,15 @@ export class Renderer {
         this.tipoAtual = tipoAtual;
     }
     render(item) {
+        var _a, _b;
         const cards = document.createElement('div');
         cards.classList.add('item-container');
         cards.dataset.id = item.id.toString();
         cards.dataset.type = item.currentType;
+        cards.dataset.name = item.name || '';
+        cards.dataset.title = item.title || '';
+        cards.dataset.thumbnailPath = ((_a = item.thumbnail) === null || _a === void 0 ? void 0 : _a.path) || '';
+        cards.dataset.thumbnailExtension = ((_b = item.thumbnail) === null || _b === void 0 ? void 0 : _b.extension) || '';
         const titulo = document.createElement('h3');
         titulo.classList.add('titulo-item-container');
         titulo.textContent = item.currentType === 'characters'
