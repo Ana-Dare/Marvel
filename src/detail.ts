@@ -9,7 +9,6 @@ const controller = new DetailController(
   new RenderCharacters(container),
   new RenderComics(container),
   new RenderSeries(container),
-  container,
 );
 
 controller.initialize();

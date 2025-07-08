@@ -118,6 +118,13 @@ export class ControllerApi {
                 }
             });
     }
+    openfavoritespage() {
+        const btnPageFavorite = document.querySelector("#favorite");
+        btnPageFavorite.addEventListener("click", () => {
+            window.location.href = "pages/favorite.html";
+            console.log("clicado favorite");
+        });
+    }
     setInitialFilter(tipo) {
         btnFilters.forEach((btn) => {
             btn.classList.remove("ativo");
@@ -225,6 +232,7 @@ export class ControllerApi {
         this.enableEvents();
         this.scroll.start();
         this.enableEventsDeCliqueNosCards();
+        this.openfavoritespage();
         this.setInitialFilter(this.currentType);
         this.updateContent(this.currentType, "", false);
         this.resetSearch();

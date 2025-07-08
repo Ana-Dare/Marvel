@@ -8,6 +8,7 @@
   </head>
   <body>
     <main>
+      <div class="main-container">
       <div class="container-search">
         <div class="logo-marvel">MARVEL</div>
         <select id="ordenacao">
@@ -16,10 +17,10 @@
           <option value="A-Z">A-Z</option>
           <option value="Z-A">Z-A</option>
         </select>
-        <input id="search" type="search" placeholder="Pesquisar" />
-        <button id="deletar">X</button>
-        <button id="buscar">Buscar</button>
-        <button id="favorite" class="favorite-home"></button>
+        <input id="search" type="search" placeholder="Pesquisar" class="input-search"/>
+        <button id="deletar" class="btn-delete">X</button>
+        <button id="buscar" class="btn-search"> <img src="./img/icon-search.svg" class="icon-search"> </button>
+        <button id="favorite" class="btn-favorite-home"><img src="./img/icon-favorite.svg" class="icon-favorite "></button>
       </div>
       <div class="filters">
         <button class="filtro" data-tipo="characters" id="personagens">
@@ -54,6 +55,7 @@
       </div>
       <div class="resultsInfo" id="resultsInfo"></div>
     </footer>
+    </div>
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   <script type="module" src="./js/index.js"></script>

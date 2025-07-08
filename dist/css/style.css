@@ -14,11 +14,13 @@
   gap: 2rem;
   padding: 2rem;
 }
+
 .filters {
   display: flex;
   gap: 2rem;
   justify-content: center;
   padding: 1rem;
+  padding-top: 5rem;
 }
 
 .item-container {
@@ -51,9 +53,62 @@
 }
 .container-search {
   position: fixed;
+  display: flex;
+  gap: 2rem;  
+  flex-direction: row;
   background-color: white;
   width: 100%;
   height: 3rem;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+.input-search {
+  width: 24rem;
+  height: 1.8rem;
+  border-radius: 15px;
+  border-color: #7d7369;
+  padding: 1rem;
+
+  box-sizing: border-box;
+  
+}
+
+.btn-delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2rem;
+  width: 2rem;
+  padding: 1rem;
+}
+
+.btn-search {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2rem;
+  width: 2rem;
+  padding: 1rem;
+}
+
+.icon-search {
+  width: 1rem;
+  height: 1rem;
+}
+
+.btn-favorite-home {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2rem;
+  width: 2rem;
+  padding: 1rem;
+}
+
+.icon-favorite {
+  width: 1rem;
+  height: 1rem;
 }
 
 .logo-marvel {
@@ -72,11 +127,6 @@
   border: none;
   font-family: "Lexend";
   font-weight: 300;
-  margin-top: 3rem;
-}
-
-.favorite-home {
-  display: flex;
 }
 
 .spinner {

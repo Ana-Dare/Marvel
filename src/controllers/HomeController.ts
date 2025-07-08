@@ -18,7 +18,7 @@ import { removeItemfavorite } from "../utils/localStorage.js";
 import { ObjectFavoriteInterface } from "../utils/localStorage.js";
 
 const btnFilters = Array.from(
-  document.querySelectorAll(".filtro"),
+  document.querySelectorAll(".filtro")
 ) as HTMLElement[];
 const btnSearch = document.querySelector("#buscar") as HTMLButtonElement;
 const inputSearch = document.querySelector("#search") as HTMLInputElement;
@@ -42,7 +42,7 @@ export class ControllerApi {
 
   constructor(
     public container: HTMLElement,
-    private currentType: ContentType,
+    private currentType: ContentType
   ) {
     this.renderer = new Renderer(container, currentType);
     this.scrollView = new ScrollView();
@@ -103,7 +103,7 @@ export class ControllerApi {
     });
   }
 
-  private enableEventsDeCliqueNosFavoritos() {
+  public enableEventsDeCliqueNosFavoritos() {
     this.container &&
       this.container.addEventListener("click", (e) => {
         const target = e.target as HTMLElement;
@@ -133,6 +133,16 @@ export class ControllerApi {
       });
   }
 
+  private openfavoritespage(): void {
+    const btnPageFavorite = document.querySelector(
+      "#favorite"
+    ) as HTMLButtonElement;
+    btnPageFavorite.addEventListener("click", () => {
+      window.location.href = "pages/favorite.html";
+      console.log("clicado favorite");
+    });
+  }
+
   private setInitialFilter(tipo: ContentType) {
     btnFilters.forEach((btn) => {
       btn.classList.remove("ativo");
@@ -144,7 +154,7 @@ export class ControllerApi {
 
   private resetSearch() {
     const BtnResetSearch = document.querySelector(
-      "#deletar",
+      "#deletar"
     ) as HTMLButtonElement;
     BtnResetSearch.addEventListener("click", async () => {
       inputSearch.value = "";
@@ -180,14 +190,14 @@ export class ControllerApi {
 
   public async getData(
     tipo: ContentType,
-    termo: string,
+    termo: string
   ): Promise<{ itens: DataApi[]; total: number }> {
     const url = createUrl(
       tipo,
       termo,
       this.offset,
       this.limit,
-      this.currentOrder,
+      this.currentOrder
     );
     console.log(url);
 
@@ -200,7 +210,7 @@ export class ControllerApi {
         termo,
         this.offset,
         this.limit,
-        this.currentOrder,
+        this.currentOrder
       );
       const total = dados.data.total;
       const results: DataApi[] = dados.data.results;
@@ -217,7 +227,7 @@ export class ControllerApi {
   public async updateContent(
     tipo: ContentType,
     termo: string,
-    limpar: boolean = false,
+    limpar: boolean = false
   ) {
     const sortValue = orderSelect?.value || "";
     this.currentOrder = obterOrderBy(this.currentType, sortValue);
@@ -261,6 +271,7 @@ export class ControllerApi {
     this.enableEvents();
     this.scroll.start();
     this.enableEventsDeCliqueNosCards();
+    this.openfavoritespage();
     this.setInitialFilter(this.currentType);
     this.updateContent(this.currentType, "", false);
     this.resetSearch();
