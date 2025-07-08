@@ -1,42 +1,60 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Marvel</title>
     <link rel="stylesheet" type="text/css" href="../css/style.css" />
-</head>
-<body>
+  </head>
+  <body>
     <main>
-        <div class="container-search">
-            <select id="ordenacao">
-                <option value="Mais recente">Mais recente</option>
-                <option value="Mais antigo">Mais antigo</option>
-                <option value="A-Z">A-Z</option>
-                <option value="Z-A">Z-A</option>
-                
-            </select>
-                <input id="search" type="search" placeholder="Pesquisar">
-                <button id="deletar">X</button>
-                <button id="buscar">Buscar</button>
-                <button class="filtro" data-tipo="characters" id="personagens">Personagens</button>
-                <button class="filtro" data-tipo="series" id="series">Séries</button>
-                <button class="filtro" data-tipo="comics" id="quadrinhos">Quadrinhos</button>
-                
-              <div class="resultsInfo" id="resultsInfo"></div>
-            </div>
-            <div id="exibir" class="container"> 
-            </div>
-          
-    </main>
-<footer>
-    <div class="loading" id="messageLoading">Carregando</div>
-    <div class="noMoreResults" id="noMoreResults">Não há mais resultados para esta busca.</div>
-    <div class="resultsInfo" id="resultsInfo"></div>
+      <div class="container-search">
+        <div class="logo-marvel">MARVEL</div>
+        <select id="ordenacao">
+          <option value="Mais recente">Mais recente</option>
+          <option value="Mais antigo">Mais antigo</option>
+          <option value="A-Z">A-Z</option>
+          <option value="Z-A">Z-A</option>
+        </select>
+        <input id="search" type="search" placeholder="Pesquisar" />
+        <button id="deletar">X</button>
+        <button id="buscar">Buscar</button>
+        <button id="favorite" class="favorite-home"></button>
+      </div>
+      <div class="filters">
+        <button class="filtro" data-tipo="characters" id="personagens">
+          Personagens
+        </button>
+        <button class="filtro" data-tipo="series" id="series">Séries</button>
+        <button class="filtro" data-tipo="comics" id="quadrinhos">
+          Quadrinhos
+        </button>
+      </div>
+      <div class="resultsInfo" id="resultsInfo"></div>
 
-</footer>
-    
-</body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-    <script type="module" src="./js/index.js"></script>
+      <div id="exibir" class="container"></div>
+    </main>
+    <footer>
+      <div class="spinner" id="messageLoading">
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+      </div>
+      <div class="noMoreResults" id="noMoreResults">
+        Não há mais resultados para esta busca.
+      </div>
+      <div class="resultsInfo" id="resultsInfo"></div>
+    </footer>
+  </body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <script type="module" src="./js/index.js"></script>
 </html>

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { createUrl } from "../../utils/createurl-utils.js";
 export function fetchFromAPI(type_1, termo_1, offset_1, limit_1) {
-    return __awaiter(this, arguments, void 0, function* (type, termo, offset, limit, orderBy = '') {
+    return __awaiter(this, arguments, void 0, function* (type, termo, offset, limit, orderBy = "") {
         const url = createUrl(type, termo, offset, limit, orderBy);
         const res = yield fetch(url);
         if (!res.ok) {

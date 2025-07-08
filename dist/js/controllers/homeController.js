@@ -20,10 +20,12 @@ import { createUrl } from "../utils/createurl-utils.js";
 import { ContentDataFetcher } from "../services/contentDataFetcher.js";
 import { PaginationController } from "../services/pagination.js";
 import { ContentDisplay } from "../views/contentDisplay.js";
-const btnFilters = Array.from(document.querySelectorAll('.filtro'));
-const btnSearch = document.querySelector('#buscar');
-const inputSearch = document.querySelector('#search');
-const orderSelect = document.querySelector('#ordenacao');
+import { setItemFavorite } from "../utils/localStorage.js";
+import { removeItemfavorite } from "../utils/localStorage.js";
+const btnFilters = Array.from(document.querySelectorAll(".filtro"));
+const btnSearch = document.querySelector("#buscar");
+const inputSearch = document.querySelector("#search");
+const orderSelect = document.querySelector("#ordenacao");
 export class ControllerApi {
     constructor(container, currentType) {
         this.container = container;
@@ -32,8 +34,8 @@ export class ControllerApi {
         this.total = 0;
         this.isEndOfData = false;
         this.limit = 10;
-        this.currentTerm = '';
-        this.currentOrder = '';
+        this.currentTerm = "";
+        this.currentOrder = "";
         this.renderer = new Renderer(container, currentType);
         this.scrollView = new ScrollView();
         this.loadingUI = new LoadingUI();
@@ -46,58 +48,89 @@ export class ControllerApi {
                 return;
             this.scroll.lock();
             this.scrollView.showLoading();
-            yield this.updateContent(this.currentType, this.currentTerm);
+            yield this.updateContent(this.currentType, this.currentTerm, false);
             this.scroll.unlock();
             this.scrollView.hideLoading();
         }));
     }
     enableEvents() {
-        btnFilters.forEach(btn => {
-            btn.addEventListener('click', (e) => __awaiter(this, void 0, void 0, function* () {
+        btnFilters.forEach((btn) => {
+            btn.addEventListener("click", (e) => __awaiter(this, void 0, void 0, function* () {
                 const target = e.currentTarget;
-                btnFilters.forEach(btn => btn.classList.remove('ativo'));
-                target.classList.add('ativo');
+                btnFilters.forEach((btn) => btn.classList.remove("ativo"));
+                target.classList.add("ativo");
                 const tipo = target.dataset.tipo;
                 if (tipo) {
                     const inputTerm = inputSearch.value.trim();
                     this.currentTerm = inputTerm;
+                    this.displayContent.clear();
+                    this.resultsInfoView.hideResults();
                     this.currentType = tipo;
                     this.renderer.mudarTipo(tipo);
-                    const sortValue = (orderSelect === null || orderSelect === void 0 ? void 0 : orderSelect.value) || '';
+                    const sortValue = (orderSelect === null || orderSelect === void 0 ? void 0 : orderSelect.value) || "";
                     this.currentOrder = obterOrderBy(this.currentType, sortValue);
                     yield this.updateContent(this.currentType, this.currentTerm, true);
                 }
             }));
         });
-        btnSearch.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+        btnSearch.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
             if (inputSearch) {
                 const inputTerm = inputSearch.value.trim();
                 if (!inputTerm) {
-                    alert('Digite algo!');
+                    alert("Digite algo!");
                     return;
                 }
                 this.currentTerm = inputTerm;
-                const sortValue = (orderSelect === null || orderSelect === void 0 ? void 0 : orderSelect.value) || '';
+                this.displayContent.clear();
+                this.resultsInfoView.hideResults();
+                const sortValue = (orderSelect === null || orderSelect === void 0 ? void 0 : orderSelect.value) || "";
                 this.currentOrder = obterOrderBy(this.currentType, sortValue);
-                this.scroll.lock();
-                this.scrollView.showLoading();
                 yield this.updateContent(this.currentType, this.currentTerm, true);
             }
         }));
     }
+    enableEventsDeCliqueNosFavoritos() {
+        this.container &&
+            this.container.addEventListener("click", (e) => {
+                const target = e.target;
+                const btn = target.closest(".favorite");
+                const card = btn && btn.closest(".item-container");
+                const id = card === null || card === void 0 ? void 0 : card.dataset.id;
+                const type = card === null || card === void 0 ? void 0 : card.dataset.type;
+                const name = card === null || card === void 0 ? void 0 : card.dataset.name;
+                const title = card === null || card === void 0 ? void 0 : card.dataset.title;
+                const imagem = `${card === null || card === void 0 ? void 0 : card.dataset.thumbnailPath}.${card === null || card === void 0 ? void 0 : card.dataset.thumbnailExtension}`;
+                id && type && btn && btn.classList.toggle("active");
+                if (btn === null || btn === void 0 ? void 0 : btn.classList.contains("active")) {
+                    const objectFavorite = {
+                        [type]: {
+                            [id]: {
+                                name,
+                                title,
+                                imagem,
+                            },
+                        },
+                    };
+                    setItemFavorite("favorite", objectFavorite);
+                }
+                else {
+                    removeItemfavorite("favorite", type, id);
+                }
+            });
+    }
     setInitialFilter(tipo) {
-        btnFilters.forEach(btn => {
-            btn.classList.remove('ativo');
+        btnFilters.forEach((btn) => {
+            btn.classList.remove("ativo");
             if (btn.dataset.tipo === tipo) {
-                btn.classList.add('ativo');
+                btn.classList.add("ativo");
             }
         });
     }
     resetSearch() {
-        const BtnResetSearch = document.querySelector('#deletar');
-        BtnResetSearch.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
-            inputSearch.value = '';
-            this.currentTerm = '';
+        const BtnResetSearch = document.querySelector("#deletar");
+        BtnResetSearch.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
+            inputSearch.value = "";
+            this.currentTerm = "";
             this.offset = 0;
             this.isEndOfData = false;
             this.currentType = "characters";
@@ -105,16 +138,19 @@ export class ControllerApi {
             this.offset = 0;
             this.limit = 10;
             this.total = 0;
-            this.currentOrder = '';
+            this.currentOrder = "";
             this.setInitialFilter("characters");
-            yield this.updateContent("characters", '', true);
+            yield this.updateContent("characters", "", true);
         }));
     }
     enableEventsDeCliqueNosCards() {
         if (!this.container)
             return;
-        this.container.addEventListener('click', (e) => {
-            const card = e.target.closest('.item-container');
+        this.container.addEventListener("click", (e) => {
+            const target = e.target;
+            if (target.closest(".favorite"))
+                return;
+            const card = target.closest(".item-container");
             if (card && card instanceof HTMLElement) {
                 const id = card.dataset.id;
                 const type = card.dataset.type;
@@ -147,8 +183,12 @@ export class ControllerApi {
     }
     updateContent(tipo_1, termo_1) {
         return __awaiter(this, arguments, void 0, function* (tipo, termo, limpar = false) {
+            const sortValue = (orderSelect === null || orderSelect === void 0 ? void 0 : orderSelect.value) || "";
+            this.currentOrder = obterOrderBy(this.currentType, sortValue);
             this.loadingUI.disableUI();
             this.scrollView.HideEndResults();
+            this.scroll.lock();
+            this.scrollView.showLoading();
             if (limpar) {
                 this.offset = 0;
                 this.isEndOfData = false;
@@ -172,7 +212,7 @@ export class ControllerApi {
                 }
             }
             catch (error) {
-                console.error('Erro ao atualizar conteúdo:', error);
+                console.error("Erro ao atualizar conteúdo:", error);
             }
             finally {
                 this.loadingUI.enableUI();
@@ -186,7 +226,8 @@ export class ControllerApi {
         this.scroll.start();
         this.enableEventsDeCliqueNosCards();
         this.setInitialFilter(this.currentType);
-        this.updateContent(this.currentType, '');
+        this.updateContent(this.currentType, "", false);
         this.resetSearch();
+        this.enableEventsDeCliqueNosFavoritos();
     }
 }

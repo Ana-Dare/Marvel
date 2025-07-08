@@ -1,4 +1,3 @@
-
 import { requestCharactersById } from "../services/requests/CharactersById.js";
 import { RenderCharacters } from "../views/Render/charactersRender.js";
 import { requestComicsById } from "../services/requests/ComicsById.js";
@@ -12,18 +11,17 @@ export class DetailController {
     private renderCharacters: RenderCharacters,
     private renderComics: RenderComics,
     private renderSeries: RenderSeries,
-  ) {
-}
+  ) {}
 
- public async initialize() {
-  const params = new URLSearchParams(window.location.search);
-  const type = params.get("type");
-  const id = params.get("id");
+  public async initialize() {
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get("type");
+    const id = params.get("id");
 
-  if (!type || !id) {
-  throw new Error("Parâmetros inválidos.");
-  }
-     try {
+    if (!type || !id) {
+      throw new Error("Parâmetros inválidos.");
+    }
+    try {
       switch (type) {
         case "characters":
           const character = await requestCharactersById(id);

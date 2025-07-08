@@ -14,10 +14,11 @@ export class ScrollDetector {
         this.scrollOffset = scrollOffset;
     }
     start() {
-        window.addEventListener('scroll', () => __awaiter(this, void 0, void 0, function* () {
+        window.addEventListener("scroll", () => __awaiter(this, void 0, void 0, function* () {
             if (this.isLoading)
                 return;
-            const isNearEnd = (window.innerHeight + window.scrollY) >= (document.body.offsetHeight - this.scrollOffset);
+            const isNearEnd = window.innerHeight + window.scrollY >=
+                document.body.offsetHeight - this.scrollOffset;
             if (isNearEnd) {
                 this.isLoading = true;
                 yield this.callback();

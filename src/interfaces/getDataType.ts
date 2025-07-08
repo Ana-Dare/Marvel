@@ -1,6 +1,6 @@
-import { ContentType, DataApi } from "./requestInterface.js" 
+import { ContentType, DataApi } from "./requestInterface.js";
 
 export type getDataType = (
   type: ContentType,
-  termo: string
+  termo: string,
 ) => Promise<{ itens: DataApi[]; total: number }>;

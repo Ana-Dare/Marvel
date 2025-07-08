@@ -1,15 +1,22 @@
 export class ResultsInfoView {
-  private resultMessage  = document.getElementById("resultsInfo")!;
+  private resultMessage = document.getElementById("resultsInfo")!;
 
-updateProgress(atual: number, total: number) {
+  updateProgress(atual: number, total: number) {
+    this.resultMessage.style.display = "block";
     this.resultMessage.textContent = `Exibindo ${Math.min(atual, total)} de ${total} resultados.`;
   }
-  
-showAllLoaded(total: number) {
+
+  showAllLoaded(total: number) {
+    this.resultMessage.style.display = "block";
     this.resultMessage.textContent = `Todos ${total} os resultados carregados.`;
   }
 
-showAllresults(total: number) {
+  showAllresults(total: number) {
+    this.resultMessage.style.display = "block";
     this.resultMessage.textContent = `Exibindo ${total} results.`;
+  }
+
+  hideResults() {
+    this.resultMessage.style.display = "none";
   }
 }

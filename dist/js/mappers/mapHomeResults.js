@@ -8,8 +8,8 @@ export function mapApiResults(results, tipo) {
             id: item.id,
             thumbnail: {
                 path: ((_a = item.thumbnail) === null || _a === void 0 ? void 0 : _a.path) || null,
-                extension: ((_b = item.thumbnail) === null || _b === void 0 ? void 0 : _b.extension) || null
-            }
+                extension: ((_b = item.thumbnail) === null || _b === void 0 ? void 0 : _b.extension) || null,
+            },
         });
     });
 }

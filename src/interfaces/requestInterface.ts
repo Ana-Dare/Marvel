@@ -1,19 +1,19 @@
-export type ContentType = 'characters' | 'comics' | 'series';
+export type ContentType = "characters" | "comics" | "series";
 
 export interface StatusResults {
-currentType: ContentType;
-currentTerm: string;
-offset: number;
-limit: number;
-total: number | null
-loading: boolean;
+  currentType: ContentType;
+  currentTerm: string;
+  offset: number;
+  limit: number;
+  total: number | null;
+  loading: boolean;
 }
 
-export interface DataApi{
-  currentType: ContentType
+export interface DataApi {
+  currentType: ContentType;
   name: string | null;
   title: string | null;
-  id: string
+  id: string;
   thumbnail: {
     path: string | null;
     extension: string | null;
@@ -46,9 +46,9 @@ export interface Comics extends DataApi {
   description: string | null;
   pageCount: string | null;
   prices: SummaryPrice;
-  characters: CollectionSummary
-  series: CollectionSummary
-  creators: CollectionSummary
+  characters: CollectionSummary;
+  series: CollectionSummary;
+  creators: CollectionSummary;
 }
 
 export interface Series extends DataApi {
@@ -56,7 +56,7 @@ export interface Series extends DataApi {
   pageCount: string | null;
   startYear: string | null;
   endYear: string | null;
-  creators: CollectionSummary
-  characters: CollectionSummary
-  comics: CollectionSummary
+  creators: CollectionSummary;
+  characters: CollectionSummary;
+  comics: CollectionSummary;
 }
