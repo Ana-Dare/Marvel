@@ -3,7 +3,7 @@ import { removeItemfavorite } from "../utils/localStorage.js";
 
 export class favoriteController {
     constructor(
-        private renderFavorite: RenderitemFavorites
+      private renderFavorite: RenderitemFavorites
     ) {}
 
     private removeItemPageFavorite() {
@@ -24,8 +24,37 @@ export class favoriteController {
   });
 }
 
+    private enableFilterCurrentType() {
+    const btnFilters = document.querySelectorAll('.filtro');
+    btnFilters.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const target = e.currentTarget as HTMLElement;
+      const type = target.dataset.tipo;
+      if (!type) return;
+      btnFilters.forEach(b => b.classList.remove('ativo'));
+      target.classList.add('ativo');
+
+       switch (type) {
+          case "characters":
+            this.renderFavorite.renderitemFavorites("characters");
+            break;
+          case "comics":
+            this.renderFavorite.renderitemFavorites("comics");
+            break;
+          case "series":
+            this.renderFavorite.renderitemFavorites("series");
+            break;
+          default:
+            console.warn("Tipo inválido:", type);
+            break;
+        }
+    });
+  });
+}
+
     public initialize() {
-        this.renderFavorite.renderitemFavorites();
+      this.enableFilterCurrentType();
+        this.renderFavorite.renderitemFavorites('characters');
         this.removeItemPageFavorite();
         
     }

@@ -18,8 +18,36 @@ export class favoriteController {
             }
         });
     }
+    enableFilterCurrentType() {
+        const btnFilters = document.querySelectorAll('.filtro');
+        btnFilters.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const target = e.currentTarget;
+                const type = target.dataset.tipo;
+                if (!type)
+                    return;
+                btnFilters.forEach(b => b.classList.remove('ativo'));
+                target.classList.add('ativo');
+                switch (type) {
+                    case "characters":
+                        this.renderFavorite.renderitemFavorites("characters");
+                        break;
+                    case "comics":
+                        this.renderFavorite.renderitemFavorites("comics");
+                        break;
+                    case "series":
+                        this.renderFavorite.renderitemFavorites("series");
+                        break;
+                    default:
+                        console.warn("Tipo inválido:", type);
+                        break;
+                }
+            });
+        });
+    }
     initialize() {
-        this.renderFavorite.renderitemFavorites();
+        this.enableFilterCurrentType();
+        this.renderFavorite.renderitemFavorites('characters');
         this.removeItemPageFavorite();
     }
 }
