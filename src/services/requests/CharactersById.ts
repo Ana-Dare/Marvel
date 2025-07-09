@@ -1,4 +1,4 @@
-import { hash, ts, publicKey } from "../../gerarHash.js";
+import { hash, ts, publicKey } from "../../utils/gerarHash.js";
 import { urlBase } from "../../utils/createurl-utils.js";
 
 export async function requestCharactersById(id: string) {

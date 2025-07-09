@@ -27,6 +27,8 @@ export class Renderer {
     btnCardfavorite.classList.add("favorite");
     if(isItemFavorite('favorite', item.currentType, item.id.toString())) {
       btnCardfavorite.classList.add('active');
+    } else {
+      btnCardfavorite.classList.remove('active');
     }
     const img = document.createElement("img");
     img.classList.add("img-item-container");
@@ -36,25 +38,11 @@ export class Renderer {
     img.alt = titulo.textContent || "Imagem";
     img.width = 100;
 
-    //  adiciona ou tirar corzinha do botao conforme resposta do getFavoriteItem
-
     cards.appendChild(btnCardfavorite);
     cards.appendChild(titulo);
     cards.appendChild(img);
     this.container.appendChild(cards);
     console.log(item);
-  }
-
-  private getFavoriteItem(id: string): boolean {
-    let dataLocalStorage = [];
-    try {
-      dataLocalStorage = JSON.parse(localStorage.getItem("characters") || "");
-    } catch (error) {
-      return false;
-    }
-
-    const characters: Array<{}> = dataLocalStorage;
-    return characters.includes(id);
   }
 
   public limpar() {

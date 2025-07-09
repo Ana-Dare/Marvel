@@ -4,6 +4,7 @@ export class RenderitemFavorites {
         this.container = container;
     }
     renderitemFavorites() {
+        this.container.innerHTML = '';
         const itemFavoriteString = localStorage.getItem('favorite') || '{}';
         let itemFavorite = {};
         try {
@@ -38,6 +39,9 @@ export class RenderitemFavorites {
                 btnCardFavorite.classList.add("favorite");
                 if (isItemFavorite('favorite', card.dataset.type, card.dataset.id)) {
                     btnCardFavorite.classList.add('active');
+                }
+                else {
+                    btnCardFavorite.classList.remove('active');
                 }
                 card.appendChild(btnCardFavorite);
                 card.appendChild(title);

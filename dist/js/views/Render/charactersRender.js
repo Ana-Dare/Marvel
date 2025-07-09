@@ -1,3 +1,4 @@
+import { isItemFavorite } from "../../utils/localStorage.js";
 export class RenderCharacters {
     constructor(container) {
         this.container = container;
@@ -9,6 +10,13 @@ export class RenderCharacters {
         const img = div === null || div === void 0 ? void 0 : div.querySelector("img");
         if (img && characters.thumbnail.path && characters.thumbnail.extension)
             img.src = `${characters.thumbnail.path}.${characters.thumbnail.extension}`;
+        const btnCardfavorite = document.querySelector(".favorite");
+        if (isItemFavorite('favorite', characters.currentType, characters.id.toString())) {
+            btnCardfavorite.classList.add('active');
+        }
+        else {
+            btnCardfavorite.classList.remove('active');
+        }
         const name = document.getElementById("characters-name");
         if (name)
             name.textContent = characters.name || "Nome Indisponível";

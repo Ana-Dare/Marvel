@@ -6,14 +6,27 @@ export class favoriteController {
         private renderFavorite: RenderitemFavorites
     ) {}
 
-    private removeItemfavorite(item: RenderitemFavorites) {
-        const btnCardFavorite = document.querySelector('.favorite');
-        btnCardFavorite?.addEventListener('click', () => {
+    private removeItemPageFavorite() {
+        this.renderFavorite.container.addEventListener('click', (event) => {
+        const target = event.target as HTMLElement;
+        const btn = target.closest('.favorite') as HTMLElement;
 
-        })
+        if (btn) {
+        const card = btn.closest('.item-container') as HTMLElement;
+        const id = card?.dataset.id;
+        const type = card?.dataset.type;
+
+        if (id && type) {
+        removeItemfavorite('favorite', type, id);
+        card.remove();
+      }
     }
+  });
+}
 
     public initialize() {
-        this.renderFavorite.renderitemFavorites()
+        this.renderFavorite.renderitemFavorites();
+        this.removeItemPageFavorite();
+        
     }
 }

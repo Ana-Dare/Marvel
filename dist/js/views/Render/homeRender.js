@@ -25,6 +25,9 @@ export class Renderer {
         if (isItemFavorite('favorite', item.currentType, item.id.toString())) {
             btnCardfavorite.classList.add('active');
         }
+        else {
+            btnCardfavorite.classList.remove('active');
+        }
         const img = document.createElement("img");
         img.classList.add("img-item-container");
         if (item.thumbnail.path && item.thumbnail.extension) {
@@ -37,17 +40,6 @@ export class Renderer {
         cards.appendChild(img);
         this.container.appendChild(cards);
         console.log(item);
-    }
-    getFavoriteItem(id) {
-        let dataLocalStorage = [];
-        try {
-            dataLocalStorage = JSON.parse(localStorage.getItem("characters") || "");
-        }
-        catch (error) {
-            return false;
-        }
-        const characters = dataLocalStorage;
-        return characters.includes(id);
     }
     limpar() {
         this.container.innerHTML = "";

@@ -10,11 +10,53 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { requestCharactersById } from "../services/requests/CharactersById.js";
 import { requestComicsById } from "../services/requests/ComicsById.js";
 import { requestSeriesById } from "../services/requests/SeriesById.js";
+import { setItemFavorite } from "../utils/localStorage.js";
+import { removeItemfavorite } from "../utils/localStorage.js";
+import { isItemFavorite } from "../utils/localStorage.js";
 export class DetailController {
     constructor(renderCharacters, renderComics, renderSeries) {
         this.renderCharacters = renderCharacters;
         this.renderComics = renderComics;
         this.renderSeries = renderSeries;
+    }
+    openfavoritespage() {
+        const btnPageFavorite = document.querySelector("#favorite");
+        btnPageFavorite.addEventListener("click", () => {
+            window.location.href = "favorite.html";
+        });
+    }
+    enableEventClickFavorite(item) {
+        const type = item.currentType;
+        const id = item.id.toString();
+        const name = item.name;
+        const title = item.title;
+        const imagem = `${item.thumbnail.path}.${item.thumbnail.extension}`;
+        const btnDetailFavorite = document.querySelector('.favorite');
+        if (isItemFavorite('favorite', type, id)) {
+            btnDetailFavorite.classList.add('active');
+        }
+        else {
+            btnDetailFavorite.classList.remove('active');
+        }
+        btnDetailFavorite.addEventListener('click', () => {
+            id && type && btnDetailFavorite.classList.toggle("active");
+            if (btnDetailFavorite.classList.contains('active')) {
+                const objectFavorite = {
+                    [type]: {
+                        [id]: {
+                            name,
+                            title,
+                            imagem,
+                        },
+                    },
+                };
+                setItemFavorite("favorite", objectFavorite);
+            }
+            else {
+                removeItemfavorite("favorite", type, id);
+                btnDetailFavorite === null || btnDetailFavorite === void 0 ? void 0 : btnDetailFavorite.classList.remove("active");
+            }
+        });
     }
     initialize() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -30,17 +72,22 @@ export class DetailController {
                         const character = yield requestCharactersById(id);
                         if (character)
                             this.renderCharacters.renderCharacters(character);
-                        console.log("Buscando comics por ID:", id);
+                        character.currentType = 'characters';
+                        this.enableEventClickFavorite(character);
                         break;
                     case "comics":
                         const comics = yield requestComicsById(id);
                         if (comics)
                             this.renderComics.renderComics(comics);
+                        comics.currentType = 'comics';
+                        this.enableEventClickFavorite(comics);
                         break;
                     case "series":
                         const series = yield requestSeriesById(id);
                         if (series)
                             this.renderSeries.renderSeries(series);
+                        series.currentType = "series";
+                        this.enableEventClickFavorite(series);
                         break;
                     default:
                         console.warn("Tipo inválido:", type);
@@ -49,6 +96,7 @@ export class DetailController {
             catch (e) {
                 console.error("Erro ao carregar os dados:", e);
             }
+            this.openfavoritespage();
         });
     }
 }

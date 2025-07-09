@@ -1,4 +1,5 @@
 import { Characters } from "../../interfaces/requestInterface.js";
+import { isItemFavorite } from "../../utils/localStorage.js";
 
 export class RenderCharacters {
   constructor(protected container: HTMLElement) {}
@@ -15,6 +16,13 @@ export class RenderCharacters {
     const img = div?.querySelector("img") as HTMLImageElement | null;
     if (img && characters.thumbnail.path && characters.thumbnail.extension)
       img.src = `${characters.thumbnail.path}.${characters.thumbnail.extension}`;
+
+    const btnCardfavorite = document.querySelector(".favorite") as HTMLButtonElement;
+    if(isItemFavorite('favorite', characters.currentType, characters.id.toString())) {
+      btnCardfavorite.classList.add('active');
+    } else {
+      btnCardfavorite.classList.remove('active');
+    }
 
     const name = document.getElementById(
       "characters-name",

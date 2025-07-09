@@ -1,5 +1,5 @@
-import { hash, ts, publicKey } from "../../gerarHash.js";
-import { urlBase } from "../../utils/createurl-utils.js";
+import { hash, ts, publicKey } from "../utils/gerarHash.js";
+import { urlBase } from "../utils/createurl-utils.js";
 
 export async function requestSeriesById(id: string) {
   const url = `${urlBase}/series/${id}?ts=${ts}&apikey=${publicKey}&hash=${hash}`;

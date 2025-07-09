@@ -1,4 +1,4 @@
-import { ts, publicKey, hash } from "../gerarHash.js";
+import { hash, ts, publicKey } from "./gerarHash.js";
 import { ContentType } from "../interfaces/requestInterface.js";
 
 export const urlBase = "https://gateway.marvel.com/v1/public/";

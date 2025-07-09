@@ -129,6 +129,7 @@ export class ControllerApi {
           setItemFavorite("favorite", objectFavorite);
         } else {
           removeItemfavorite("favorite", type, id);
+          btn?.classList.remove("active");
         }
       });
   }
@@ -139,7 +140,6 @@ export class ControllerApi {
     ) as HTMLButtonElement;
     btnPageFavorite.addEventListener("click", () => {
       window.location.href = "pages/favorite.html";
-      console.log("clicado favorite");
     });
   }
 
@@ -269,6 +269,9 @@ export class ControllerApi {
   }
 
   public inicializar() {
+    window.addEventListener('pageshow', () => {
+    this.updateContent(this.currentType, this.currentTerm, true);
+    });
     this.enableEvents();
     this.scroll.start();
     this.enableEventsDeCliqueNosCards();

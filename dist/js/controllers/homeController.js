@@ -115,6 +115,7 @@ export class ControllerApi {
                 }
                 else {
                     removeItemfavorite("favorite", type, id);
+                    btn === null || btn === void 0 ? void 0 : btn.classList.remove("active");
                 }
             });
     }
@@ -122,7 +123,6 @@ export class ControllerApi {
         const btnPageFavorite = document.querySelector("#favorite");
         btnPageFavorite.addEventListener("click", () => {
             window.location.href = "pages/favorite.html";
-            console.log("clicado favorite");
         });
     }
     setInitialFilter(tipo) {
@@ -231,6 +231,9 @@ export class ControllerApi {
         });
     }
     inicializar() {
+        window.addEventListener('pageshow', () => {
+            this.updateContent(this.currentType, this.currentTerm, true);
+        });
         this.enableEvents();
         this.scroll.start();
         this.enableEventsDeCliqueNosCards();

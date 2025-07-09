@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { hash, ts, publicKey } from "../../gerarHash.js";
+import { hash, ts, publicKey } from "../../utils/gerarHash.js";
 import { urlBase } from "../../utils/createurl-utils.js";
 export function requestAllComics() {
     return __awaiter(this, void 0, void 0, function* () {
