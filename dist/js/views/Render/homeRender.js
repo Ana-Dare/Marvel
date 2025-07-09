@@ -1,3 +1,4 @@
+import { isItemFavorite } from "../../utils/localStorage.js";
 export class Renderer {
     constructor(container, tipoAtual) {
         this.container = container;
@@ -19,8 +20,11 @@ export class Renderer {
             item.currentType === "characters"
                 ? item.name || "Nome indisponível."
                 : item.title || "Título indisponível.";
-        const favorite = document.createElement("button");
-        favorite.classList.add("favorite");
+        const btnCardfavorite = document.createElement("button");
+        btnCardfavorite.classList.add("favorite");
+        if (isItemFavorite('favorite', item.currentType, item.id.toString())) {
+            btnCardfavorite.classList.add('active');
+        }
         const img = document.createElement("img");
         img.classList.add("img-item-container");
         if (item.thumbnail.path && item.thumbnail.extension) {
@@ -28,7 +32,7 @@ export class Renderer {
         }
         img.alt = titulo.textContent || "Imagem";
         img.width = 100;
-        cards.appendChild(favorite);
+        cards.appendChild(btnCardfavorite);
         cards.appendChild(titulo);
         cards.appendChild(img);
         this.container.appendChild(cards);

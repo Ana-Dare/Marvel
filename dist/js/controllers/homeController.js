@@ -169,6 +169,7 @@ export class ControllerApi {
     }
     getData(tipo, termo) {
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             const url = createUrl(tipo, termo, this.offset, this.limit, this.currentOrder);
             console.log(url);
             try {
@@ -176,7 +177,8 @@ export class ControllerApi {
                 if (cache)
                     return cache;
                 const { dados } = yield fetchFromAPI(tipo, termo, this.offset, this.limit, this.currentOrder);
-                const total = dados.data.total;
+                console.log('🔍 Resposta da API:', dados);
+                const total = (_a = dados.data) === null || _a === void 0 ? void 0 : _a.total;
                 const results = dados.data.results;
                 const itens = mapApiResults(results, tipo);
                 cacheService.set(url, { itens, total });

@@ -1,8 +1,8 @@
-import { ContentType } from "../../interfaces/requestInterface.js";
+import { isItemFavorite } from "../../utils/localStorage.js";
 
 export class RenderitemFavorites {
     constructor(
-        protected container: HTMLElement,
+        public container: HTMLElement,
     ){}
 
     public renderitemFavorites(){
@@ -44,7 +44,9 @@ export class RenderitemFavorites {
 
                 const btnCardFavorite = document.createElement("button");
                 btnCardFavorite.classList.add("favorite");
-
+                if(isItemFavorite('favorite', card.dataset.type, card.dataset.id)) {
+                    btnCardFavorite.classList.add('active')
+                }
                 card.appendChild(btnCardFavorite);
                 card.appendChild(title);
                 card.appendChild(img);

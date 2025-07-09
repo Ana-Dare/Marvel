@@ -212,7 +212,8 @@ export class ControllerApi {
         this.limit,
         this.currentOrder
       );
-      const total = dados.data.total;
+      console.log('🔍 Resposta da API:', dados);
+      const total = dados.data?.total;
       const results: DataApi[] = dados.data.results;
       const itens = mapApiResults(results, tipo);
 

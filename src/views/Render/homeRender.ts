@@ -1,5 +1,6 @@
 import { DataApi } from "../../interfaces/requestInterface.js";
 import { ContentType } from "../../interfaces/requestInterface.js";
+import { isItemFavorite } from "../../utils/localStorage.js";
 
 export class Renderer {
   constructor(
@@ -22,8 +23,11 @@ export class Renderer {
       item.currentType === "characters"
         ? item.name || "Nome indisponível."
         : item.title || "Título indisponível.";
-    const favorite = document.createElement("button");
-    favorite.classList.add("favorite");
+    const btnCardfavorite = document.createElement("button");
+    btnCardfavorite.classList.add("favorite");
+    if(isItemFavorite('favorite', item.currentType, item.id.toString())) {
+      btnCardfavorite.classList.add('active');
+    }
     const img = document.createElement("img");
     img.classList.add("img-item-container");
     if (item.thumbnail.path && item.thumbnail.extension) {
@@ -34,7 +38,7 @@ export class Renderer {
 
     //  adiciona ou tirar corzinha do botao conforme resposta do getFavoriteItem
 
-    cards.appendChild(favorite);
+    cards.appendChild(btnCardfavorite);
     cards.appendChild(titulo);
     cards.appendChild(img);
     this.container.appendChild(cards);

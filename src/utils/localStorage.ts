@@ -63,3 +63,14 @@ export function removeItemfavorite(favorite: string, type: string, id: string) {
     console.error("Erro ao remover favorito:", error);
   }
 }
+ export function isItemFavorite(storageKey: string, type: string, id: string): boolean {
+  const objectString = localStorage.getItem(storageKey);
+  if(!objectString) return false;
+
+  try {
+    const object = JSON.parse(objectString);
+    return !!object[type]?.[id];
+  } catch {
+    return false;
+  }
+}

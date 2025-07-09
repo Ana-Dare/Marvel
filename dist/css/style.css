@@ -15,6 +15,13 @@
   padding: 2rem;
 }
 
+.container-header-fixed {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+
+}
+
 .filters {
   display: flex;
   gap: 2rem;
@@ -27,7 +34,7 @@
   border: 1px;
   border-color: black;
   border-radius: 1rem;
-  background-color: rgb(231, 227, 170);
+  background-color: rgb(255, 243, 176);
   display: flex;
   width: 14rem;
   height: 16rem;
@@ -61,15 +68,15 @@
   height: 3rem;
   box-sizing: border-box;
   align-items: center;
+  justify-content: center;
 }
 
 .input-search {
-  width: 24rem;
-  height: 1.8rem;
-  border-radius: 15px;
-  border-color: #7d7369;
-  padding: 1rem;
-
+  width: 26rem;
+  height: 2.5rem;
+  border-radius: 32px;
+  border-color: #000000;
+  padding: 0.5rem;
   box-sizing: border-box;
   
 }
