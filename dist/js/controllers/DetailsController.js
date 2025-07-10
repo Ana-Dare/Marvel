@@ -13,11 +13,13 @@ import { requestSeriesById } from "../services/requests/SeriesById.js";
 import { setItemFavorite } from "../utils/localStorage.js";
 import { removeItemfavorite } from "../utils/localStorage.js";
 import { isItemFavorite } from "../utils/localStorage.js";
+import { ScrollView } from "../views/Scroll/scrollView.js";
 export class DetailController {
     constructor(renderCharacters, renderComics, renderSeries) {
         this.renderCharacters = renderCharacters;
         this.renderComics = renderComics;
         this.renderSeries = renderSeries;
+        this.scrollView = new ScrollView();
     }
     openfavoritespage() {
         const btnPageFavorite = document.querySelector("#favorite");
@@ -83,6 +85,7 @@ export class DetailController {
                         this.enableEventClickFavorite(comics);
                         break;
                     case "series":
+                        this.scrollView.showLoading();
                         const series = yield requestSeriesById(id);
                         if (series)
                             this.renderSeries.renderSeries(series);

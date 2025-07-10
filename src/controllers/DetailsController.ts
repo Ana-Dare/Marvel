@@ -9,13 +9,17 @@ import { setItemFavorite } from "../utils/localStorage.js";
 import { removeItemfavorite } from "../utils/localStorage.js";
 import { ObjectFavoriteInterface } from "../utils/localStorage.js";
 import { isItemFavorite } from "../utils/localStorage.js";
+import { ScrollView } from "../views/Scroll/scrollView.js";
 
 export class DetailController {
+  private scrollView: ScrollView
   constructor(
     private renderCharacters: RenderCharacters,
     private renderComics: RenderComics,
     private renderSeries: RenderSeries
-  ) {}
+  ) {
+    this.scrollView = new ScrollView();
+  }
 
   private openfavoritespage(): void {
     const btnPageFavorite = document.querySelector(
@@ -84,6 +88,7 @@ export class DetailController {
           break;
 
         case "series":
+          this.scrollView.showLoading();
           const series = await requestSeriesById(id);
           if (series) this.renderSeries.renderSeries(series);
           series.currentType = "series";

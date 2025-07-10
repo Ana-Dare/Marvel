@@ -4,7 +4,8 @@ import { RenderitemFavorites } from "./views/Render/favoritesRender.js";
 const container = document.querySelector('#container-favorite') as HTMLElement;
 
 const controller = new favoriteController(
-    new RenderitemFavorites(container)
+    new RenderitemFavorites(container),
+    container
 );
 
 controller.initialize();

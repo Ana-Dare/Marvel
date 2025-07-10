@@ -1,7 +1,8 @@
 import { removeItemfavorite } from "../utils/localStorage.js";
 export class favoriteController {
-    constructor(renderFavorite) {
+    constructor(renderFavorite, container) {
         this.renderFavorite = renderFavorite;
+        this.container = container;
     }
     removeItemPageFavorite() {
         this.renderFavorite.container.addEventListener('click', (event) => {
@@ -45,9 +46,30 @@ export class favoriteController {
             });
         });
     }
+    enableEventsDeCliqueNosCards() {
+        if (!this.container)
+            return;
+        this.container.addEventListener("click", (e) => {
+            console.log('clicado');
+            const target = e.target;
+            if (target.closest(".favorite"))
+                return;
+            const card = target.closest(".item-container");
+            if (card && card instanceof HTMLElement) {
+                const id = card.dataset.id;
+                const type = card.dataset.type;
+                if (id && type) {
+                    window.location.href = `${type}.html?type=${type}&id=${id}`;
+                }
+            }
+        });
+    }
     initialize() {
         this.enableFilterCurrentType();
+        const btnDefault = document.querySelector('[data-tipo="characters"]');
+        btnDefault === null || btnDefault === void 0 ? void 0 : btnDefault.classList.add("ativo");
         this.renderFavorite.renderitemFavorites('characters');
         this.removeItemPageFavorite();
+        this.enableEventsDeCliqueNosCards();
     }
 }

@@ -1,9 +1,13 @@
 import { RenderitemFavorites } from "../views/Render/favoritesRender.js";
 import { removeItemfavorite } from "../utils/localStorage.js";
+import { ContentType } from "../interfaces/requestInterface.js";
+import { ScrollView } from "../views/Scroll/scrollView.js";
+
 
 export class favoriteController {
     constructor(
-      private renderFavorite: RenderitemFavorites
+      private renderFavorite: RenderitemFavorites,
+      private container: HTMLElement,
     ) {}
 
     private removeItemPageFavorite() {
@@ -52,10 +56,31 @@ export class favoriteController {
   });
 }
 
+    private enableEventsDeCliqueNosCards() {
+    if (!this.container) return;
+    this.container.addEventListener("click", (e) => {
+      console.log('clicado');
+      
+      const target = e.target as HTMLElement;
+      if (target.closest(".favorite")) return;
+      const card = target.closest(".item-container");
+      if (card && card instanceof HTMLElement) {
+        const id = card.dataset.id;
+        const type = card.dataset.type;
+        if (id && type) {
+          window.location.href = `${type}.html?type=${type}&id=${id}`;
+        }
+      }
+    });
+  }
+
     public initialize() {
       this.enableFilterCurrentType();
-        this.renderFavorite.renderitemFavorites('characters');
-        this.removeItemPageFavorite();
+      const btnDefault = document.querySelector('[data-tipo="characters"]');
+      btnDefault?.classList.add("ativo");
+      this.renderFavorite.renderitemFavorites('characters');
+      this.removeItemPageFavorite();
+      this.enableEventsDeCliqueNosCards();
         
     }
 }
