@@ -99,6 +99,7 @@ export class ControllerApi {
         const sortValue = orderSelect?.value || "";
         this.currentOrder = obterOrderBy(this.currentType, sortValue);
         await this.updateContent(this.currentType, this.currentTerm, true);
+    
       }
     });
   }
@@ -212,7 +213,7 @@ export class ControllerApi {
         this.limit,
         this.currentOrder
       );
-      console.log('🔍 Resposta da API:', dados);
+      console.log("🔍 Resposta da API:", dados);
       const total = dados.data?.total;
       const results: DataApi[] = dados.data.results;
       const itens = mapApiResults(results, tipo);
@@ -269,9 +270,10 @@ export class ControllerApi {
   }
 
   public inicializar() {
-    window.addEventListener('pageshow', () => {
-    this.updateContent(this.currentType, this.currentTerm, true);
+    window.addEventListener("pageshow", () => {
+      this.updateContent(this.currentType, this.currentTerm, true);
     });
+
     this.enableEvents();
     this.scroll.start();
     this.enableEventsDeCliqueNosCards();

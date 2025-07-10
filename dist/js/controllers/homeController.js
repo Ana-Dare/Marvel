@@ -177,7 +177,7 @@ export class ControllerApi {
                 if (cache)
                     return cache;
                 const { dados } = yield fetchFromAPI(tipo, termo, this.offset, this.limit, this.currentOrder);
-                console.log('🔍 Resposta da API:', dados);
+                console.log("🔍 Resposta da API:", dados);
                 const total = (_a = dados.data) === null || _a === void 0 ? void 0 : _a.total;
                 const results = dados.data.results;
                 const itens = mapApiResults(results, tipo);
@@ -231,7 +231,7 @@ export class ControllerApi {
         });
     }
     inicializar() {
-        window.addEventListener('pageshow', () => {
+        window.addEventListener("pageshow", () => {
             this.updateContent(this.currentType, this.currentTerm, true);
         });
         this.enableEvents();

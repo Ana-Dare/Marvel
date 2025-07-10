@@ -3,19 +3,26 @@ export class RenderitemFavorites {
     constructor(container) {
         this.container = container;
     }
-    renderitemFavorites(type) {
-        this.container.innerHTML = '';
-        const itemFavoriteString = localStorage.getItem('favorite') || '{}';
-        let itemFavorite = {};
-        try {
-            itemFavorite = JSON.parse(itemFavoriteString);
+    renderitemFavorites(type, filtered) {
+        this.container.innerHTML = "";
+        let items = {};
+        if (filtered) {
+            items = filtered;
         }
-        catch (error) {
-            console.error('Erro ao converter favoritos:', error);
+        else {
+            const itemFavoriteString = localStorage.getItem("favorite") || "{}";
+            let itemFavorite = {};
+            try {
+                itemFavorite = JSON.parse(itemFavoriteString);
+            }
+            catch (error) {
+                console.error("Erro ao converter favoritos:", error);
+            }
+            items = itemFavorite[type] || {};
         }
-        const items = itemFavorite[type];
         if (!items || Object.keys(items).length === 0) {
             this.container.innerHTML = "Não há itens salvos nessa categoria";
+            return;
         }
         switch (type) {
             case "characters":
@@ -29,9 +36,10 @@ export class RenderitemFavorites {
                     card.dataset.type = type;
                     const title = document.createElement("h3");
                     title.classList.add("titulo-item-container");
-                    title.textContent = type === "characters"
-                        ? item.name || "Nome indisponível"
-                        : item.title || "Título indisponível";
+                    title.textContent =
+                        type === "characters"
+                            ? item.name || "Nome indisponível"
+                            : item.title || "Título indisponível";
                     const img = document.createElement("img");
                     img.classList.add("img-item-container");
                     img.src = item.imagem || "";

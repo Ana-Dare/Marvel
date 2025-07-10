@@ -1,4 +1,5 @@
 import { Comics } from "../../interfaces/requestInterface.js";
+import { isItemFavorite } from "../../utils/localStorage.js";
 
 export class RenderComics {
   constructor(protected container: HTMLElement) {}
@@ -16,6 +17,14 @@ export class RenderComics {
     if (img && comics.thumbnail.path && comics.thumbnail.extension)
       img.src = `${comics.thumbnail.path}.${comics.thumbnail.extension}`;
 
+    const btnCardfavorite = document.createElement("button") as HTMLButtonElement;
+    btnCardfavorite.classList.add('favorite');
+
+    if(isItemFavorite('favorite', comics.currentType, comics.id.toString())) {
+      btnCardfavorite.classList.add('active');
+    } else {
+      btnCardfavorite.classList.remove('active');
+    }
     const title = document.getElementById(
       "comics-title",
     ) as HTMLDivElement | null;
@@ -75,5 +84,7 @@ export class RenderComics {
               .map((series) => `<li>${series.name}</li>`)
               .join("")
           : "<li>Séries indisponíveis</li>";
+
+    containerId.appendChild(btnCardfavorite);
   }
 }

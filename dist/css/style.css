@@ -136,6 +136,12 @@
   font-weight: 300;
 }
 
+.container-spinner {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+}
+
 .spinner {
   font-size: 28px;
   position: relative;

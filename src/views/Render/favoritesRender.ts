@@ -1,33 +1,47 @@
 import { isItemFavorite } from "../../utils/localStorage.js";
+import { ObjectFavoriteInterface } from "../../utils/localStorage.js";
 
 export class RenderitemFavorites {
-    constructor(
-        public container: HTMLElement,
-    ){}
+  constructor(public container: HTMLElement) {}
 
-    public renderitemFavorites(type: string){
-        this.container.innerHTML = '';
-        const itemFavoriteString = localStorage.getItem('favorite') || '{}';
-        let itemFavorite: Record<string, Record<string, { name: string; title: string; imagem: string }>> = {};
-        try {
-            itemFavorite = JSON.parse(itemFavoriteString);
-        } catch (error) {
-            console.error('Erro ao converter favoritos:', error);
-        }
+  public renderitemFavorites(
+    type: string,
+    filtered?: Record<string, { name: string; title: string; imagem: string }>
+  ) {
+    this.container.innerHTML = "";
 
-        const items = itemFavorite[type]
+    let items: Record<string, { name: string; title: string; imagem: string }> =
+      {};
 
-        if(!items || Object.keys(items).length === 0){
-            this.container.innerHTML =  "Não há itens salvos nessa categoria"
-        }
+    if (filtered) {
+      items = filtered;
+    } else {
+      const itemFavoriteString = localStorage.getItem("favorite") || "{}";
+      let itemFavorite: Record<
+        string,
+        Record<string, { name: string; title: string; imagem: string }>
+      > = {};
+      try {
+        itemFavorite = JSON.parse(itemFavoriteString);
+      } catch (error) {
+        console.error("Erro ao converter favoritos:", error);
+      }
+      items = itemFavorite[type] || {};
 
-        switch (type) {
-         case "characters":
-         case "comics":
-         case "series":
-          for (const id in items) {
-            const item = items[id];
- 
+    }
+
+    if (!items || Object.keys(items).length === 0) {
+      this.container.innerHTML = "Não há itens salvos nessa categoria";
+      return
+    }
+
+    switch (type) {
+      case "characters":
+      case "comics":
+      case "series":
+        for (const id in items) {
+          const item = items[id];
+
           const card = document.createElement("div");
           card.classList.add("item-container");
           card.dataset.id = id;
@@ -35,9 +49,10 @@ export class RenderitemFavorites {
 
           const title = document.createElement("h3");
           title.classList.add("titulo-item-container");
-          title.textContent = type === "characters"
-            ? item.name || "Nome indisponível"
-            : item.title || "Título indisponível";
+          title.textContent =
+            type === "characters"
+              ? item.name || "Nome indisponível"
+              : item.title || "Título indisponível";
 
           const img = document.createElement("img");
           img.classList.add("img-item-container");
@@ -63,9 +78,3 @@ export class RenderitemFavorites {
     }
   }
 }
-
-
-            
-
-        
-

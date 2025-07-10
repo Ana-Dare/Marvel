@@ -17,7 +17,8 @@ export class RenderCharacters {
     if (img && characters.thumbnail.path && characters.thumbnail.extension)
       img.src = `${characters.thumbnail.path}.${characters.thumbnail.extension}`;
 
-    const btnCardfavorite = document.querySelector(".favorite") as HTMLButtonElement;
+    const btnCardfavorite = document.createElement("button") as HTMLButtonElement;
+    btnCardfavorite.classList.add('favorite');
     if(isItemFavorite('favorite', characters.currentType, characters.id.toString())) {
       btnCardfavorite.classList.add('active');
     } else {
@@ -57,5 +58,7 @@ export class RenderCharacters {
               .map((comics) => `<li>${comics.name}</li>`)
               .join("")
           : "<li>Comics indisponíveis</li>";
+
+    containerId.appendChild(btnCardfavorite);
   }
 }

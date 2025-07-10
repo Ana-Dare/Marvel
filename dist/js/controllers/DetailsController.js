@@ -62,6 +62,7 @@ export class DetailController {
     }
     initialize() {
         return __awaiter(this, void 0, void 0, function* () {
+            const container = document.querySelector('.detail');
             const params = new URLSearchParams(window.location.search);
             const type = params.get("type");
             const id = params.get("id");
@@ -71,26 +72,55 @@ export class DetailController {
             try {
                 switch (type) {
                     case "characters":
-                        const character = yield requestCharactersById(id);
-                        if (character)
-                            this.renderCharacters.renderCharacters(character);
-                        character.currentType = 'characters';
-                        this.enableEventClickFavorite(character);
+                        this.scrollView.showLoading();
+                        try {
+                            const character = yield requestCharactersById(id);
+                            if (character)
+                                this.renderCharacters.renderCharacters(character);
+                            character.currentType = 'characters';
+                            this.enableEventClickFavorite(character);
+                            this.scrollView.hideLoading();
+                        }
+                        catch (error) {
+                            console.log('Erro ao buscar personagem', error);
+                        }
+                        finally {
+                            this.scrollView.hideLoading;
+                        }
                         break;
                     case "comics":
-                        const comics = yield requestComicsById(id);
-                        if (comics)
-                            this.renderComics.renderComics(comics);
-                        comics.currentType = 'comics';
-                        this.enableEventClickFavorite(comics);
+                        this.scrollView.showLoading();
+                        try {
+                            const comics = yield requestComicsById(id);
+                            if (comics)
+                                this.renderComics.renderComics(comics);
+                            comics.currentType = 'comics';
+                            this.enableEventClickFavorite(comics);
+                            this.scrollView.hideLoading();
+                        }
+                        catch (error) {
+                            console.log('Erro ao buscar quadrinho', error);
+                        }
+                        finally {
+                            this.scrollView.hideLoading();
+                        }
                         break;
                     case "series":
                         this.scrollView.showLoading();
-                        const series = yield requestSeriesById(id);
-                        if (series)
-                            this.renderSeries.renderSeries(series);
-                        series.currentType = "series";
-                        this.enableEventClickFavorite(series);
+                        try {
+                            const series = yield requestSeriesById(id);
+                            if (series)
+                                this.renderSeries.renderSeries(series);
+                            series.currentType = "series";
+                            this.enableEventClickFavorite(series);
+                            this.scrollView.hideLoading();
+                        }
+                        catch (error) {
+                            console.log('Erro ao buscar quadrinho', error);
+                        }
+                        finally {
+                            this.scrollView.hideLoading();
+                        }
                         break;
                     default:
                         console.warn("Tipo inválido:", type);

@@ -1,3 +1,4 @@
+import { isItemFavorite } from "../../utils/localStorage.js";
 export class RenderComics {
     constructor(container) {
         this.container = container;
@@ -10,6 +11,14 @@ export class RenderComics {
         const img = div === null || div === void 0 ? void 0 : div.querySelector("img");
         if (img && comics.thumbnail.path && comics.thumbnail.extension)
             img.src = `${comics.thumbnail.path}.${comics.thumbnail.extension}`;
+        const btnCardfavorite = document.createElement("button");
+        btnCardfavorite.classList.add('favorite');
+        if (isItemFavorite('favorite', comics.currentType, comics.id.toString())) {
+            btnCardfavorite.classList.add('active');
+        }
+        else {
+            btnCardfavorite.classList.remove('active');
+        }
         const title = document.getElementById("comics-title");
         if (title)
             title.textContent = comics.title || "Titulo Indisponível";
@@ -50,5 +59,6 @@ export class RenderComics {
                         .map((series) => `<li>${series.name}</li>`)
                         .join("")
                     : "<li>Séries indisponíveis</li>";
+        containerId.appendChild(btnCardfavorite);
     }
 }

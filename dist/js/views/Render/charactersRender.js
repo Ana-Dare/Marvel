@@ -10,7 +10,8 @@ export class RenderCharacters {
         const img = div === null || div === void 0 ? void 0 : div.querySelector("img");
         if (img && characters.thumbnail.path && characters.thumbnail.extension)
             img.src = `${characters.thumbnail.path}.${characters.thumbnail.extension}`;
-        const btnCardfavorite = document.querySelector(".favorite");
+        const btnCardfavorite = document.createElement("button");
+        btnCardfavorite.classList.add('favorite');
         if (isItemFavorite('favorite', characters.currentType, characters.id.toString())) {
             btnCardfavorite.classList.add('active');
         }
@@ -40,5 +41,6 @@ export class RenderCharacters {
                         .map((comics) => `<li>${comics.name}</li>`)
                         .join("")
                     : "<li>Comics indisponíveis</li>";
+        containerId.appendChild(btnCardfavorite);
     }
 }
