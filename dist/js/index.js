@@ -1,4 +1,4 @@
 import { ControllerApi } from "./controllers/HomeController.js";
-const content = document.querySelector("#exibir");
-const controller = new ControllerApi(content, "characters");
+const container = document.querySelector("#exibir");
+const controller = new ControllerApi(container, "characters");
 controller.inicializar();

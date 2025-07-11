@@ -31,7 +31,6 @@ export function removeItemfavorite(favorite, type, id) {
         const currentData = JSON.parse(existingData);
         if (currentData[type] && currentData[type][id]) {
             delete currentData[type][id];
-            console.log("deletando o id");
         }
         if (Object.keys(currentData[type]).length === 0) {
             delete currentData[type];

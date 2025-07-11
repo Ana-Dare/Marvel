@@ -11,12 +11,16 @@ export function mapComics(results: Comics[]): Comics[] {
       extension: item.thumbnail?.extension,
     },
     description: item.description || "",
-    pageCount: item.pageCount || "Número de páginas não disponível",
+    pageCount: item.pageCount || "Número de páginas indisponível",
     prices: {
-      price: item.prices.price ?? 0,
-      type: item.prices.type || "Tipo de preço não disponível",
+      price: item.prices.price ?? 'Valor indisponível',
+      type: item.prices.type || "Tipo de preço indisponível",
     },
-    characters: item.characters || "Personagens do quadrinho não disponíveis",
+    characters: {
+      available: item.characters.available || 0,
+      collectionURI: item.characters.collectionURI || '',
+      items: item.characters.items || []
+    },
     series: {
       available: item.series?.available || 0,
       collectionURI: item.series?.collectionURI || "",

@@ -3,11 +3,11 @@ export class LoadingUI {
         this.elementsToDisable = [
             document.querySelector("#buscar"),
             document.querySelector("#search"),
-            document.querySelector("#ordenacao"),
+            document.querySelector("#selec-order"),
             document.querySelector("#personagens"),
             document.querySelector("#series"),
             document.querySelector("#quadrinhos"),
-            document.querySelector("#deletar"),
+            document.querySelector("#reset-search"),
         ].filter(Boolean);
     }
     disableUI() {

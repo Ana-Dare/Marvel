@@ -4,7 +4,7 @@ export class ScrollView {
         this.messageNoMoreResults = document.querySelector("#noMoreResults");
         this.buttons = [
             ...Array.from(document.querySelectorAll("button")),
-            document.querySelector("#ordenacao"),
+            document.querySelector("#selec-order"),
             document.querySelector("#search"),
         ].filter(Boolean);
     }

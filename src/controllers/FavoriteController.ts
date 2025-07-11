@@ -1,12 +1,12 @@
 import { RenderitemFavorites } from "../views/Render/favoritesRender.js";
 import { removeItemfavorite } from "../utils/localStorage.js";
-import { ContentType } from "../interfaces/requestInterface.js";
+import { CurrentTypeInterface } from "../interfaces/requestInterface.js";
 
 const btnFilters = document.querySelectorAll(".filtro");
 
 export class favoriteController {
-  private selectedType: ContentType = 'characters';
-  private currentTerm: string = '';
+  private selectedType: CurrentTypeInterface = "characters";
+  private currentTerm: string = "";
 
   constructor(
     private renderFavorite: RenderitemFavorites,
@@ -31,7 +31,7 @@ export class favoriteController {
     });
   }
 
-  private enableFilterCurrentType() {
+  private enableFilterOnCurrentType() {
     btnFilters.forEach((btn) => {
       btn.addEventListener("click", (e) => {
         const target = e.currentTarget as HTMLElement;
@@ -58,11 +58,9 @@ export class favoriteController {
     });
   }
 
-  private enableEventsDeCliqueNosCards() {
+  private enableClickEventOnCards() {
     if (!this.container) return;
     this.container.addEventListener("click", (e) => {
-      console.log("clicado");
-
       const target = e.target as HTMLElement;
       if (target.closest(".favorite")) return;
       const card = target.closest(".item-container");
@@ -76,14 +74,18 @@ export class favoriteController {
     });
   }
 
-  private enableEventsSearch() {
-    const inputSearch = document.querySelector("#input-search-favorite") as HTMLInputElement;
-    const btnSearch = document.querySelector("#btn-search-favorite") as HTMLButtonElement;
+  private enableSearchEvent() {
+    const inputSearch = document.querySelector(
+      "#input-search-favorite"
+    ) as HTMLInputElement;
+    const btnSearch = document.querySelector(
+      "#btn-search-favorite"
+    ) as HTMLButtonElement;
 
     btnFilters.forEach((btn) => {
       btn.addEventListener("click", async (e) => {
         const target = e.currentTarget as HTMLElement;
-        this.selectedType = target.dataset.tipo as ContentType;
+        this.selectedType = target.dataset.tipo as CurrentTypeInterface;
       });
     });
 
@@ -102,30 +104,40 @@ export class favoriteController {
           (item.name || item.title).toLowerCase().includes(this.currentTerm)
         )
       );
-      console.log(filtered);
-      
       this.renderFavorite.renderitemFavorites(this.selectedType, filtered);
+    });
+
+    inputSearch.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        btnSearch.click();
+      }
     });
   }
 
-  private resetSearch(){
-    const inputSearch = document.querySelector("#input-search-favorite") as HTMLInputElement;
-    const btnResetSearch = document.querySelector('#deletar-search-favorite') as HTMLButtonElement;
-      btnResetSearch.addEventListener('click', () => {
-        this.renderFavorite.renderitemFavorites(this.selectedType);
-        inputSearch.value = '';
-        this.currentTerm = '';
-      })
+  private resetSearch() {
+    const inputSearch = document.querySelector(
+      "#input-search-favorite"
+    ) as HTMLInputElement;
+    const btnResetSearch = document.querySelector(
+      "#deletar-search-favorite"
+    ) as HTMLButtonElement;
+    btnResetSearch.addEventListener("click", () => {
+      this.renderFavorite.renderitemFavorites(this.selectedType);
+      inputSearch.value = "";
+      this.currentTerm = "";
+    });
   }
 
   public initialize() {
-    this.enableFilterCurrentType();
-    const btnDefault = document.querySelector('[data-tipo="characters"]');
-    btnDefault?.classList.add("ativo");
+    this.enableFilterOnCurrentType();
+    const btnDefault = document.querySelector(
+      '[data-tipo="characters"]'
+    ) as HTMLButtonElement;
+    btnDefault.classList.add("ativo");
     this.renderFavorite.renderitemFavorites("characters");
-    this.enableEventsSearch();
+    this.enableSearchEvent();
     this.removeItemPageFavorite();
-    this.enableEventsDeCliqueNosCards();
+    this.enableClickEventOnCards();
     this.resetSearch();
   }
 }

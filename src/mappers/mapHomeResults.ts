@@ -1,9 +1,9 @@
 import { DataApi } from "../interfaces/requestInterface.js";
-import { ContentType } from "../interfaces/requestInterface.js";
+import { CurrentTypeInterface } from "../interfaces/requestInterface.js";
 
 export function mapApiResults(
   results: DataApi[],
-  tipo: ContentType,
+  tipo: CurrentTypeInterface
 ): DataApi[] {
   return results.map((item: DataApi) => ({
     currentType: tipo,

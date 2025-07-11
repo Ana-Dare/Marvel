@@ -14,7 +14,6 @@ export function requestSeriesById(id) {
         const url = `${urlBase}/series/${id}?ts=${ts}&apikey=${publicKey}&hash=${hash}`;
         try {
             const response = yield fetch(url);
-            console.log(url);
             if (!response.ok) {
                 throw new Error(`Erro ao buscar serie: ${response.status}`);
             }

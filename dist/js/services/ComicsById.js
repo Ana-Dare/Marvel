@@ -14,7 +14,6 @@ export function requestAllComics() {
         const url = `${urlBase}/comics?ts=${ts}&apikey=${publicKey}&hash=${hash}`;
         try {
             const response = yield fetch(url);
-            console.log(url);
             if (!response.ok) {
                 throw new Error(`Erro ao buscar quadrinho: ${response.status}`);
             }
@@ -33,7 +32,6 @@ export function requestComicsById(id) {
         const url = `${urlBase}/comics/${id}?ts=${ts}&apikey=${publicKey}&hash=${hash}`;
         try {
             const response = yield fetch(url);
-            console.log(url);
             if (!response.ok) {
                 throw new Error(`Erro ao buscar quadrinho: ${response.status}`);
             }

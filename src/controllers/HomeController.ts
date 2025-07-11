@@ -1,5 +1,5 @@
 import { Renderer } from "../views/Render/homeRender.js";
-import { ContentType } from "../interfaces/requestInterface.js";
+import { CurrentTypeInterface } from "../interfaces/requestInterface.js";
 import { obterOrderBy } from "../utils/orderby-utils.js";
 import { ScrollDetector } from "./ScrollDetector .js";
 import { ScrollView } from "../views/Scroll/scrollView.js";
@@ -15,14 +15,14 @@ import { PaginationController } from "../services/pagination.js";
 import { ContentDisplay } from "../views/contentDisplay.js";
 import { setItemFavorite } from "../utils/localStorage.js";
 import { removeItemfavorite } from "../utils/localStorage.js";
-import { ObjectFavoriteInterface } from "../utils/localStorage.js";
+import { ObjectFavoriteInterface } from "../interfaces/favoriteInterface.js";
 
 const btnFilters = Array.from(
   document.querySelectorAll(".filtro")
 ) as HTMLElement[];
 const btnSearch = document.querySelector("#buscar") as HTMLButtonElement;
 const inputSearch = document.querySelector("#search") as HTMLInputElement;
-const orderSelect = document.querySelector("#ordenacao") as HTMLSelectElement;
+const orderSelect = document.querySelector("#selec-order") as HTMLSelectElement;
 
 export class ControllerApi {
   private offset: number = 0;
@@ -42,7 +42,7 @@ export class ControllerApi {
 
   constructor(
     public container: HTMLElement,
-    private currentType: ContentType
+    private currentType: CurrentTypeInterface
   ) {
     this.renderer = new Renderer(container, currentType);
     this.scrollView = new ScrollView();
@@ -71,14 +71,14 @@ export class ControllerApi {
         btnFilters.forEach((btn) => btn.classList.remove("ativo"));
         target.classList.add("ativo");
 
-        const tipo = target.dataset.tipo as ContentType | undefined;
-        if (tipo) {
+        const type = target.dataset.tipo as CurrentTypeInterface | undefined;
+        if (type) {
           const inputTerm = inputSearch.value.trim();
           this.currentTerm = inputTerm;
-          this.displayContent.clear();
+          this.renderer.toClean();
           this.resultsInfoView.hideResults();
-          this.currentType = tipo;
-          this.renderer.mudarTipo(tipo);
+          this.currentType = type;
+          this.renderer.changeType(type);
           const sortValue = orderSelect?.value || "";
           this.currentOrder = obterOrderBy(this.currentType, sortValue);
           await this.updateContent(this.currentType, this.currentTerm, true);
@@ -90,21 +90,36 @@ export class ControllerApi {
       if (inputSearch) {
         const inputTerm = inputSearch.value.trim();
         if (!inputTerm) {
-          alert("Digite algo!");
+          //mensagem sutil em cima da tela
           return;
         }
         this.currentTerm = inputTerm;
-        this.displayContent.clear();
+        this.renderer.toClean();
         this.resultsInfoView.hideResults();
         const sortValue = orderSelect?.value || "";
         this.currentOrder = obterOrderBy(this.currentType, sortValue);
         await this.updateContent(this.currentType, this.currentTerm, true);
-    
       }
+    });
+
+    inputSearch.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        btnSearch.click();
+      }
+    });
+
+    orderSelect.addEventListener("change", async () => {
+      const inputTerm = inputSearch.value.trim();
+      this.currentTerm = inputTerm;
+      this.renderer.toClean();
+      this.resultsInfoView.hideResults();
+      const sortValue = orderSelect?.value || "";
+      this.currentOrder = obterOrderBy(this.currentType, sortValue);
+      await this.updateContent(this.currentType, this.currentTerm, true);
     });
   }
 
-  public enableEventsDeCliqueNosFavoritos() {
+  public enableFavoriteClickEvent() {
     this.container &&
       this.container.addEventListener("click", (e) => {
         const target = e.target as HTMLElement;
@@ -135,7 +150,7 @@ export class ControllerApi {
       });
   }
 
-  private openfavoritespage(): void {
+  private openfavoritesPage(): void {
     const btnPageFavorite = document.querySelector(
       "#favorite"
     ) as HTMLButtonElement;
@@ -144,7 +159,7 @@ export class ControllerApi {
     });
   }
 
-  private setInitialFilter(tipo: ContentType) {
+  private setInitialFilter(tipo: CurrentTypeInterface) {
     btnFilters.forEach((btn) => {
       btn.classList.remove("ativo");
       if (btn.dataset.tipo === tipo) {
@@ -155,7 +170,7 @@ export class ControllerApi {
 
   private resetSearch() {
     const BtnResetSearch = document.querySelector(
-      "#deletar"
+      "#reset-search"
     ) as HTMLButtonElement;
     BtnResetSearch.addEventListener("click", async () => {
       inputSearch.value = "";
@@ -163,17 +178,18 @@ export class ControllerApi {
       this.offset = 0;
       this.isEndOfData = false;
       this.currentType = "characters";
-      this.renderer.mudarTipo("characters");
+      this.renderer.changeType("characters");
       this.offset = 0;
       this.limit = 10;
       this.total = 0;
       this.currentOrder = "";
+      orderSelect.value = "Mais recente";
       this.setInitialFilter("characters");
       await this.updateContent("characters", "", true);
     });
   }
 
-  private enableEventsDeCliqueNosCards() {
+  private enableClickEventsOnCards() {
     if (!this.container) return;
     this.container.addEventListener("click", (e) => {
       const target = e.target as HTMLElement;
@@ -190,7 +206,7 @@ export class ControllerApi {
   }
 
   public async getData(
-    tipo: ContentType,
+    tipo: CurrentTypeInterface,
     termo: string
   ): Promise<{ itens: DataApi[]; total: number }> {
     const url = createUrl(
@@ -200,12 +216,9 @@ export class ControllerApi {
       this.limit,
       this.currentOrder
     );
-    console.log(url);
-
     try {
       const cache = cacheService.get(url);
       if (cache) return cache;
-
       const { dados } = await fetchFromAPI(
         tipo,
         termo,
@@ -213,7 +226,6 @@ export class ControllerApi {
         this.limit,
         this.currentOrder
       );
-      console.log("🔍 Resposta da API:", dados);
       const total = dados.data?.total;
       const results: DataApi[] = dados.data.results;
       const itens = mapApiResults(results, tipo);
@@ -227,7 +239,7 @@ export class ControllerApi {
   }
 
   public async updateContent(
-    tipo: ContentType,
+    tipo: CurrentTypeInterface,
     termo: string,
     limpar: boolean = false
   ) {
@@ -273,14 +285,13 @@ export class ControllerApi {
     window.addEventListener("pageshow", () => {
       this.updateContent(this.currentType, this.currentTerm, true);
     });
-
     this.enableEvents();
     this.scroll.start();
-    this.enableEventsDeCliqueNosCards();
-    this.openfavoritespage();
+    this.enableClickEventsOnCards();
+    this.openfavoritesPage();
     this.setInitialFilter(this.currentType);
     this.updateContent(this.currentType, "", false);
     this.resetSearch();
-    this.enableEventsDeCliqueNosFavoritos();
+    this.enableFavoriteClickEvent();
   }
 }

@@ -6,7 +6,6 @@ export async function requestAllComics() {
 
   try {
     const response = await fetch(url);
-    console.log(url);
     if (!response.ok) {
       throw new Error(`Erro ao buscar quadrinho: ${response.status}`);
     }
@@ -25,7 +24,6 @@ export async function requestComicsById(id: string) {
 
   try {
     const response = await fetch(url);
-    console.log(url);
     if (!response.ok) {
       throw new Error(`Erro ao buscar quadrinho: ${response.status}`);
     }

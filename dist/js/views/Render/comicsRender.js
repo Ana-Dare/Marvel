@@ -1,10 +1,11 @@
 import { isItemFavorite } from "../../utils/localStorage.js";
+import { getIdFromUri } from "../../utils/getIdFromUri.js";
 export class RenderComics {
     constructor(container) {
         this.container = container;
     }
     renderComics(comics) {
-        var _a, _b, _c, _d, _e, _f;
+        var _a, _b, _c;
         const containerId = document.getElementById("container-details-comics");
         containerId.dataset.id = comics.id.toString();
         const div = document.getElementById("comics-image");
@@ -12,12 +13,12 @@ export class RenderComics {
         if (img && comics.thumbnail.path && comics.thumbnail.extension)
             img.src = `${comics.thumbnail.path}.${comics.thumbnail.extension}`;
         const btnCardfavorite = document.createElement("button");
-        btnCardfavorite.classList.add('favorite');
-        if (isItemFavorite('favorite', comics.currentType, comics.id.toString())) {
-            btnCardfavorite.classList.add('active');
+        btnCardfavorite.classList.add("favorite");
+        if (isItemFavorite("favorite", comics.currentType, comics.id.toString())) {
+            btnCardfavorite.classList.add("active");
         }
         else {
-            btnCardfavorite.classList.remove('active');
+            btnCardfavorite.classList.remove("active");
         }
         const title = document.getElementById("comics-title");
         if (title)
@@ -43,22 +44,35 @@ export class RenderComics {
                         .map((creators) => `<li>${creators.name}</li>`)
                         .join("")
                     : "<li>Sem criadores disponíveis</li>";
-        const containerCharacters = document.getElementById("comics-container-characters");
-        if (containerCharacters)
-            containerCharacters.innerHTML =
-                ((_d = (_c = comics.characters) === null || _c === void 0 ? void 0 : _c.items) === null || _d === void 0 ? void 0 : _d.length) > 0
-                    ? comics.characters.items
-                        .map((characters) => `<li>${characters.name}</li>`)
-                        .join("")
-                    : "<li>Personagens indisponíveis</li>";
-        const containerSeries = document.getElementById("comics-container-series");
-        if (containerSeries)
-            containerSeries.innerHTML =
-                ((_f = (_e = comics.series) === null || _e === void 0 ? void 0 : _e.items) === null || _f === void 0 ? void 0 : _f.length) > 0
-                    ? comics.series.items
-                        .map((series) => `<li>${series.name}</li>`)
-                        .join("")
-                    : "<li>Séries indisponíveis</li>";
-        containerId.appendChild(btnCardfavorite);
+        const containerCharacters = document.getElementById("link-characters");
+        if (containerCharacters) {
+            const items = (_c = comics.characters) === null || _c === void 0 ? void 0 : _c.items;
+            if (items && items.length > 0) {
+                containerCharacters.innerHTML = items
+                    .map((character) => {
+                    const id = getIdFromUri(character.resourceURI);
+                    return `<li><a href="characters.html?type=characters&id=${id}">${character.name}</a></li>`;
+                })
+                    .join("");
+            }
+            else {
+                containerCharacters.innerHTML = "<li>Personagens indisponíveis</li>";
+            }
+        }
+        const containerSeries = document.getElementById("link-series");
+        if (containerSeries) {
+            const items = comics.series.items;
+            if (items && items.length > 0) {
+                containerSeries.innerHTML = items
+                    .map((serie) => {
+                    const id = getIdFromUri(serie.resourceURI);
+                    return `<li><a href="series.html?type=series&id=${id}">${serie.name}</a></li>`;
+                })
+                    .join("");
+            }
+            else {
+                containerSeries.innerHTML = "<li>Series indisponíveis</li>";
+            }
+        }
     }
 }

@@ -1,11 +1,11 @@
 import { DataApi } from "../../interfaces/requestInterface.js";
-import { ContentType } from "../../interfaces/requestInterface.js";
+import { CurrentTypeInterface } from "../../interfaces/requestInterface.js";
 import { isItemFavorite } from "../../utils/localStorage.js";
 
 export class Renderer {
   constructor(
     protected container: HTMLElement,
-    protected tipoAtual: ContentType,
+    protected tipoAtual: CurrentTypeInterface
   ) {}
 
   public render(item: DataApi) {
@@ -25,10 +25,10 @@ export class Renderer {
         : item.title || "Título indisponível.";
     const btnCardfavorite = document.createElement("button");
     btnCardfavorite.classList.add("favorite");
-    if(isItemFavorite('favorite', item.currentType, item.id.toString())) {
-      btnCardfavorite.classList.add('active');
+    if (isItemFavorite("favorite", item.currentType, item.id.toString())) {
+      btnCardfavorite.classList.add("active");
     } else {
-      btnCardfavorite.classList.remove('active');
+      btnCardfavorite.classList.remove("active");
     }
     const img = document.createElement("img");
     img.classList.add("img-item-container");
@@ -42,13 +42,12 @@ export class Renderer {
     cards.appendChild(titulo);
     cards.appendChild(img);
     this.container.appendChild(cards);
-    console.log(item);
   }
 
-  public limpar() {
+  public toClean() {
     this.container.innerHTML = "";
   }
-  public mudarTipo(novoTipo: ContentType) {
+  public changeType(novoTipo: CurrentTypeInterface) {
     this.tipoAtual = novoTipo;
   }
 }

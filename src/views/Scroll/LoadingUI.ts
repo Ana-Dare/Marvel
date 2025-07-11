@@ -9,11 +9,11 @@ export class LoadingUI {
     this.elementsToDisable = [
       document.querySelector("#buscar") as HTMLButtonElement,
       document.querySelector("#search") as HTMLInputElement,
-      document.querySelector("#ordenacao") as HTMLSelectElement,
+      document.querySelector("#selec-order") as HTMLSelectElement,
       document.querySelector("#personagens") as HTMLButtonElement,
       document.querySelector("#series") as HTMLButtonElement,
       document.querySelector("#quadrinhos") as HTMLButtonElement,
-      document.querySelector("#deletar") as HTMLButtonElement,
+      document.querySelector("#reset-search") as HTMLButtonElement,
     ].filter(Boolean);
   }
 

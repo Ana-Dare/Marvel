@@ -8,6 +8,10 @@ export class RenderitemFavorites {
         let items = {};
         if (filtered) {
             items = filtered;
+            if (!items || Object.keys(items).length === 0) {
+                this.container.innerHTML = "Não há itens salvos com esse termo.";
+                return;
+            }
         }
         else {
             const itemFavoriteString = localStorage.getItem("favorite") || "{}";

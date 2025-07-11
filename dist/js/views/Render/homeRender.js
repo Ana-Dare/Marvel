@@ -22,11 +22,11 @@ export class Renderer {
                 : item.title || "Título indisponível.";
         const btnCardfavorite = document.createElement("button");
         btnCardfavorite.classList.add("favorite");
-        if (isItemFavorite('favorite', item.currentType, item.id.toString())) {
-            btnCardfavorite.classList.add('active');
+        if (isItemFavorite("favorite", item.currentType, item.id.toString())) {
+            btnCardfavorite.classList.add("active");
         }
         else {
-            btnCardfavorite.classList.remove('active');
+            btnCardfavorite.classList.remove("active");
         }
         const img = document.createElement("img");
         img.classList.add("img-item-container");
@@ -39,12 +39,11 @@ export class Renderer {
         cards.appendChild(titulo);
         cards.appendChild(img);
         this.container.appendChild(cards);
-        console.log(item);
     }
-    limpar() {
+    toClean() {
         this.container.innerHTML = "";
     }
-    mudarTipo(novoTipo) {
+    changeType(novoTipo) {
         this.tipoAtual = novoTipo;
     }
 }

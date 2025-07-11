@@ -6,7 +6,7 @@ export async function requestCharactersById(id: string) {
 
   try {
     const response = await fetch(url);
-    console.log(url);
+
     if (!response.ok) {
       throw new Error(`Erro ao buscar personagem: ${response.status}`);
     }

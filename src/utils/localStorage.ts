@@ -1,14 +1,5 @@
-export interface FavoriteData{
-  name: string;
-  title: string;
-  imagem: string;
-}
+import { ObjectFavoriteInterface } from "../interfaces/favoriteInterface.js";
 
-export interface ObjectFavoriteInterface {
-  [type: string]: {
-    [id: string]: FavoriteData;
-  };
-}
 
 export function setItemFavorite(
   favorite: string,
@@ -53,7 +44,6 @@ export function removeItemfavorite(favorite: string, type: string, id: string) {
 
     if (currentData[type] && currentData[type][id]) {
       delete currentData[type][id];
-      console.log("deletando o id");
     }
     if (Object.keys(currentData[type]).length === 0) {
       delete currentData[type];

@@ -33,16 +33,16 @@ export class DetailController {
         const name = item.name;
         const title = item.title;
         const imagem = `${item.thumbnail.path}.${item.thumbnail.extension}`;
-        const btnDetailFavorite = document.querySelector('.favorite');
-        if (isItemFavorite('favorite', type, id)) {
-            btnDetailFavorite.classList.add('active');
+        const btnDetailFavorite = document.querySelector(".favorite");
+        if (isItemFavorite("favorite", type, id)) {
+            btnDetailFavorite.classList.add("active");
         }
         else {
-            btnDetailFavorite.classList.remove('active');
+            btnDetailFavorite.classList.remove("active");
         }
-        btnDetailFavorite.addEventListener('click', () => {
+        btnDetailFavorite.addEventListener("click", () => {
             id && type && btnDetailFavorite.classList.toggle("active");
-            if (btnDetailFavorite.classList.contains('active')) {
+            if (btnDetailFavorite.classList.contains("active")) {
                 const objectFavorite = {
                     [type]: {
                         [id]: {
@@ -62,7 +62,7 @@ export class DetailController {
     }
     initialize() {
         return __awaiter(this, void 0, void 0, function* () {
-            const container = document.querySelector('.detail');
+            const container = document.querySelector(".detail");
             const params = new URLSearchParams(window.location.search);
             const type = params.get("type");
             const id = params.get("id");
@@ -77,12 +77,12 @@ export class DetailController {
                             const character = yield requestCharactersById(id);
                             if (character)
                                 this.renderCharacters.renderCharacters(character);
-                            character.currentType = 'characters';
+                            character.currentType = "characters";
                             this.enableEventClickFavorite(character);
                             this.scrollView.hideLoading();
                         }
                         catch (error) {
-                            console.log('Erro ao buscar personagem', error);
+                            console.log("Erro ao buscar personagem", error);
                         }
                         finally {
                             this.scrollView.hideLoading;
@@ -94,12 +94,12 @@ export class DetailController {
                             const comics = yield requestComicsById(id);
                             if (comics)
                                 this.renderComics.renderComics(comics);
-                            comics.currentType = 'comics';
+                            comics.currentType = "comics";
                             this.enableEventClickFavorite(comics);
                             this.scrollView.hideLoading();
                         }
                         catch (error) {
-                            console.log('Erro ao buscar quadrinho', error);
+                            console.log("Erro ao buscar quadrinho", error);
                         }
                         finally {
                             this.scrollView.hideLoading();
@@ -116,7 +116,7 @@ export class DetailController {
                             this.scrollView.hideLoading();
                         }
                         catch (error) {
-                            console.log('Erro ao buscar quadrinho', error);
+                            console.log("Erro ao buscar quadrinho", error);
                         }
                         finally {
                             this.scrollView.hideLoading();

@@ -7,12 +7,12 @@ import { RenderSeries } from "../views/Render/seriesRender.js";
 import { DataApi } from "../interfaces/requestInterface.js";
 import { setItemFavorite } from "../utils/localStorage.js";
 import { removeItemfavorite } from "../utils/localStorage.js";
-import { ObjectFavoriteInterface } from "../utils/localStorage.js";
+import { ObjectFavoriteInterface } from "../interfaces/favoriteInterface.js"; 
 import { isItemFavorite } from "../utils/localStorage.js";
 import { ScrollView } from "../views/Scroll/scrollView.js";
 
 export class DetailController {
-  private scrollView: ScrollView
+  private scrollView: ScrollView;
   constructor(
     private renderCharacters: RenderCharacters,
     private renderComics: RenderComics,
@@ -30,21 +30,24 @@ export class DetailController {
     });
   }
 
-  private enableEventClickFavorite(item:DataApi) {
-    const type = item.currentType
+  private enableEventClickFavorite(item: DataApi) {
+    const type = item.currentType;
     const id = item.id.toString() as string;
     const name = item.name as string;
     const title = item.title as string;
-    const imagem = `${item.thumbnail.path}.${item.thumbnail.extension}` as string;
-    const btnDetailFavorite = document.querySelector('.favorite') as HTMLButtonElement;
-    if (isItemFavorite('favorite', type, id)) {
-    btnDetailFavorite.classList.add('active');
+    const imagem =
+      `${item.thumbnail.path}.${item.thumbnail.extension}` as string;
+    const btnDetailFavorite = document.querySelector(
+      ".favorite"
+    ) as HTMLButtonElement;
+    if (isItemFavorite("favorite", type, id)) {
+      btnDetailFavorite.classList.add("active");
     } else {
-      btnDetailFavorite.classList.remove('active');
+      btnDetailFavorite.classList.remove("active");
     }
-    btnDetailFavorite.addEventListener('click', () => {
+    btnDetailFavorite.addEventListener("click", () => {
       id && type && btnDetailFavorite.classList.toggle("active");
-      if(btnDetailFavorite.classList.contains('active')) {
+      if (btnDetailFavorite.classList.contains("active")) {
         const objectFavorite: ObjectFavoriteInterface = {
           [type]: {
             [id]: {
@@ -54,17 +57,17 @@ export class DetailController {
             },
           },
         };
-      
-      setItemFavorite("favorite", objectFavorite);
+
+        setItemFavorite("favorite", objectFavorite);
       } else {
         removeItemfavorite("favorite", type, id);
         btnDetailFavorite?.classList.remove("active");
       }
-    })
+    });
   }
 
   public async initialize() {
-    const container = document.querySelector('.detail') as HTMLDivElement;
+    const container = document.querySelector(".detail") as HTMLDivElement;
     const params = new URLSearchParams(window.location.search);
     const type = params.get("type");
     const id = params.get("id");
@@ -79,46 +82,46 @@ export class DetailController {
           try {
             const character = await requestCharactersById(id);
             if (character) this.renderCharacters.renderCharacters(character);
-            character.currentType = 'characters';
+            character.currentType = "characters";
             this.enableEventClickFavorite(character);
             this.scrollView.hideLoading();
-          } catch(error) {
-            console.log('Erro ao buscar personagem', error)
+          } catch (error) {
+            console.log("Erro ao buscar personagem", error);
           } finally {
-            this.scrollView.hideLoading; 
+            this.scrollView.hideLoading;
           }
           break;
 
         case "comics":
-          this.scrollView.showLoading(); 
+          this.scrollView.showLoading();
           try {
             const comics = await requestComicsById(id);
             if (comics) this.renderComics.renderComics(comics);
-            comics.currentType = 'comics';
+            comics.currentType = "comics";
             this.enableEventClickFavorite(comics);
             this.scrollView.hideLoading();
           } catch (error) {
-            console.log('Erro ao buscar quadrinho', error)
+            console.log("Erro ao buscar quadrinho", error);
           } finally {
-            this.scrollView.hideLoading(); 
+            this.scrollView.hideLoading();
           }
           break;
 
         case "series":
           this.scrollView.showLoading();
           try {
-          const series = await requestSeriesById(id);
-          if (series) this.renderSeries.renderSeries(series);
-          series.currentType = "series";
-          this.enableEventClickFavorite(series);        
-          this.scrollView.hideLoading();
+            const series = await requestSeriesById(id);
+            if (series) this.renderSeries.renderSeries(series);
+            series.currentType = "series";
+            this.enableEventClickFavorite(series);
+            this.scrollView.hideLoading();
           } catch (error) {
-            console.log('Erro ao buscar quadrinho', error)
+            console.log("Erro ao buscar quadrinho", error);
           } finally {
-            this.scrollView.hideLoading(); 
+            this.scrollView.hideLoading();
           }
           break;
-          
+
         default:
           console.warn("Tipo inválido:", type);
       }

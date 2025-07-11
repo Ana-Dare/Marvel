@@ -13,8 +13,8 @@ export class favoriteController {
     constructor(renderFavorite, container) {
         this.renderFavorite = renderFavorite;
         this.container = container;
-        this.selectedType = 'characters';
-        this.currentTerm = '';
+        this.selectedType = "characters";
+        this.currentTerm = "";
     }
     removeItemPageFavorite() {
         this.renderFavorite.container.addEventListener("click", (event) => {
@@ -31,7 +31,7 @@ export class favoriteController {
             }
         });
     }
-    enableFilterCurrentType() {
+    enableFilterOnCurrentType() {
         btnFilters.forEach((btn) => {
             btn.addEventListener("click", (e) => {
                 const target = e.currentTarget;
@@ -57,11 +57,10 @@ export class favoriteController {
             });
         });
     }
-    enableEventsDeCliqueNosCards() {
+    enableClickEventOnCards() {
         if (!this.container)
             return;
         this.container.addEventListener("click", (e) => {
-            console.log("clicado");
             const target = e.target;
             if (target.closest(".favorite"))
                 return;
@@ -75,7 +74,7 @@ export class favoriteController {
             }
         });
     }
-    enableEventsSearch() {
+    enableSearchEvent() {
         const inputSearch = document.querySelector("#input-search-favorite");
         const btnSearch = document.querySelector("#btn-search-favorite");
         btnFilters.forEach((btn) => {
@@ -90,27 +89,31 @@ export class favoriteController {
             const favorites = JSON.parse(objectString);
             const selectedFavorites = favorites[this.selectedType] || {};
             const filtered = Object.fromEntries(Object.entries(selectedFavorites).filter(([id, item]) => (item.name || item.title).toLowerCase().includes(this.currentTerm)));
-            console.log(filtered);
             this.renderFavorite.renderitemFavorites(this.selectedType, filtered);
+        });
+        inputSearch.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+                btnSearch.click();
+            }
         });
     }
     resetSearch() {
         const inputSearch = document.querySelector("#input-search-favorite");
-        const btnResetSearch = document.querySelector('#deletar-search-favorite');
-        btnResetSearch.addEventListener('click', () => {
+        const btnResetSearch = document.querySelector("#deletar-search-favorite");
+        btnResetSearch.addEventListener("click", () => {
             this.renderFavorite.renderitemFavorites(this.selectedType);
-            inputSearch.value = '';
-            this.currentTerm = '';
+            inputSearch.value = "";
+            this.currentTerm = "";
         });
     }
     initialize() {
-        this.enableFilterCurrentType();
+        this.enableFilterOnCurrentType();
         const btnDefault = document.querySelector('[data-tipo="characters"]');
-        btnDefault === null || btnDefault === void 0 ? void 0 : btnDefault.classList.add("ativo");
+        btnDefault.classList.add("ativo");
         this.renderFavorite.renderitemFavorites("characters");
-        this.enableEventsSearch();
+        this.enableSearchEvent();
         this.removeItemPageFavorite();
-        this.enableEventsDeCliqueNosCards();
+        this.enableClickEventOnCards();
         this.resetSearch();
     }
 }

@@ -1,15 +1,15 @@
 import { hash, ts, publicKey } from "./gerarHash.js";
 export const urlBase = "https://gateway.marvel.com/v1/public/";
-export function createUrl(tipo, termo, offset, limit, orderBy) {
-    let url = `${urlBase}/${tipo}?ts=${ts}&apikey=${publicKey}&hash=${hash}&limit=${limit}&offset=${offset}`;
+export function createUrl(type, term, offset, limit, orderBy) {
+    let url = `${urlBase}/${type}?ts=${ts}&apikey=${publicKey}&hash=${hash}&limit=${limit}&offset=${offset}`;
     if (orderBy) {
         url += `&orderBy=${orderBy}`;
     }
-    if (termo) {
+    if (term) {
         url +=
-            tipo === "characters"
-                ? `&nameStartsWith=${encodeURIComponent(termo)}`
-                : `&titleStartsWith=${encodeURIComponent(termo)}`;
+            type === "characters"
+                ? `&nameStartsWith=${encodeURIComponent(term)}`
+                : `&titleStartsWith=${encodeURIComponent(term)}`;
     }
     return url;
 }

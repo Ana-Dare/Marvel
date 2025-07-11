@@ -1,4 +1,5 @@
 import { isItemFavorite } from "../../utils/localStorage.js";
+import { getIdFromUri } from "../../utils/getIdFromUri.js";
 export class RenderSeries {
     constructor(container) {
         this.container = container;
@@ -11,12 +12,12 @@ export class RenderSeries {
         if (img && series.thumbnail.path && series.thumbnail.extension)
             img.src = `${series.thumbnail.path}.${series.thumbnail.extension}`;
         const btnCardfavorite = document.createElement("button");
-        btnCardfavorite.classList.add('favorite');
-        if (isItemFavorite('favorite', series.currentType, series.id.toString())) {
-            btnCardfavorite.classList.add('active');
+        btnCardfavorite.classList.add("favorite");
+        if (isItemFavorite("favorite", series.currentType, series.id.toString())) {
+            btnCardfavorite.classList.add("active");
         }
         else {
-            btnCardfavorite.classList.remove('active');
+            btnCardfavorite.classList.remove("active");
         }
         const title = document.getElementById("series-title");
         if (title)
@@ -43,22 +44,35 @@ export class RenderSeries {
                         .map((creators) => `<li>${creators.name}</li>`)
                         .join("")
                     : "<li>Criadores indisponíveis</li>";
-        const Containercharacters = document.getElementById("series-container-characters");
-        if (Containercharacters)
-            Containercharacters.innerHTML =
-                series.characters.items.length > 0
-                    ? series.characters.items
-                        .map((characters) => `<li>${characters.name}</li>`)
-                        .join("")
-                    : "<li>Personaegns indisponíveis</li>";
-        const containerComicsUl = document.getElementById("series-container-comics");
-        if (containerComicsUl)
-            containerComicsUl.innerHTML =
-                series.comics.items.length > 0
-                    ? series.comics.items
-                        .map((comics) => `<li>${comics.name}</li>`)
-                        .join("")
-                    : "<li>Séries indisponíveis</li>";
-        containerId.appendChild(btnCardfavorite);
+        const containerCharacters = document.getElementById("link-characters");
+        if (containerCharacters) {
+            const items = series.characters.items;
+            if (items && items.length > 0) {
+                containerCharacters.innerHTML = items
+                    .map((character) => {
+                    const id = getIdFromUri(character.resourceURI);
+                    return `<li><a href="characters.html?type=characters&id=${id}">${character.name}</a></li>`;
+                })
+                    .join("");
+            }
+            else {
+                containerCharacters.innerHTML = "<li>Personagens indisponíveis</li>";
+            }
+        }
+        const containerComics = document.getElementById("link-comics");
+        if (containerComics) {
+            const items = series.comics.items;
+            if (items && items.length > 0) {
+                containerComics.innerHTML = items
+                    .map((comics) => {
+                    const id = getIdFromUri(comics.resourceURI);
+                    return `<li><a href="comics.html?type=comics&id=${id}">${comics.name}</a></li>`;
+                })
+                    .join("");
+            }
+            else {
+                containerComics.innerHTML = "<li>Comics indisponíveis</li>";
+            }
+        }
     }
 }

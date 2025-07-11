@@ -1,14 +1,14 @@
 import { createUrl } from "../../utils/createurl-utils.js";
-import { ContentType } from "../../interfaces/requestInterface.js";
+import { CurrentTypeInterface } from "../../interfaces/requestInterface.js";
 
 export async function fetchFromAPI(
-  type: ContentType,
-  termo: string,
+  type: CurrentTypeInterface,
+  term: string,
   offset: number,
   limit: number,
-  orderBy = "",
+  orderBy = ""
 ) {
-  const url = createUrl(type, termo, offset, limit, orderBy);
+  const url = createUrl(type, term, offset, limit, orderBy);
   const res = await fetch(url);
 
   if (!res.ok) {

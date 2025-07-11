@@ -1,5 +1,4 @@
 import { isItemFavorite } from "../../utils/localStorage.js";
-import { ObjectFavoriteInterface } from "../../utils/localStorage.js";
 
 export class RenderitemFavorites {
   constructor(public container: HTMLElement) {}
@@ -14,7 +13,11 @@ export class RenderitemFavorites {
       {};
 
     if (filtered) {
-      items = filtered;
+      items = filtered; 
+      if (!items || Object.keys(items).length === 0) {
+      this.container.innerHTML = "Não há itens salvos com esse termo.";
+      return
+      }
     } else {
       const itemFavoriteString = localStorage.getItem("favorite") || "{}";
       let itemFavorite: Record<

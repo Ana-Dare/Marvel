@@ -8,7 +8,7 @@ export class ScrollView {
     this.messageNoMoreResults = document.querySelector("#noMoreResults")!;
     this.buttons = [
       ...Array.from(document.querySelectorAll("button")),
-      document.querySelector("#ordenacao") as HTMLElement,
+      document.querySelector("#selec-order") as HTMLElement,
       document.querySelector("#search") as HTMLElement,
     ].filter(Boolean) as HTMLElement[];
   }

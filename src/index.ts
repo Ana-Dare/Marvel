@@ -1,5 +1,5 @@
 import { ControllerApi } from "./controllers/HomeController.js";
-const content = document.querySelector("#exibir") as HTMLElement;
+const container = document.querySelector("#exibir") as HTMLElement;
 
-const controller = new ControllerApi(content, "characters");
+const controller = new ControllerApi(container, "characters");
 controller.inicializar();

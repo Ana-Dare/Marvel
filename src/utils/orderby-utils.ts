@@ -1,8 +1,8 @@
-import { ContentType } from "../interfaces/requestInterface.js";
+import { CurrentTypeInterface } from "../interfaces/requestInterface.js";
 
 export function obterOrderBy(
-  tipo: ContentType,
-  filtroOrdenacao: string,
+  tipo: CurrentTypeInterface,
+  filtroOrdenacao: string
 ): string {
   switch (filtroOrdenacao) {
     case "Mais recente":

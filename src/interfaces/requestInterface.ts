@@ -1,7 +1,7 @@
-export type ContentType = "characters" | "comics" | "series";
+export type CurrentTypeInterface = "characters" | "comics" | "series";
 
 export interface StatusResults {
-  currentType: ContentType;
+  currentType: CurrentTypeInterface;
   currentTerm: string;
   offset: number;
   limit: number;
@@ -10,7 +10,7 @@ export interface StatusResults {
 }
 
 export interface DataApi {
-  currentType: ContentType;
+  currentType: CurrentTypeInterface;
   name: string | null;
   title: string | null;
   id: string;

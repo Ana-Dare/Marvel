@@ -9,8 +9,10 @@
   <body>
     <div id="container-details-comics" class="detail">
       <div class="container-header-fixed">
-        <div class="logo-marvel">MARVEL</div>
-        <button id="favorite" class="btn-favorite-home"><img src="../img/icon-favorite.svg" class="icon-favorite "></button>
+        <div class="brand-logo-marvel">MARVEL</div>
+        <button id="favorite" class="btn-favorite-home">
+          <img src="../img/icon-favorite.svg" class="icon-favorite" />
+        </button>
       </div>
       <div id="comics-image" class="main-image">
         <img src="" />
@@ -26,27 +28,30 @@
       <br />
       <div id="comics-container-creators" class="container-creators"></div>
       <br />
-      <div id="comics-container-characters" class="container-characters"></div>
+      <div id="comics-container-characters" class="container-characters">
+        <ul id="link-characters"></ul>
+      </div>
       <br />
       <div id="comics-container-series" class="container-series"></div>
+      <ul id="link-series"></ul>
       <br />
     </div>
-          <div class="container-spinner">
-            <div class="spinner" id="messageLoading">
-              <div class="spinner-blade"></div>
-              <div class="spinner-blade"></div>
-              <div class="spinner-blade"></div>
-              <div class="spinner-blade"></div>
-              <div class="spinner-blade"></div>
-              <div class="spinner-blade"></div>
-              <div class="spinner-blade"></div>
-              <div class="spinner-blade"></div>
-              <div class="spinner-blade"></div>
-              <div class="spinner-blade"></div>
-              <div class="spinner-blade"></div>
-              <div class="spinner-blade"></div>
-           </div>
-          </div>
+    <div class="container-spinner">
+      <div class="spinner" id="messageLoading">
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+        <div class="spinner-blade"></div>
+      </div>
+    </div>
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   <script src="../js/detail.js" type="module"></script>
