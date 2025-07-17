@@ -13,10 +13,10 @@ export class RenderitemFavorites {
       {};
 
     if (filtered) {
-      items = filtered; 
+      items = filtered;
       if (!items || Object.keys(items).length === 0) {
-      this.container.innerHTML = "Não há itens salvos com esse termo.";
-      return
+        this.container.innerHTML = "Não há itens salvos com esse termo.";
+        return;
       }
     } else {
       const itemFavoriteString = localStorage.getItem("favorite") || "{}";
@@ -30,12 +30,11 @@ export class RenderitemFavorites {
         console.error("Erro ao converter favoritos:", error);
       }
       items = itemFavorite[type] || {};
-
     }
 
     if (!items || Object.keys(items).length === 0) {
       this.container.innerHTML = "Não há itens salvos nessa categoria";
-      return
+      return;
     }
 
     switch (type) {
@@ -65,13 +64,24 @@ export class RenderitemFavorites {
 
           const btnCardFavorite = document.createElement("button");
           btnCardFavorite.classList.add("favorite");
-          if (isItemFavorite("favorite", type, id)) {
-            btnCardFavorite.classList.add("active");
-          }
+          const imageBtnCardFavorite = document.createElement(
+            "img"
+          ) as HTMLImageElement;
+          imageBtnCardFavorite.classList.add("image-btn-card");
+          imageBtnCardFavorite.src = imageBtnCardFavorite.src =
+            "../img/suit-heart-fill.svg";
 
-          card.appendChild(btnCardFavorite);
-          card.appendChild(title);
+          if (isItemFavorite("favorite", type, id)) {
+            imageBtnCardFavorite.src = "../img/suit-heart-fill.svg";
+          }
+          const elements = document.createElement("div");
+          elements.classList.add("elements-title-button");
+
           card.appendChild(img);
+          btnCardFavorite.appendChild(imageBtnCardFavorite);
+          elements.appendChild(title);
+          elements.appendChild(btnCardFavorite);
+          card.appendChild(elements);
           this.container.appendChild(card);
         }
         break;

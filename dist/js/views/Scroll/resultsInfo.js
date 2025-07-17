@@ -12,7 +12,7 @@ export class ResultsInfoView {
     }
     showAllresults(total) {
         this.resultMessage.style.display = "block";
-        this.resultMessage.textContent = `Exibindo ${total} results.`;
+        this.resultMessage.textContent = `Exibindo ${total} resultados.`;
     }
     hideResults() {
         this.resultMessage.style.display = "none";

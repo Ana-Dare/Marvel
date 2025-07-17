@@ -8,19 +8,15 @@
 </head>
 <body>
     <div class="container-header-fixed">
-        <div class="brand-logo-marvel">MARVEL</div>
+        <div class="logo-marvel">MARVEL</div>
         <button id="favorite" class="btn-favorite-home"><img src="../img/icon-favorite.svg" class="icon-favorite "></button>
     </div>  
     <div class="container-search">
-        <select id="">
-            <option value="Mais recente">Mais recente</option>
-            <option value="Mais antigo">Mais antigo</option>
-            <option value="A-Z">A-Z</option>
-            <option value="Z-A">Z-A</option>
-            </select>
-        <input id="input-search-favorite" type="search" placeholder="Pesquisar" class="input-search"/>
-        <button id="deletar-search-favorite" class="btn-delete">X</button>
-        <button id="btn-search-favorite" class="btn-search"> <img src="../img/icon-search.svg" class="icon-search"> </button>
+        <div class="container-input-search">
+            <button id="btn-search-favorite" class="btn-search"> <img src="../img/icon-search.svg" class="icon-search"> </button>
+            <input id="input-search-favorite" type="text" placeholder="Pesquisar" class="input-search" autocomplete="off"/>
+            <button id="deletar-search-favorite" class="btn-delete"><img src="../img/icon-close.svg" class="icon-delete"></button>
+        </div>
     </div>
     <div class="filters">
         <button class="filtro" data-tipo="characters" id="personagens">Personagens</button>

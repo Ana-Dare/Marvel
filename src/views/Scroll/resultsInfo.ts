@@ -13,7 +13,7 @@ export class ResultsInfoView {
 
   showAllresults(total: number) {
     this.resultMessage.style.display = "block";
-    this.resultMessage.textContent = `Exibindo ${total} results.`;
+    this.resultMessage.textContent = `Exibindo ${total} resultados.`;
   }
 
   hideResults() {

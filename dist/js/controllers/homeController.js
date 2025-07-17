@@ -111,10 +111,11 @@ export class ControllerApi {
                 const id = card === null || card === void 0 ? void 0 : card.dataset.id;
                 const type = card === null || card === void 0 ? void 0 : card.dataset.type;
                 const name = card === null || card === void 0 ? void 0 : card.dataset.name;
+                const imgBtnCard = btn === null || btn === void 0 ? void 0 : btn.querySelector(".image-btn-card");
                 const title = card === null || card === void 0 ? void 0 : card.dataset.title;
                 const imagem = `${card === null || card === void 0 ? void 0 : card.dataset.thumbnailPath}.${card === null || card === void 0 ? void 0 : card.dataset.thumbnailExtension}`;
-                id && type && btn && btn.classList.toggle("active");
-                if (btn === null || btn === void 0 ? void 0 : btn.classList.contains("active")) {
+                id && type && btn && btn.classList.toggle("favorited");
+                if (btn.classList.contains("favorited")) {
                     const objectFavorite = {
                         [type]: {
                             [id]: {
@@ -125,10 +126,11 @@ export class ControllerApi {
                         },
                     };
                     setItemFavorite("favorite", objectFavorite);
+                    imgBtnCard.src = "./img/suit-heart-fill.svg";
                 }
                 else {
                     removeItemfavorite("favorite", type, id);
-                    btn === null || btn === void 0 ? void 0 : btn.classList.remove("active");
+                    imgBtnCard.src = "./img/suit-heart.svg";
                 }
             });
     }
@@ -193,11 +195,15 @@ export class ControllerApi {
                 const total = (_a = dados.data) === null || _a === void 0 ? void 0 : _a.total;
                 const results = dados.data.results;
                 const itens = mapApiResults(results, tipo);
+                console.log("Resposta inesperada da API:", results);
                 cacheService.set(url, { itens, total });
                 return { itens, total };
             }
             catch (error) {
                 console.error("Erro ao buscar dados:", error);
+                const noMoreResults = document.querySelector('#noMoreResults');
+                noMoreResults.style.display = 'block';
+                noMoreResults.innerHTML = 'Erro ao buscar dados, tente novamente.';
                 throw error;
             }
         });
@@ -229,6 +235,7 @@ export class ControllerApi {
                 if (this.paginationController.hasReachedEnd(this.offset, this.total)) {
                     this.isEndOfData = true;
                     this.scrollView.showEndResults();
+                    console.log('exibindo mensagem na hora errada');
                     this.resultsInfoView.showAllresults(this.total);
                 }
             }

@@ -22,11 +22,17 @@ export class RenderComics {
       "button"
     ) as HTMLButtonElement;
     btnCardfavorite.classList.add("favorite");
+    const imageBtnCardFavorite = document.createElement(
+      "img"
+    ) as HTMLImageElement;
+    imageBtnCardFavorite.classList.add("image-btn-card");
+    imageBtnCardFavorite.src = "../img/suit-heart.svg";
+    btnCardfavorite.classList.add("favorite");
 
     if (isItemFavorite("favorite", comics.currentType, comics.id.toString())) {
-      btnCardfavorite.classList.add("active");
+      imageBtnCardFavorite.src = "../img/suit-heart-fill.svg";
     } else {
-      btnCardfavorite.classList.remove("active");
+      imageBtnCardFavorite.src = "../img/suit-heart.svg";
     }
     const title = document.getElementById(
       "comics-title"
@@ -99,5 +105,8 @@ export class RenderComics {
         containerSeries.innerHTML = "<li>Series indisponíveis</li>";
       }
     }
+
+    btnCardfavorite.appendChild(imageBtnCardFavorite);
+    containerId.appendChild(btnCardfavorite);
   }
 }

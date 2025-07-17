@@ -123,16 +123,19 @@ export class ControllerApi {
     this.container &&
       this.container.addEventListener("click", (e) => {
         const target = e.target as HTMLElement;
-        const btn = target.closest(".favorite");
+        const btn = target.closest(".favorite") as HTMLButtonElement;
         const card = btn && (btn.closest(".item-container") as HTMLElement);
         const id = card?.dataset.id as string;
         const type = card?.dataset.type as string;
         const name = card?.dataset.name as string;
+        const imgBtnCard = btn?.querySelector(
+          ".image-btn-card"
+        ) as HTMLImageElement;
         const title = card?.dataset.title as string;
         const imagem =
           `${card?.dataset.thumbnailPath}.${card?.dataset.thumbnailExtension}` as string;
-        id && type && btn && btn.classList.toggle("active");
-        if (btn?.classList.contains("active")) {
+        id && type && btn && btn.classList.toggle("favorited");
+        if (btn.classList.contains("favorited")) {
           const objectFavorite: ObjectFavoriteInterface = {
             [type]: {
               [id]: {
@@ -143,9 +146,10 @@ export class ControllerApi {
             },
           };
           setItemFavorite("favorite", objectFavorite);
+          imgBtnCard.src = "./img/suit-heart-fill.svg";
         } else {
           removeItemfavorite("favorite", type, id);
-          btn?.classList.remove("active");
+          imgBtnCard.src = "./img/suit-heart.svg";
         }
       });
   }
@@ -229,11 +233,15 @@ export class ControllerApi {
       const total = dados.data?.total;
       const results: DataApi[] = dados.data.results;
       const itens = mapApiResults(results, tipo);
+      console.log("Resposta inesperada da API:", results);
 
       cacheService.set(url, { itens, total });
       return { itens, total };
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
+      const noMoreResults = document.querySelector('#noMoreResults') as HTMLDivElement;
+      noMoreResults.style.display ='block';
+      noMoreResults.innerHTML = 'Erro ao buscar dados, tente novamente.'
       throw error;
     }
   }
@@ -270,6 +278,7 @@ export class ControllerApi {
       if (this.paginationController.hasReachedEnd(this.offset, this.total)) {
         this.isEndOfData = true;
         this.scrollView.showEndResults();
+        console.log('exibindo mensagem na hora errada');
         this.resultsInfoView.showAllresults(this.total);
       }
     } catch (error) {

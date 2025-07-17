@@ -34,15 +34,16 @@ export class DetailController {
         const title = item.title;
         const imagem = `${item.thumbnail.path}.${item.thumbnail.extension}`;
         const btnDetailFavorite = document.querySelector(".favorite");
+        const imageBtnCardFavorite = btnDetailFavorite.querySelector(".image-btn-card");
         if (isItemFavorite("favorite", type, id)) {
-            btnDetailFavorite.classList.add("active");
+            imageBtnCardFavorite.src = "../img/suit-heart-fill.svg";
         }
         else {
-            btnDetailFavorite.classList.remove("active");
+            imageBtnCardFavorite.src = "../img/suit-heart.svg";
         }
         btnDetailFavorite.addEventListener("click", () => {
-            id && type && btnDetailFavorite.classList.toggle("active");
-            if (btnDetailFavorite.classList.contains("active")) {
+            id && type && btnDetailFavorite.classList.toggle("favorited");
+            if (btnDetailFavorite.classList.contains("favorited")) {
                 const objectFavorite = {
                     [type]: {
                         [id]: {
@@ -53,10 +54,11 @@ export class DetailController {
                     },
                 };
                 setItemFavorite("favorite", objectFavorite);
+                imageBtnCardFavorite.src = "../img/suit-heart-fill.svg";
             }
             else {
                 removeItemfavorite("favorite", type, id);
-                btnDetailFavorite === null || btnDetailFavorite === void 0 ? void 0 : btnDetailFavorite.classList.remove("active");
+                imageBtnCardFavorite.src = "../img/suit-heart.svg";
             }
         });
     }

@@ -18,15 +18,18 @@ export class Renderer {
         titulo.classList.add("titulo-item-container");
         titulo.textContent =
             item.currentType === "characters"
-                ? item.name || "Nome indisponível."
-                : item.title || "Título indisponível.";
+                ? (item.name || "Nome indisponível.").toUpperCase()
+                : (item.title || "Título indisponível.").toUpperCase();
         const btnCardfavorite = document.createElement("button");
+        const imageBtnCardFavorite = document.createElement('img');
+        imageBtnCardFavorite.classList.add('image-btn-card');
+        imageBtnCardFavorite.src = './img/suit-heart.svg';
         btnCardfavorite.classList.add("favorite");
         if (isItemFavorite("favorite", item.currentType, item.id.toString())) {
-            btnCardfavorite.classList.add("active");
+            imageBtnCardFavorite.src = './img/suit-heart-fill.svg';
         }
         else {
-            btnCardfavorite.classList.remove("active");
+            imageBtnCardFavorite.src = './img/suit-heart.svg';
         }
         const img = document.createElement("img");
         img.classList.add("img-item-container");
@@ -35,9 +38,13 @@ export class Renderer {
         }
         img.alt = titulo.textContent || "Imagem";
         img.width = 100;
-        cards.appendChild(btnCardfavorite);
-        cards.appendChild(titulo);
+        const elements = document.createElement('div');
+        elements.classList.add('elements-title-button');
         cards.appendChild(img);
+        btnCardfavorite.appendChild(imageBtnCardFavorite);
+        elements.appendChild(titulo);
+        elements.appendChild(btnCardfavorite);
+        cards.appendChild(elements);
         this.container.appendChild(cards);
     }
     toClean() {

@@ -7,7 +7,7 @@ import { RenderSeries } from "../views/Render/seriesRender.js";
 import { DataApi } from "../interfaces/requestInterface.js";
 import { setItemFavorite } from "../utils/localStorage.js";
 import { removeItemfavorite } from "../utils/localStorage.js";
-import { ObjectFavoriteInterface } from "../interfaces/favoriteInterface.js"; 
+import { ObjectFavoriteInterface } from "../interfaces/favoriteInterface.js";
 import { isItemFavorite } from "../utils/localStorage.js";
 import { ScrollView } from "../views/Scroll/scrollView.js";
 
@@ -40,14 +40,18 @@ export class DetailController {
     const btnDetailFavorite = document.querySelector(
       ".favorite"
     ) as HTMLButtonElement;
+    const imageBtnCardFavorite = btnDetailFavorite.querySelector(
+      ".image-btn-card"
+    ) as HTMLImageElement;
+
     if (isItemFavorite("favorite", type, id)) {
-      btnDetailFavorite.classList.add("active");
+      imageBtnCardFavorite.src = "../img/suit-heart-fill.svg";
     } else {
-      btnDetailFavorite.classList.remove("active");
+      imageBtnCardFavorite.src = "../img/suit-heart.svg";
     }
     btnDetailFavorite.addEventListener("click", () => {
-      id && type && btnDetailFavorite.classList.toggle("active");
-      if (btnDetailFavorite.classList.contains("active")) {
+      id && type && btnDetailFavorite.classList.toggle("favorited");
+      if (btnDetailFavorite.classList.contains("favorited")) {
         const objectFavorite: ObjectFavoriteInterface = {
           [type]: {
             [id]: {
@@ -59,9 +63,10 @@ export class DetailController {
         };
 
         setItemFavorite("favorite", objectFavorite);
+        imageBtnCardFavorite.src = "../img/suit-heart-fill.svg";
       } else {
         removeItemfavorite("favorite", type, id);
-        btnDetailFavorite?.classList.remove("active");
+        imageBtnCardFavorite.src = "../img/suit-heart.svg";
       }
     });
   }

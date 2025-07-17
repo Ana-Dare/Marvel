@@ -51,12 +51,20 @@ export class RenderitemFavorites {
                     img.width = 100;
                     const btnCardFavorite = document.createElement("button");
                     btnCardFavorite.classList.add("favorite");
+                    const imageBtnCardFavorite = document.createElement("img");
+                    imageBtnCardFavorite.classList.add("image-btn-card");
+                    imageBtnCardFavorite.src = imageBtnCardFavorite.src =
+                        "../img/suit-heart-fill.svg";
                     if (isItemFavorite("favorite", type, id)) {
-                        btnCardFavorite.classList.add("active");
+                        imageBtnCardFavorite.src = "../img/suit-heart-fill.svg";
                     }
-                    card.appendChild(btnCardFavorite);
-                    card.appendChild(title);
+                    const elements = document.createElement("div");
+                    elements.classList.add("elements-title-button");
                     card.appendChild(img);
+                    btnCardFavorite.appendChild(imageBtnCardFavorite);
+                    elements.appendChild(title);
+                    elements.appendChild(btnCardFavorite);
+                    card.appendChild(elements);
                     this.container.appendChild(card);
                 }
                 break;
