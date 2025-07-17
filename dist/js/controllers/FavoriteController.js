@@ -106,6 +106,12 @@ export class favoriteController {
             this.currentTerm = "";
         });
     }
+    eventBackToHome() {
+        const logoMarvel = document.querySelector(".logo-marvel");
+        logoMarvel.addEventListener("click", () => {
+            window.location.href = "../index.html";
+        });
+    }
     initialize() {
         this.enableFilterOnCurrentType();
         const btnDefault = document.querySelector('[data-tipo="characters"]');
@@ -115,5 +121,6 @@ export class favoriteController {
         this.removeItemPageFavorite();
         this.enableClickEventOnCards();
         this.resetSearch();
+        this.eventBackToHome();
     }
 }

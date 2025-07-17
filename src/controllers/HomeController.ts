@@ -64,7 +64,7 @@ export class ControllerApi {
     });
   }
 
-  private enableEvents() {
+  private enableEventsSearch() {
     btnFilters.forEach((btn) => {
       btn.addEventListener("click", async (e) => {
         const target = e.currentTarget as HTMLElement;
@@ -90,7 +90,6 @@ export class ControllerApi {
       if (inputSearch) {
         const inputTerm = inputSearch.value.trim();
         if (!inputTerm) {
-          //mensagem sutil em cima da tela
           return;
         }
         this.currentTerm = inputTerm;
@@ -119,6 +118,13 @@ export class ControllerApi {
     });
   }
 
+  private eventBackToHome() {
+    const logoMarvel = document.querySelector(".logo-marvel") as HTMLDivElement;
+    logoMarvel.addEventListener("click", () => {
+      window.location.href = "../index.html";
+    });
+  }
+
   public enableFavoriteClickEvent() {
     this.container &&
       this.container.addEventListener("click", (e) => {
@@ -135,7 +141,7 @@ export class ControllerApi {
         const imagem =
           `${card?.dataset.thumbnailPath}.${card?.dataset.thumbnailExtension}` as string;
         id && type && btn && btn.classList.toggle("favorited");
-        if (btn.classList.contains("favorited")) {
+        if (btn?.classList.contains("favorited")) {
           const objectFavorite: ObjectFavoriteInterface = {
             [type]: {
               [id]: {
@@ -239,9 +245,11 @@ export class ControllerApi {
       return { itens, total };
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
-      const noMoreResults = document.querySelector('#noMoreResults') as HTMLDivElement;
-      noMoreResults.style.display ='block';
-      noMoreResults.innerHTML = 'Erro ao buscar dados, tente novamente.'
+      const noMoreResults = document.querySelector(
+        "#noMoreResults"
+      ) as HTMLDivElement;
+      noMoreResults.style.display = "block";
+      noMoreResults.innerHTML = "Erro ao buscar dados, tente novamente.";
       throw error;
     }
   }
@@ -278,7 +286,7 @@ export class ControllerApi {
       if (this.paginationController.hasReachedEnd(this.offset, this.total)) {
         this.isEndOfData = true;
         this.scrollView.showEndResults();
-        console.log('exibindo mensagem na hora errada');
+        console.log("exibindo mensagem na hora errada");
         this.resultsInfoView.showAllresults(this.total);
       }
     } catch (error) {
@@ -294,7 +302,7 @@ export class ControllerApi {
     window.addEventListener("pageshow", () => {
       this.updateContent(this.currentType, this.currentTerm, true);
     });
-    this.enableEvents();
+    this.enableEventsSearch();
     this.scroll.start();
     this.enableClickEventsOnCards();
     this.openfavoritesPage();
@@ -302,5 +310,6 @@ export class ControllerApi {
     this.updateContent(this.currentType, "", false);
     this.resetSearch();
     this.enableFavoriteClickEvent();
+    this.eventBackToHome();
   }
 }

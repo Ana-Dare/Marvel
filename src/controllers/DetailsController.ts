@@ -71,6 +71,13 @@ export class DetailController {
     });
   }
 
+    private eventBackToHome() {
+    const logoMarvel = document.querySelector(".logo-marvel") as HTMLDivElement;
+    logoMarvel.addEventListener("click", () => {
+      window.location.href = "../index.html";
+    });
+  }
+
   public async initialize() {
     const container = document.querySelector(".detail") as HTMLDivElement;
     const params = new URLSearchParams(window.location.search);
@@ -93,7 +100,7 @@ export class DetailController {
           } catch (error) {
             console.log("Erro ao buscar personagem", error);
           } finally {
-            this.scrollView.hideLoading;
+            this.scrollView.hideLoading();
           }
           break;
 
@@ -134,5 +141,6 @@ export class DetailController {
       console.error("Erro ao carregar os dados:", e);
     }
     this.openfavoritespage();
+    this.eventBackToHome();
   }
 }

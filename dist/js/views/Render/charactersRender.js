@@ -9,6 +9,7 @@ export class RenderCharacters {
         containerId.dataset.id = characters.id.toString();
         const div = document.getElementById("characters-image");
         const img = div === null || div === void 0 ? void 0 : div.querySelector("img");
+        img === null || img === void 0 ? void 0 : img.classList.add('container-image');
         if (img && characters.thumbnail.path && characters.thumbnail.extension)
             img.src = `${characters.thumbnail.path}.${characters.thumbnail.extension}`;
         const btnCardfavorite = document.createElement("button");
@@ -59,7 +60,7 @@ export class RenderCharacters {
                 containerComics.innerHTML = "<li>Comics indisponíveis</li>";
             }
         }
-        btnCardfavorite.appendChild(imageBtnCardFavorite);
         containerId.appendChild(btnCardfavorite);
+        btnCardfavorite.appendChild(imageBtnCardFavorite);
     }
 }

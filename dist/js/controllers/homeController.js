@@ -53,7 +53,7 @@ export class ControllerApi {
             this.scrollView.hideLoading();
         }));
     }
-    enableEvents() {
+    enableEventsSearch() {
         btnFilters.forEach((btn) => {
             btn.addEventListener("click", (e) => __awaiter(this, void 0, void 0, function* () {
                 const target = e.currentTarget;
@@ -102,6 +102,12 @@ export class ControllerApi {
             yield this.updateContent(this.currentType, this.currentTerm, true);
         }));
     }
+    eventBackToHome() {
+        const logoMarvel = document.querySelector(".logo-marvel");
+        logoMarvel.addEventListener("click", () => {
+            window.location.href = "../index.html";
+        });
+    }
     enableFavoriteClickEvent() {
         this.container &&
             this.container.addEventListener("click", (e) => {
@@ -115,7 +121,7 @@ export class ControllerApi {
                 const title = card === null || card === void 0 ? void 0 : card.dataset.title;
                 const imagem = `${card === null || card === void 0 ? void 0 : card.dataset.thumbnailPath}.${card === null || card === void 0 ? void 0 : card.dataset.thumbnailExtension}`;
                 id && type && btn && btn.classList.toggle("favorited");
-                if (btn.classList.contains("favorited")) {
+                if (btn === null || btn === void 0 ? void 0 : btn.classList.contains("favorited")) {
                     const objectFavorite = {
                         [type]: {
                             [id]: {
@@ -201,9 +207,9 @@ export class ControllerApi {
             }
             catch (error) {
                 console.error("Erro ao buscar dados:", error);
-                const noMoreResults = document.querySelector('#noMoreResults');
-                noMoreResults.style.display = 'block';
-                noMoreResults.innerHTML = 'Erro ao buscar dados, tente novamente.';
+                const noMoreResults = document.querySelector("#noMoreResults");
+                noMoreResults.style.display = "block";
+                noMoreResults.innerHTML = "Erro ao buscar dados, tente novamente.";
                 throw error;
             }
         });
@@ -235,7 +241,7 @@ export class ControllerApi {
                 if (this.paginationController.hasReachedEnd(this.offset, this.total)) {
                     this.isEndOfData = true;
                     this.scrollView.showEndResults();
-                    console.log('exibindo mensagem na hora errada');
+                    console.log("exibindo mensagem na hora errada");
                     this.resultsInfoView.showAllresults(this.total);
                 }
             }
@@ -253,7 +259,7 @@ export class ControllerApi {
         window.addEventListener("pageshow", () => {
             this.updateContent(this.currentType, this.currentTerm, true);
         });
-        this.enableEvents();
+        this.enableEventsSearch();
         this.scroll.start();
         this.enableClickEventsOnCards();
         this.openfavoritesPage();
@@ -261,5 +267,6 @@ export class ControllerApi {
         this.updateContent(this.currentType, "", false);
         this.resetSearch();
         this.enableFavoriteClickEvent();
+        this.eventBackToHome();
     }
 }

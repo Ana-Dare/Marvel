@@ -62,6 +62,12 @@ export class DetailController {
             }
         });
     }
+    eventBackToHome() {
+        const logoMarvel = document.querySelector(".logo-marvel");
+        logoMarvel.addEventListener("click", () => {
+            window.location.href = "../index.html";
+        });
+    }
     initialize() {
         return __awaiter(this, void 0, void 0, function* () {
             const container = document.querySelector(".detail");
@@ -87,7 +93,7 @@ export class DetailController {
                             console.log("Erro ao buscar personagem", error);
                         }
                         finally {
-                            this.scrollView.hideLoading;
+                            this.scrollView.hideLoading();
                         }
                         break;
                     case "comics":
@@ -132,6 +138,7 @@ export class DetailController {
                 console.error("Erro ao carregar os dados:", e);
             }
             this.openfavoritespage();
+            this.eventBackToHome();
         });
     }
 }

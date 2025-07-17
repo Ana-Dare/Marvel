@@ -128,6 +128,13 @@ export class favoriteController {
     });
   }
 
+  private eventBackToHome() {
+    const logoMarvel = document.querySelector(".logo-marvel") as HTMLDivElement;
+    logoMarvel.addEventListener("click", () => {
+      window.location.href = "../index.html";
+    });
+  }
+
   public initialize() {
     this.enableFilterOnCurrentType();
     const btnDefault = document.querySelector(
@@ -139,5 +146,6 @@ export class favoriteController {
     this.removeItemPageFavorite();
     this.enableClickEventOnCards();
     this.resetSearch();
+    this.eventBackToHome();
   }
 }

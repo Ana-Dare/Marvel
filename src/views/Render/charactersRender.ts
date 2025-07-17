@@ -15,6 +15,7 @@ export class RenderCharacters {
       "characters-image"
     ) as HTMLDivElement | null;
     const img = div?.querySelector("img") as HTMLImageElement | null;
+    img?.classList.add('container-image')
     if (img && characters.thumbnail.path && characters.thumbnail.extension)
       img.src = `${characters.thumbnail.path}.${characters.thumbnail.extension}`;
 
@@ -82,7 +83,8 @@ export class RenderCharacters {
         containerComics.innerHTML = "<li>Comics indisponíveis</li>";
       }
     }
-    btnCardfavorite.appendChild(imageBtnCardFavorite);
     containerId.appendChild(btnCardfavorite);
+    btnCardfavorite.appendChild(imageBtnCardFavorite);
+
   }
 }
