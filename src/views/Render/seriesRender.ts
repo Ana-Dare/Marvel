@@ -15,6 +15,7 @@ export class RenderSeries {
       "series-image"
     ) as HTMLDivElement | null;
     const img = div?.querySelector("img") as HTMLImageElement | null;
+    img?.classList.add("container-image");
     if (img && series.thumbnail.path && series.thumbnail.extension)
       img.src = `${series.thumbnail.path}.${series.thumbnail.extension}`;
 
@@ -67,8 +68,8 @@ export class RenderSeries {
         series.endYear || "Ano de encerramento indisponíveis";
 
     const Containercreators = document.getElementById(
-      "series-container-creators"
-    ) as HTMLDivElement | null;
+      "list-creators"
+    ) as HTMLUListElement | null;
     if (Containercreators)
       Containercreators.innerHTML =
         series.creators.items.length > 0

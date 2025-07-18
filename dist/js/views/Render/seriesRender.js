@@ -9,6 +9,7 @@ export class RenderSeries {
         containerId.dataset.id = series.id.toString();
         const div = document.getElementById("series-image");
         const img = div === null || div === void 0 ? void 0 : div.querySelector("img");
+        img === null || img === void 0 ? void 0 : img.classList.add("container-image");
         if (img && series.thumbnail.path && series.thumbnail.extension)
             img.src = `${series.thumbnail.path}.${series.thumbnail.extension}`;
         const btnCardfavorite = document.createElement("button");
@@ -40,7 +41,7 @@ export class RenderSeries {
         if (endYear)
             endYear.textContent =
                 series.endYear || "Ano de encerramento indisponíveis";
-        const Containercreators = document.getElementById("series-container-creators");
+        const Containercreators = document.getElementById("list-creators");
         if (Containercreators)
             Containercreators.innerHTML =
                 series.creators.items.length > 0

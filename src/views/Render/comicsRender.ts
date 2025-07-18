@@ -15,6 +15,7 @@ export class RenderComics {
       "comics-image"
     ) as HTMLDivElement | null;
     const img = div?.querySelector("img") as HTMLImageElement | null;
+    img?.classList.add("container-image");
     if (img && comics.thumbnail.path && comics.thumbnail.extension)
       img.src = `${comics.thumbnail.path}.${comics.thumbnail.extension}`;
 
@@ -62,8 +63,8 @@ export class RenderComics {
       });
 
     const containerCreators = document.getElementById(
-      "comics-container-creators"
-    ) as HTMLDivElement | null;
+      "list-creators"
+    ) as HTMLUListElement | null;
     if (containerCreators)
       containerCreators.innerHTML =
         comics.creators.items.length > 0

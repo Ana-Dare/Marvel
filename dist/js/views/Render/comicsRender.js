@@ -10,6 +10,7 @@ export class RenderComics {
         containerId.dataset.id = comics.id.toString();
         const div = document.getElementById("comics-image");
         const img = div === null || div === void 0 ? void 0 : div.querySelector("img");
+        img === null || img === void 0 ? void 0 : img.classList.add("container-image");
         if (img && comics.thumbnail.path && comics.thumbnail.extension)
             img.src = `${comics.thumbnail.path}.${comics.thumbnail.extension}`;
         const btnCardfavorite = document.createElement("button");
@@ -40,7 +41,7 @@ export class RenderComics {
                 style: "currency",
                 currency: "BRL",
             });
-        const containerCreators = document.getElementById("comics-container-creators");
+        const containerCreators = document.getElementById("list-creators");
         if (containerCreators)
             containerCreators.innerHTML =
                 comics.creators.items.length > 0
