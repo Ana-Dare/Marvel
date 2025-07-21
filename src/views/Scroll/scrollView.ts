@@ -4,7 +4,7 @@ export class ScrollView {
   private buttons: HTMLElement[];
 
   constructor() {
-    this.messageLoading = document.querySelector("#messageLoading")!;
+    this.messageLoading = document.querySelector(".container-spinner")!;
     this.messageNoMoreResults = document.querySelector("#noMoreResults")!;
     this.buttons = [
       ...Array.from(document.querySelectorAll("button")),
@@ -14,7 +14,7 @@ export class ScrollView {
   }
 
   public showLoading() {
-    this.messageLoading.style.display = "block";
+    this.messageLoading.style.display = "flex";
     this.buttons.forEach((btn) => btn.setAttribute("disabled", "true"));
   }
 
@@ -24,6 +24,13 @@ export class ScrollView {
   }
 
   public showEndResults() {
+    this.messageNoMoreResults.innerHTML =
+      "Todos os resultados foram carregados.";
+    this.messageNoMoreResults.style.display = "block";
+  }
+
+  public showNoResults() {
+    this.messageNoMoreResults.innerHTML = 'Não foi possível encontrar resultados.'
     this.messageNoMoreResults.style.display = "block";
   }
 

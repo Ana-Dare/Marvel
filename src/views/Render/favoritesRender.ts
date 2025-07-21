@@ -15,7 +15,10 @@ export class RenderitemFavorites {
     if (filtered) {
       items = filtered;
       if (!items || Object.keys(items).length === 0) {
-        this.container.innerHTML = "Não há itens salvos com esse termo.";
+        this.container.innerHTML = `
+        <div class='no-more-results'> 
+          Não há itens salvos nessa categoria.
+        </div>`;
         return;
       }
     } else {
@@ -33,7 +36,10 @@ export class RenderitemFavorites {
     }
 
     if (!items || Object.keys(items).length === 0) {
-      this.container.innerHTML = "Não há itens salvos nessa categoria";
+      this.container.innerHTML = `
+        <div class='no-more-results'> 
+          Não há itens salvos nessa categoria.
+        </div>`;
       return;
     }
 

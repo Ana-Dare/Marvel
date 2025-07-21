@@ -53,7 +53,6 @@ export interface Comics extends DataApi {
 
 export interface Series extends DataApi {
   description: string | null;
-  pageCount: string | null;
   startYear: string | null;
   endYear: string | null;
   creators: CollectionSummary;

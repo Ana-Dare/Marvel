@@ -12,7 +12,6 @@ export function mapSeries(results: Series[]): Series[] {
     },
 
     description: item.description || "",
-    pageCount: item.pageCount || "",
     startYear: item.startYear || "",
     endYear: item.endYear || "",
 

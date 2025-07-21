@@ -233,6 +233,13 @@ export class ControllerApi {
             }
             try {
                 const { itens, total } = yield this.dataFetcher.fetchContent(tipo, termo);
+                if (itens.length === 0) {
+                    this.scrollView.showNoResults();
+                    this.loadingUI.enableUI();
+                    this.scroll.unlock();
+                    this.scrollView.hideLoading();
+                    return;
+                }
                 this.displayContent.clearIfFirstPage(this.offset);
                 this.displayContent.renderItems(itens);
                 this.total = total;

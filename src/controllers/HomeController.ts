@@ -277,6 +277,14 @@ export class ControllerApi {
     }
     try {
       const { itens, total } = await this.dataFetcher.fetchContent(tipo, termo);
+
+      if (itens.length === 0) {
+      this.scrollView.showNoResults (); // Mostra a mensagem "Nenhum resultado"
+      this.loadingUI.enableUI();
+      this.scroll.unlock();
+      this.scrollView.hideLoading();
+      return;
+    }
       this.displayContent.clearIfFirstPage(this.offset);
       this.displayContent.renderItems(itens);
       this.total = total;

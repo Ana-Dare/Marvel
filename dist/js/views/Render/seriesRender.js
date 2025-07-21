@@ -30,10 +30,6 @@ export class RenderSeries {
         const description = document.getElementById("series-description");
         if (description)
             description.textContent = series.description || "Descrição indisponível";
-        const pageCount = document.getElementById("series-page-count");
-        if (pageCount)
-            pageCount.textContent =
-                series.pageCount || "número de páginas inindisponíveis";
         const startYear = document.getElementById("series-start-year");
         if (startYear)
             startYear.textContent = series.startYear || "Ano de ínicio indisponíveis";

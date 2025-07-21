@@ -47,13 +47,6 @@ export class RenderSeries {
     if (description)
       description.textContent = series.description || "Descrição indisponível";
 
-    const pageCount = document.getElementById(
-      "series-page-count"
-    ) as HTMLDivElement | null;
-    if (pageCount)
-      pageCount.textContent =
-        series.pageCount || "número de páginas inindisponíveis";
-
     const startYear = document.getElementById(
       "series-start-year"
     ) as HTMLDivElement | null;

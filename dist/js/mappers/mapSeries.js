@@ -11,7 +11,6 @@ export function mapSeries(results) {
                 extension: (_b = item.thumbnail) === null || _b === void 0 ? void 0 : _b.extension,
             },
             description: item.description || "",
-            pageCount: item.pageCount || "",
             startYear: item.startYear || "",
             endYear: item.endYear || "",
             creators: {

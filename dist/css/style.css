@@ -16,6 +16,7 @@
   height: 2rem;
   cursor: pointer;
   box-sizing: border-box;
+  order: 1  ;
 }
 
 :root {
@@ -371,6 +372,13 @@
   100% {
     background-color: transparent;
   }
+}
+
+.no-more-results {
+  font-family:var(--font--main);
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: #000000;
 }
 
 footer {

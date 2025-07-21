@@ -90,6 +90,7 @@ export class DetailController {
     try {
       switch (type) {
         case "characters":
+          container.classList.remove('visible');
           this.scrollView.showLoading();
           try {
             const character = await requestCharactersById(id);
@@ -97,6 +98,7 @@ export class DetailController {
             character.currentType = "characters";
             this.enableEventClickFavorite(character);
             this.scrollView.hideLoading();
+            container.classList.add('visible');
           } catch (error) {
             console.log("Erro ao buscar personagem", error);
           } finally {
@@ -105,6 +107,7 @@ export class DetailController {
           break;
 
         case "comics":
+          container.classList.remove('visible');
           this.scrollView.showLoading();
           try {
             const comics = await requestComicsById(id);
@@ -112,6 +115,7 @@ export class DetailController {
             comics.currentType = "comics";
             this.enableEventClickFavorite(comics);
             this.scrollView.hideLoading();
+            container.classList.add('visible');
           } catch (error) {
             console.log("Erro ao buscar quadrinho", error);
           } finally {
@@ -120,6 +124,7 @@ export class DetailController {
           break;
 
         case "series":
+          container.classList.remove('visible');
           this.scrollView.showLoading();
           try {
             const series = await requestSeriesById(id);
@@ -127,6 +132,7 @@ export class DetailController {
             series.currentType = "series";
             this.enableEventClickFavorite(series);
             this.scrollView.hideLoading();
+            container.classList.add('visible');
           } catch (error) {
             console.log("Erro ao buscar quadrinho", error);
           } finally {

@@ -60,7 +60,7 @@ export class RenderCharacters {
                 containerComics.innerHTML = "<li>Comics indisponíveis</li>";
             }
         }
-        containerId.appendChild(btnCardfavorite);
         btnCardfavorite.appendChild(imageBtnCardFavorite);
+        containerId.appendChild(btnCardfavorite);
     }
 }
