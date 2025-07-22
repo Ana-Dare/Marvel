@@ -136,17 +136,12 @@
 
 .text-info {
   order: 4;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-family: var(--font-main);
   font-weight: 300;
-}
-
-.elements-series-comics {
-  order: 5;
-  display: flex;
-  padding: 1rem 0rem 0rem 0rem;
+  color: #000;
   width: 100%;
-  align-self: center;
+  padding: 1rem 0 0 0;
 }
 
 .container-series {
@@ -172,23 +167,26 @@ a {
   font-family: var(--font-main);
   color: #000;
   line-height: 20px;
+  font-size: 1rem;
 }
 
-
 li {
-padding: 1rem;
-border-bottom: .3px solid #463f3a;
-border-right: none;
-border-left: none;
+  padding: 01rem;
+  border-bottom: 0.3px solid #463f3a;
+  border-right: none;
+  border-left: none;
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
 }
 
 li img {
   width: 4rem;
-  height: 1rem;
+  height: auto;
 }
 
 li:hover {
-  background-color: #0000000f;
+  background-color: rgba(194, 190, 190, 0.15);
 }
 
 a:hover {
@@ -197,7 +195,6 @@ a:hover {
   background-clip: text, padding-box;
   transition: 0.5s;
 }
-
 
 .main-page-count {
   font-family: var(--font-main);
@@ -210,16 +207,10 @@ a:hover {
   font-family: var(--font-main);
 }
 
-.main-start-year {
+.main-year {
   font-family: var(--font-main);
   font-size: 1rem;
-  font-weight: 700;
-}
-
-.main-end-year {
-  font-family: var(--font-main);
-  font-size: 1rem;
-  font-weight: 700;
+  font-weight: 400;
 }
 
 .container-creators {
@@ -246,17 +237,19 @@ a:hover {
   font-weight: 300;
   gap: 0.2rem;
   width: fit-content;
+  font-family: var(--font-main);
 }
 
 .element-menu {
   order: 5;
   padding: 1rem 0 1rem 0;
+  width: 100%;
 }
 
 .option-button-menu {
   display: flex;
-  width: 50%;
-  gap: 5rem;
+  width: 40%;
+  gap: 4rem;
 }
 
 .button-menu {
@@ -275,6 +268,7 @@ a:hover {
 .button-menu:hover {
   border-bottom: #780000 solid 1px;
   color: #000;
+  cursor: pointer;
 }
 
 .section {
@@ -282,6 +276,7 @@ a:hover {
   font-size: 1rem;
   justify-content: center;
   display: none;
+  padding: 1rem 0 0 0;
 }
 .section.show {
   display: block;
@@ -331,8 +326,25 @@ a:hover {
     height: 1rem;
   }
 
-  li {
+  a {
     font-size: 0.8rem;
+  }
+
+  .text-info {
+    font-size: 0.9rem;
+  }
+
+  .button-menu {
+    font-size: 0.8rem;
+  }
+
+  .main-year {
+    font-size: 0.8rem;
+  }
+
+  li img {
+    width: 3rem;
+    height: auto;
   }
 }
 
@@ -371,9 +383,32 @@ a:hover {
   a {
     font-size: 0.6rem;
   }
+  li {
+    font-size: 0.6rem;
+  }
 
   .img-icon-title {
     width: 0.8rem;
     height: 0.8rem;
+  }
+
+  .text-info {
+    font-size: 0.7rem;
+  }
+
+  .button-menu {
+    font-size: 0.4rem;
+  }
+
+  .main-year {
+    font-size: 0.6rem;
+  }
+
+  .option-button-menu {
+    gap: 2rem;
+  }
+  li img {
+    width: 2rem;
+    height: auto;
   }
 }

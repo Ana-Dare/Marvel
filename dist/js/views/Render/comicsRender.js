@@ -46,7 +46,9 @@ export class RenderComics {
             containerCreators.innerHTML =
                 comics.creators.items.length > 0
                     ? comics.creators.items
-                        .map((creators) => `<li>${creators.name}</li>`)
+                        .map((creators) => `<li>${creators.name}
+                <img src='../img/marvel.svg'>
+              </li>`)
                         .join("")
                     : "<li>Sem criadores disponíveis</li>";
         const containerCharacters = document.getElementById("link-characters");
@@ -56,7 +58,9 @@ export class RenderComics {
                 containerCharacters.innerHTML = items
                     .map((character) => {
                     const id = getIdFromUri(character.resourceURI);
-                    return `<li><a href="characters.html?type=characters&id=${id}">${character.name}</a></li>`;
+                    return `<li><a href="characters.html?type=characters&id=${id}">${character.name}</a>
+              <img src='../img/marvel.svg'>
+            </li>`;
                 })
                     .join("");
             }
@@ -71,7 +75,9 @@ export class RenderComics {
                 containerSeries.innerHTML = items
                     .map((serie) => {
                     const id = getIdFromUri(serie.resourceURI);
-                    return `<li><a href="series.html?type=series&id=${id}">${serie.name}</a></li>`;
+                    return `<li><a href="series.html?type=series&id=${id}">${serie.name}</a>
+              <img src='../img/marvel.svg'>
+            </li>`;
                 })
                     .join("");
             }

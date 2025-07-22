@@ -15,16 +15,18 @@ export class RenderCharacters {
       "characters-image"
     ) as HTMLDivElement | null;
     const img = div?.querySelector("img") as HTMLImageElement | null;
-    img?.classList.add('container-image')
+    img?.classList.add("container-image");
     if (img && characters.thumbnail.path && characters.thumbnail.extension)
       img.src = `${characters.thumbnail.path}.${characters.thumbnail.extension}`;
 
     const btnCardfavorite = document.createElement(
       "button"
     ) as HTMLButtonElement;
-    const imageBtnCardFavorite = document.createElement('img') as HTMLImageElement
-    imageBtnCardFavorite.classList.add('image-btn-card');
-    imageBtnCardFavorite.src = '../img/suit-heart.svg';
+    const imageBtnCardFavorite = document.createElement(
+      "img"
+    ) as HTMLImageElement;
+    imageBtnCardFavorite.classList.add("image-btn-card");
+    imageBtnCardFavorite.src = "../img/suit-heart.svg";
     btnCardfavorite.classList.add("favorite");
     if (
       isItemFavorite(
@@ -33,9 +35,9 @@ export class RenderCharacters {
         characters.id.toString()
       )
     ) {
-      imageBtnCardFavorite.src = '../img/suit-heart-fill.svg'
+      imageBtnCardFavorite.src = "../img/suit-heart-fill.svg";
     } else {
-      imageBtnCardFavorite.src = '../img/suit-heart.svg';
+      imageBtnCardFavorite.src = "../img/suit-heart.svg";
     }
 
     const name = document.getElementById(
@@ -59,7 +61,9 @@ export class RenderCharacters {
         containerSeries.innerHTML = items
           .map((series) => {
             const id = getIdFromUri(series.resourceURI);
-            return `<li><a href="series.html?type=series&id=${id}">${series.name}</a></li>`;
+            return `<li><a href="series.html?type=series&id=${id}">${series.name}</a>
+              <img src='../img/marvel.svg'>
+            </li>`;
           })
           .join("");
       } else {
@@ -76,7 +80,9 @@ export class RenderCharacters {
         containerComics.innerHTML = items
           .map((comics) => {
             const id = getIdFromUri(comics.resourceURI);
-            return `<li><a href="comics.html?type=comics&id=${id}">${comics.name}</a></li>`;
+            return `<li><a href="comics.html?type=comics&id=${id}">${comics.name}</a>
+              <img src='../img/marvel.svg'>
+            </li>`;
           })
           .join("");
       } else {
@@ -85,7 +91,5 @@ export class RenderCharacters {
     }
     btnCardfavorite.appendChild(imageBtnCardFavorite);
     containerId.appendChild(btnCardfavorite);
-    
-
   }
 }
