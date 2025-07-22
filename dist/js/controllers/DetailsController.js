@@ -68,6 +68,27 @@ export class DetailController {
             window.location.href = "../index.html";
         });
     }
+    handleTabMenu(menuId) {
+        const menu = document.getElementById(menuId);
+        if (!menu)
+            return;
+        const buttons = menu.querySelectorAll('button');
+        const sections = document.querySelectorAll('.section');
+        buttons.forEach((button) => {
+            button.addEventListener('click', () => {
+                const target = button.dataset.target;
+                if (!target)
+                    return;
+                sections.forEach((section) => {
+                    const isTarget = section.id === `section-${target}`;
+                    section.classList.toggle('show', isTarget);
+                });
+                buttons.forEach((btn) => {
+                    btn.classList.toggle('show', btn === button);
+                });
+            });
+        });
+    }
     initialize() {
         return __awaiter(this, void 0, void 0, function* () {
             const container = document.querySelector(".detail");
@@ -80,7 +101,7 @@ export class DetailController {
             try {
                 switch (type) {
                     case "characters":
-                        container.classList.remove('visible');
+                        container.classList.remove("visible");
                         this.scrollView.showLoading();
                         try {
                             const character = yield requestCharactersById(id);
@@ -89,7 +110,7 @@ export class DetailController {
                             character.currentType = "characters";
                             this.enableEventClickFavorite(character);
                             this.scrollView.hideLoading();
-                            container.classList.add('visible');
+                            container.classList.add("visible");
                         }
                         catch (error) {
                             console.log("Erro ao buscar personagem", error);
@@ -99,7 +120,7 @@ export class DetailController {
                         }
                         break;
                     case "comics":
-                        container.classList.remove('visible');
+                        container.classList.remove("visible");
                         this.scrollView.showLoading();
                         try {
                             const comics = yield requestComicsById(id);
@@ -108,7 +129,7 @@ export class DetailController {
                             comics.currentType = "comics";
                             this.enableEventClickFavorite(comics);
                             this.scrollView.hideLoading();
-                            container.classList.add('visible');
+                            container.classList.add("visible");
                         }
                         catch (error) {
                             console.log("Erro ao buscar quadrinho", error);
@@ -118,7 +139,7 @@ export class DetailController {
                         }
                         break;
                     case "series":
-                        container.classList.remove('visible');
+                        container.classList.remove("visible");
                         this.scrollView.showLoading();
                         try {
                             const series = yield requestSeriesById(id);
@@ -127,7 +148,7 @@ export class DetailController {
                             series.currentType = "series";
                             this.enableEventClickFavorite(series);
                             this.scrollView.hideLoading();
-                            container.classList.add('visible');
+                            container.classList.add("visible");
                         }
                         catch (error) {
                             console.log("Erro ao buscar quadrinho", error);
@@ -145,6 +166,7 @@ export class DetailController {
             }
             this.openfavoritespage();
             this.eventBackToHome();
+            this.handleTabMenu('menu');
         });
     }
 }

@@ -71,12 +71,39 @@ export class DetailController {
     });
   }
 
-    private eventBackToHome() {
+  private eventBackToHome() {
     const logoMarvel = document.querySelector(".logo-marvel") as HTMLDivElement;
     logoMarvel.addEventListener("click", () => {
       window.location.href = "../index.html";
     });
   }
+
+  private handleTabMenu(menuId: string) {
+    const menu = document.getElementById(menuId);
+    if (!menu) return;
+
+    const buttons = menu.querySelectorAll<HTMLButtonElement>('button');
+    const sections = document.querySelectorAll<HTMLElement>('.section');
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const target = button.dataset.target;
+        if (!target) return;
+
+        // Ativa a seção correta
+        sections.forEach((section) => {
+          const isTarget = section.id === `section-${target}`;
+          section.classList.toggle('show', isTarget);
+        });
+
+        // Atualiza botão ativo
+        buttons.forEach((btn) => {
+          btn.classList.toggle('show', btn === button);
+        });
+      });
+    });
+  }
+
 
   public async initialize() {
     const container = document.querySelector(".detail") as HTMLDivElement;
@@ -90,7 +117,7 @@ export class DetailController {
     try {
       switch (type) {
         case "characters":
-          container.classList.remove('visible');
+          container.classList.remove("visible");
           this.scrollView.showLoading();
           try {
             const character = await requestCharactersById(id);
@@ -98,7 +125,7 @@ export class DetailController {
             character.currentType = "characters";
             this.enableEventClickFavorite(character);
             this.scrollView.hideLoading();
-            container.classList.add('visible');
+            container.classList.add("visible");
           } catch (error) {
             console.log("Erro ao buscar personagem", error);
           } finally {
@@ -107,7 +134,7 @@ export class DetailController {
           break;
 
         case "comics":
-          container.classList.remove('visible');
+          container.classList.remove("visible");
           this.scrollView.showLoading();
           try {
             const comics = await requestComicsById(id);
@@ -115,7 +142,7 @@ export class DetailController {
             comics.currentType = "comics";
             this.enableEventClickFavorite(comics);
             this.scrollView.hideLoading();
-            container.classList.add('visible');
+            container.classList.add("visible");
           } catch (error) {
             console.log("Erro ao buscar quadrinho", error);
           } finally {
@@ -124,7 +151,7 @@ export class DetailController {
           break;
 
         case "series":
-          container.classList.remove('visible');
+          container.classList.remove("visible");
           this.scrollView.showLoading();
           try {
             const series = await requestSeriesById(id);
@@ -132,7 +159,7 @@ export class DetailController {
             series.currentType = "series";
             this.enableEventClickFavorite(series);
             this.scrollView.hideLoading();
-            container.classList.add('visible');
+            container.classList.add("visible");
           } catch (error) {
             console.log("Erro ao buscar quadrinho", error);
           } finally {
@@ -148,5 +175,6 @@ export class DetailController {
     }
     this.openfavoritespage();
     this.eventBackToHome();
+    this.handleTabMenu('menu');
   }
 }
