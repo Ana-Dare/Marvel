@@ -28,7 +28,7 @@ export class ControllerApi {
   private offset: number = 0;
   private total: number = 0;
   private isEndOfData: boolean = false;
-  private limit: number = 10;
+  private limit: number = 12;
   private renderer: Renderer;
   private currentTerm: string = "";
   private currentOrder: string = "";
@@ -191,7 +191,7 @@ export class ControllerApi {
       this.currentType = "characters";
       this.renderer.changeType("characters");
       this.offset = 0;
-      this.limit = 10;
+      this.limit = 12;
       this.total = 0;
       this.currentOrder = "";
       orderSelect.value = "Mais recentes";
