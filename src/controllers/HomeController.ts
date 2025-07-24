@@ -72,7 +72,7 @@ export class ControllerApi {
         btnFilters.forEach((btn) => btn.classList.remove("ativo"));
         target.classList.add("ativo");
 
-        const type = target.dataset.tipo as CurrentTypeInterface | undefined;
+        const type = target.dataset.type as CurrentTypeInterface | undefined;
         if (type) {
           const inputTerm = inputSearch.value.trim();
           this.currentTerm = inputTerm;
@@ -170,10 +170,10 @@ export class ControllerApi {
     });
   }
 
-  private setInitialFilter(tipo: CurrentTypeInterface) {
+  private setInitialFilter(type: CurrentTypeInterface) {
     btnFilters.forEach((btn) => {
       btn.classList.remove("ativo");
-      if (btn.dataset.tipo === tipo) {
+      if (btn.dataset.type === type) {
         btn.classList.add("ativo");
       }
     });
@@ -217,11 +217,11 @@ export class ControllerApi {
   }
 
   public async getData(
-    tipo: CurrentTypeInterface,
+    type: CurrentTypeInterface,
     termo: string
   ): Promise<{ itens: DataApi[]; total: number }> {
     const url = createUrl(
-      tipo,
+      type,
       termo,
       this.offset,
       this.limit,
@@ -231,7 +231,7 @@ export class ControllerApi {
       const cache = cacheService.get(url);
       if (cache) return cache;
       const { dados } = await fetchFromAPI(
-        tipo,
+        type,
         termo,
         this.offset,
         this.limit,
@@ -239,7 +239,7 @@ export class ControllerApi {
       );
       const total = dados.data?.total;
       const results: DataApi[] = dados.data.results;
-      const itens = mapApiResults(results, tipo);
+      const itens = mapApiResults(results, type);
       cacheService.set(url, { itens, total });
       return { itens, total };
     } catch (error) {
@@ -254,7 +254,7 @@ export class ControllerApi {
   }
 
   public async updateContent(
-    tipo: CurrentTypeInterface,
+    type: CurrentTypeInterface,
     termo: string,
     limpar: boolean = false
   ) {
@@ -275,7 +275,7 @@ export class ControllerApi {
       return;
     }
     try {
-      const { itens, total } = await this.dataFetcher.fetchContent(tipo, termo);
+      const { itens, total } = await this.dataFetcher.fetchContent(type, termo);
 
       if (itens.length === 0) {
         this.scrollView.showNoResults();

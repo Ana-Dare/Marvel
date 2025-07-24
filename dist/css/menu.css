@@ -11,23 +11,24 @@
 }
 
 .button-menu {
-  background: transparent;
-  border-bottom: solid 1px;
-  border-color: var(--black);
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  padding: 0.3rem;
-  font-size: 1rem;
-  font-weight: 400;
+  background: #780000;
+  border: none;
+  border-radius: 3rem;
+  padding: .6rem;
+  font-size: .8rem;
+  font-weight: 300;
   font-family: var(--font-main);
-  color: var(--black);
+  color: white;
+  width: 8rem;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 2px 0px;
+ 
 }
 
 .button-menu:hover {
   border-bottom: #780000 solid 1px;
   cursor: pointer;
-  transform: scale(1.02);
+  transform: scale(1.002);
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 2px 0px;
 }
 
 .section {

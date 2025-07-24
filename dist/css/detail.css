@@ -15,7 +15,6 @@
   margin-left: 5rem;
   margin-right: 5rem;
   margin-bottom: 4rem;
-  border: 1.5px solid;
   border-color: var(--black);
   padding: 4rem 3rem 3rem 3rem;
   box-sizing: border-box;
@@ -25,6 +24,9 @@
   opacity: 0;
   visibility: hidden;
   background: white;
+  box-shadow: rgba(0, 0, 0, 0.17) 8px  8px 20px 5px;
+    
+
 }
 
 .detail.visible {
@@ -109,6 +111,9 @@
   font-weight: 300;
   color: var(--black);
   width: 100%;
+}
+
+#container-details-characters .text-info {
   padding-top: 1rem;
 }
 
@@ -125,7 +130,8 @@
   white-space: nowrap;
 }
 
-.container-prices, .main-page-count  {
+.container-prices,
+.main-page-count {
   font-weight: 700;
   font-family: var(--font-main);
 }
@@ -136,7 +142,8 @@
   font-weight: 400;
 }
 
-.container-characters, .container-creators {
+.container-characters,
+.container-creators {
   font-family: var(--font-main);
   font-size: 1rem;
 }
@@ -157,7 +164,6 @@
   width: fit-content;
   font-family: var(--font-main);
 }
-
 
 @media (max-width: 750px) {
   .elements-series-comics {

@@ -9,11 +9,14 @@ export class LoadingUI {
             document.querySelector("#quadrinhos"),
             document.querySelector("#reset-search"),
         ].filter(Boolean);
+        this.logoMarvel = document.querySelector('.logo-marvel');
     }
     disableUI() {
         this.elementsToDisable.forEach((el) => (el.disabled = true));
+        this.logoMarvel.style.pointerEvents = 'none';
     }
     enableUI() {
         this.elementsToDisable.forEach((el) => (el.disabled = false));
+        this.logoMarvel.style.pointerEvents = 'auto';
     }
 }

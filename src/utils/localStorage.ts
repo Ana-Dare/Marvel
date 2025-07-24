@@ -11,15 +11,15 @@ export function setItemFavorite(
 
     if (existingData) {
       const previousData = JSON.parse(existingData);
-      for (const tipo in objectFavorite) {
-        updateData[tipo] = {
-          ...previousData[tipo],
-          ...objectFavorite[tipo],
+      for (const type in objectFavorite) {
+        updateData[type] = {
+          ...previousData[type],
+          ...objectFavorite[type],
         };
       }
-      for (const tipo in previousData) {
-        if (!updateData[tipo]) {
-          updateData[tipo] = previousData[tipo];
+      for (const type in previousData) {
+        if (!updateData[type]) {
+          updateData[type] = previousData[type];
         }
       }
     } else {

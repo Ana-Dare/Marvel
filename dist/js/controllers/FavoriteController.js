@@ -35,7 +35,7 @@ export class favoriteController {
         this.btnFilters.forEach((btn) => {
             btn.addEventListener("click", (e) => {
                 const target = e.currentTarget;
-                const type = target.dataset.tipo;
+                const type = target.dataset.type;
                 if (!type)
                     return;
                 this.btnFilters.forEach((b) => b.classList.remove("ativo"));
@@ -80,7 +80,7 @@ export class favoriteController {
         this.btnFilters.forEach((btn) => {
             btn.addEventListener("click", (e) => __awaiter(this, void 0, void 0, function* () {
                 const target = e.currentTarget;
-                this.selectedType = target.dataset.tipo;
+                this.selectedType = target.dataset.type;
             }));
         });
         btnSearch.addEventListener("click", () => {
@@ -114,7 +114,7 @@ export class favoriteController {
     }
     initialize() {
         this.enableFilterOnCurrentType();
-        const btnDefault = document.querySelector('[data-tipo="characters"]');
+        const btnDefault = document.querySelector('[data-type="characters"]');
         btnDefault.classList.add("ativo");
         this.renderFavorite.renderitemFavorites("characters");
         this.enableSearchEvent();

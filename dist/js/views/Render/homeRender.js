@@ -1,8 +1,8 @@
 import { isItemFavorite } from "../../utils/localStorage.js";
 export class Renderer {
-    constructor(container, tipoAtual) {
+    constructor(container, currentType) {
         this.container = container;
-        this.tipoAtual = tipoAtual;
+        this.currentType = currentType;
     }
     render(item) {
         var _a, _b;
@@ -50,7 +50,7 @@ export class Renderer {
     toClean() {
         this.container.innerHTML = "";
     }
-    changeType(novoTipo) {
-        this.tipoAtual = novoTipo;
+    changeType(newType) {
+        this.currentType = newType;
     }
 }

@@ -60,7 +60,7 @@ export class ControllerApi {
                 const target = e.currentTarget;
                 btnFilters.forEach((btn) => btn.classList.remove("ativo"));
                 target.classList.add("ativo");
-                const type = target.dataset.tipo;
+                const type = target.dataset.type;
                 if (type) {
                     const inputTerm = inputSearch.value.trim();
                     this.currentTerm = inputTerm;
@@ -147,10 +147,10 @@ export class ControllerApi {
             window.location.href = "pages/favorite.html";
         });
     }
-    setInitialFilter(tipo) {
+    setInitialFilter(type) {
         btnFilters.forEach((btn) => {
             btn.classList.remove("ativo");
-            if (btn.dataset.tipo === tipo) {
+            if (btn.dataset.type === type) {
                 btn.classList.add("ativo");
             }
         });
@@ -190,18 +190,18 @@ export class ControllerApi {
             }
         });
     }
-    getData(tipo, termo) {
+    getData(type, termo) {
         return __awaiter(this, void 0, void 0, function* () {
             var _a;
-            const url = createUrl(tipo, termo, this.offset, this.limit, this.currentOrder);
+            const url = createUrl(type, termo, this.offset, this.limit, this.currentOrder);
             try {
                 const cache = cacheService.get(url);
                 if (cache)
                     return cache;
-                const { dados } = yield fetchFromAPI(tipo, termo, this.offset, this.limit, this.currentOrder);
+                const { dados } = yield fetchFromAPI(type, termo, this.offset, this.limit, this.currentOrder);
                 const total = (_a = dados.data) === null || _a === void 0 ? void 0 : _a.total;
                 const results = dados.data.results;
-                const itens = mapApiResults(results, tipo);
+                const itens = mapApiResults(results, type);
                 cacheService.set(url, { itens, total });
                 return { itens, total };
             }
@@ -214,8 +214,8 @@ export class ControllerApi {
             }
         });
     }
-    updateContent(tipo_1, termo_1) {
-        return __awaiter(this, arguments, void 0, function* (tipo, termo, limpar = false) {
+    updateContent(type_1, termo_1) {
+        return __awaiter(this, arguments, void 0, function* (type, termo, limpar = false) {
             const sortValue = (orderSelect === null || orderSelect === void 0 ? void 0 : orderSelect.value) || "";
             this.currentOrder = obterOrderBy(this.currentType, sortValue);
             this.loadingUI.disableUI();
@@ -232,7 +232,7 @@ export class ControllerApi {
                 return;
             }
             try {
-                const { itens, total } = yield this.dataFetcher.fetchContent(tipo, termo);
+                const { itens, total } = yield this.dataFetcher.fetchContent(type, termo);
                 if (itens.length === 0) {
                     this.scrollView.showNoResults();
                     this.loadingUI.enableUI();

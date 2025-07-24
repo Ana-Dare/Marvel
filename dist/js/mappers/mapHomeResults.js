@@ -1,8 +1,8 @@
-export function mapApiResults(results, tipo) {
+export function mapApiResults(results, type) {
     return results.map((item) => {
         var _a, _b;
         return ({
-            currentType: tipo,
+            currentType: type,
             name: item.name,
             title: item.title,
             id: item.id,

@@ -5,7 +5,7 @@ import { isItemFavorite } from "../../utils/localStorage.js";
 export class Renderer {
   constructor(
     protected container: HTMLElement,
-    protected tipoAtual: CurrentTypeInterface
+    protected currentType: CurrentTypeInterface
   ) {}
 
   public render(item: DataApi) {
@@ -58,7 +58,7 @@ export class Renderer {
   public toClean() {
     this.container.innerHTML = "";
   }
-  public changeType(novoTipo: CurrentTypeInterface) {
-    this.tipoAtual = novoTipo;
+  public changeType(newType: CurrentTypeInterface) {
+    this.currentType = newType;
   }
 }

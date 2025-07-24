@@ -22,6 +22,7 @@
   display: inline-block;
   width: 20%;
   cursor: pointer;
+  pointer-events: auto;
 }
 
 .logo-marvel:hover {

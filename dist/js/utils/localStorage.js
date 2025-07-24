@@ -5,12 +5,12 @@ export function setItemFavorite(favorite, objectFavorite) {
         let updateData = {};
         if (existingData) {
             const previousData = JSON.parse(existingData);
-            for (const tipo in objectFavorite) {
-                updateData[tipo] = Object.assign(Object.assign({}, previousData[tipo]), objectFavorite[tipo]);
+            for (const type in objectFavorite) {
+                updateData[type] = Object.assign(Object.assign({}, previousData[type]), objectFavorite[type]);
             }
-            for (const tipo in previousData) {
-                if (!updateData[tipo]) {
-                    updateData[tipo] = previousData[tipo];
+            for (const type in previousData) {
+                if (!updateData[type]) {
+                    updateData[type] = previousData[type];
                 }
             }
         }

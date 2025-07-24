@@ -4,6 +4,7 @@ export class LoadingUI {
     | HTMLInputElement
     | HTMLSelectElement
   )[];
+  private logoMarvel: HTMLDivElement;
 
   constructor() {
     this.elementsToDisable = [
@@ -15,13 +16,16 @@ export class LoadingUI {
       document.querySelector("#quadrinhos") as HTMLButtonElement,
       document.querySelector("#reset-search") as HTMLButtonElement,
     ].filter(Boolean);
+    this.logoMarvel = document.querySelector('.logo-marvel') as HTMLDivElement;
   }
 
   public disableUI() {
     this.elementsToDisable.forEach((el) => (el.disabled = true));
+    this.logoMarvel.style.pointerEvents = 'none';
   }
 
   public enableUI() {
     this.elementsToDisable.forEach((el) => (el.disabled = false));
+    this.logoMarvel.style.pointerEvents = 'auto';
   }
 }

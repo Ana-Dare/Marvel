@@ -1,13 +1,13 @@
-export function obterOrderBy(tipo, filtroOrdenacao) {
-    switch (filtroOrdenacao) {
+export function obterOrderBy(type, filterOrder) {
+    switch (filterOrder) {
         case "Mais recentes":
-            return tipo === "comics" ? "-onsaleDate" : "-modified";
+            return type === "comics" ? "-onsaleDate" : "-modified";
         case "Mais antigos":
-            return tipo === "comics" ? "onsaleDate" : "modified";
+            return type === "comics" ? "onsaleDate" : "modified";
         case "A-Z":
-            return tipo === "characters" ? "name" : "title";
+            return type === "characters" ? "name" : "title";
         case "Z-A":
-            return tipo === "characters" ? "-name" : "-title";
+            return type === "characters" ? "-name" : "-title";
         default:
             return "";
     }

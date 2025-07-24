@@ -3,10 +3,10 @@ import { CurrentTypeInterface } from "../interfaces/requestInterface.js";
 
 export function mapApiResults(
   results: DataApi[],
-  tipo: CurrentTypeInterface
+  type: CurrentTypeInterface
 ): DataApi[] {
   return results.map((item: DataApi) => ({
-    currentType: tipo,
+    currentType: type,
     name: item.name,
     title: item.title,
     id: item.id,
