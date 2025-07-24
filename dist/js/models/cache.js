@@ -11,14 +11,5 @@ class MemoryCache {
         }
         return undefined;
     }
-    has(key) {
-        return this.cache.has(key);
-    }
-    delete(key) {
-        this.cache.delete(key);
-    }
-    clear() {
-        this.cache.clear();
-    }
 }
 export const cacheService = new MemoryCache();

@@ -13,9 +13,9 @@ export class RenderComics {
 
     const div = document.getElementById(
       "comics-image"
-    ) as HTMLDivElement | null;
-    const img = div?.querySelector("img") as HTMLImageElement | null;
-    img?.classList.add("container-image");
+    ) as HTMLDivElement;
+    const img = div.querySelector("img") as HTMLImageElement;
+    img.classList.add("container-image");
     if (img && comics.thumbnail.path && comics.thumbnail.extension)
       img.src = `${comics.thumbnail.path}.${comics.thumbnail.extension}`;
 
@@ -37,25 +37,25 @@ export class RenderComics {
     }
     const title = document.getElementById(
       "comics-title"
-    ) as HTMLDivElement | null;
+    ) as HTMLDivElement;
     if (title) title.textContent = comics.title || "Titulo Indisponível";
 
     const description = document.getElementById(
       "comics-description"
-    ) as HTMLDivElement | null;
+    ) as HTMLDivElement;
     if (description)
-      description.textContent = comics.description || "Descrição indisponível";
+      description.textContent = comics.description || "Este quadrinho ainda não tem uma descrição oficial. Mas você pode explorá-lo nos personagens e séries disponíveis!";
 
     const pageCount = document.getElementById(
       "comics-page-count"
-    ) as HTMLDivElement | null;
+    ) as HTMLDivElement;
     if (pageCount)
       pageCount.textContent =
         comics.pageCount ?? "número de páginas não disponível";
 
     const prices = document.getElementById(
       "comics-prices"
-    ) as HTMLDivElement | null;
+    ) as HTMLDivElement;
     if (prices)
       prices.innerHTML = (comics.prices.price ?? 0).toLocaleString("pt-BR", {
         style: "currency",
@@ -64,7 +64,7 @@ export class RenderComics {
 
     const containerCreators = document.getElementById(
       "list-creators"
-    ) as HTMLUListElement | null;
+    ) as HTMLUListElement;
     if (containerCreators)
       containerCreators.innerHTML =
         comics.creators.items.length > 0
@@ -79,7 +79,7 @@ export class RenderComics {
       "link-characters"
     ) as HTMLUListElement;
     if (containerCharacters) {
-      const items = comics.characters?.items;
+      const items = comics.characters.items;
       if (items && items.length > 0) {
         containerCharacters.innerHTML = items
           .map((character) => {

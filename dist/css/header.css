@@ -1,0 +1,49 @@
+.container-header-fixed {
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 1.5rem 0.5rem 3rem;
+  align-items: center;
+  align-self: center;
+  background-color: #780000;
+  width: 100%;
+  top: 0;
+  box-sizing: border-box;
+  z-index: 999;
+}
+
+.logo-marvel {
+  display: flex;
+  align-self: center;
+  font-family: "Impact", sans-serif;
+  font-size: 2rem;
+  color: #ffffff;
+  font-weight: 500;
+  display: inline-block;
+  width: 20%;
+  cursor: pointer;
+}
+
+.logo-marvel:hover {
+  transform: scale();
+}
+
+.resultsInfo {
+  font-family: var(--font--main);
+  font-size: 0.8rem;
+  font-weight: 300;
+  padding-left: 3.5rem;
+}
+
+.no-more-results {
+  font-family: var(--font--main);
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: #000000;
+}
+
+@media (max-width: 320px) {
+  .container-header-fixed {
+    padding: 0.5rem;
+  }
+}

@@ -5,13 +5,13 @@ import { ScrollDetector } from "./ScrollDetector .js";
 import { ScrollView } from "../views/Scroll/scrollView.js";
 import { LoadingUI } from "../views/Scroll/LoadingUI.js";
 import { mapApiResults } from "../mappers/mapHomeResults.js";
-import { fetchFromAPI } from "../services/requests/Api.js";
+import { fetchFromAPI } from "../services/Api.js";
 import { DataApi } from "../interfaces/requestInterface.js";
 import { ResultsInfoView } from "../views/Scroll/resultsInfo.js";
 import { cacheService } from "../models/cache.js";
 import { createUrl } from "../utils/createurl-utils.js";
-import { ContentDataFetcher } from "../services/contentDataFetcher.js";
-import { PaginationController } from "../services/pagination.js";
+import { ContentDataFetcher } from "../utils/contentDataFetcher.js";
+import { PaginationController } from "../utils/pagination.js";
 import { ContentDisplay } from "../views/contentDisplay.js";
 import { setItemFavorite } from "../utils/localStorage.js";
 import { removeItemfavorite } from "../utils/localStorage.js";
@@ -39,6 +39,7 @@ export class ControllerApi {
   private dataFetcher: ContentDataFetcher;
   private paginationController: PaginationController;
   private displayContent: ContentDisplay;
+  private initialLoadDone: boolean = false;
 
   constructor(
     public container: HTMLElement,
@@ -152,10 +153,10 @@ export class ControllerApi {
             },
           };
           setItemFavorite("favorite", objectFavorite);
-          imgBtnCard.src = "./img/suit-heart-fill.svg";
+          imgBtnCard.src = "../img/suit-heart-fill.svg";
         } else {
           removeItemfavorite("favorite", type, id);
-          imgBtnCard.src = "./img/suit-heart.svg";
+          imgBtnCard.src = "../img/suit-heart.svg";
         }
       });
   }
@@ -193,7 +194,7 @@ export class ControllerApi {
       this.limit = 10;
       this.total = 0;
       this.currentOrder = "";
-      orderSelect.value = "Mais recente";
+      orderSelect.value = "Mais recentes";
       this.setInitialFilter("characters");
       await this.updateContent("characters", "", true);
     });
@@ -239,8 +240,6 @@ export class ControllerApi {
       const total = dados.data?.total;
       const results: DataApi[] = dados.data.results;
       const itens = mapApiResults(results, tipo);
-      console.log("Resposta inesperada da API:", results);
-
       cacheService.set(url, { itens, total });
       return { itens, total };
     } catch (error) {
@@ -279,12 +278,12 @@ export class ControllerApi {
       const { itens, total } = await this.dataFetcher.fetchContent(tipo, termo);
 
       if (itens.length === 0) {
-      this.scrollView.showNoResults (); // Mostra a mensagem "Nenhum resultado"
-      this.loadingUI.enableUI();
-      this.scroll.unlock();
-      this.scrollView.hideLoading();
-      return;
-    }
+        this.scrollView.showNoResults();
+        this.loadingUI.enableUI();
+        this.scroll.unlock();
+        this.scrollView.hideLoading();
+        return;
+      }
       this.displayContent.clearIfFirstPage(this.offset);
       this.displayContent.renderItems(itens);
       this.total = total;
@@ -307,15 +306,21 @@ export class ControllerApi {
   }
 
   public inicializar() {
-    window.addEventListener("pageshow", () => {
-      this.updateContent(this.currentType, this.currentTerm, true);
-    });
+    window.addEventListener(
+      "pageshow",
+      () => {
+        if (!this.initialLoadDone) {
+          this.updateContent(this.currentType, this.currentTerm, true);
+          this.initialLoadDone = true;
+        }
+      },
+      { once: true }
+    );
     this.enableEventsSearch();
     this.scroll.start();
     this.enableClickEventsOnCards();
     this.openfavoritesPage();
     this.setInitialFilter(this.currentType);
-    this.updateContent(this.currentType, "", false);
     this.resetSearch();
     this.enableFavoriteClickEvent();
     this.eventBackToHome();

@@ -8,7 +8,7 @@ export class RenderSeries {
         const containerId = document.getElementById("container-details-series");
         containerId.dataset.id = series.id.toString();
         const div = document.getElementById("series-image");
-        const img = div === null || div === void 0 ? void 0 : div.querySelector("img");
+        const img = div.querySelector("img");
         img === null || img === void 0 ? void 0 : img.classList.add("container-image");
         if (img && series.thumbnail.path && series.thumbnail.extension)
             img.src = `${series.thumbnail.path}.${series.thumbnail.extension}`;
@@ -29,7 +29,7 @@ export class RenderSeries {
             title.textContent = series.title || "Titúlo Indisponível";
         const description = document.getElementById("series-description");
         if (description)
-            description.textContent = series.description || "Descrição indisponível";
+            description.textContent = series.description || "Esta série ainda não tem uma descrição oficial. Mas você pode explorá-la nos personagens e quadrinhos disponíveis!";
         const startYear = document.getElementById("series-start-year");
         if (startYear)
             startYear.textContent = series.startYear || "Ano de ínicio indisponíveis";

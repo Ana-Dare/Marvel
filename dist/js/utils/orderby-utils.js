@@ -1,8 +1,8 @@
 export function obterOrderBy(tipo, filtroOrdenacao) {
     switch (filtroOrdenacao) {
-        case "Mais recente":
+        case "Mais recentes":
             return tipo === "comics" ? "-onsaleDate" : "-modified";
-        case "Mais antigo":
+        case "Mais antigos":
             return tipo === "comics" ? "onsaleDate" : "modified";
         case "A-Z":
             return tipo === "characters" ? "name" : "title";

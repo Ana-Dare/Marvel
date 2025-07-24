@@ -4,28 +4,35 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="../css/style.css" />
-    <title>Document</title>
+    <title>MARVEL</title>
+    <link rel="icon" href="../img/marvel-icon.svg" type="image/svg" />
   </head>
   <body>
-    <div class="container-header-fixed">
-      <div class="logo-marvel">MARVEL</div>
+    <main>
+      <div class="container-header-fixed">
+        <div class="logo-marvel">MARVEL</div>
+        <div class="tooltip-saved">Item adicionado aos favoritos!</div>
+        <div class="tooltip-not-saved">Item removido dos favoritos!</div>
         <button id="favorite" class="btn-favorite-home">
           <span class="material-symbols-outlined">favorite</span>
+        </button>
       </div>
-    <div id="container-details-characters" class="detail">
-      <div id="characters-name" class="main-name"></div>
-      <div class="elements-name-description">
-      <div id="characters-image" class="main-image">
-        <img src="" />
-          <div class="tooltip">Personagem</div>
-      </div>
-      <div id="characters-description" class="main-description"></div>
-      </div>
-       <div class="text-info">Explore o universo Marvel relacionado à esse personagem.</div>
+      <div id="container-details-characters" class="detail">
+        <div id="characters-name" class="main-name"></div>
+        <div class="elements-name-description">
+          <div id="characters-image" class="main-image">
+            <img src="" />
+            <div class="tooltip">Personagem</div>
+          </div>
+          <div id="characters-description" class="main-description"></div>
+        </div>
+        <div class="text-info">
+          Descubra o universo Marvel relacionado à esse personagem.
+        </div>
         <div class="element-menu">
           <div id="menu" class="option-button-menu">
             <button data-target="comics" class="button-menu">Quadrinhos</button>
-            <button data-target="series" class="button-menu" >Séries</button>
+            <button data-target="series" class="button-menu">Séries</button>
           </div>
 
           <div id="section-comics" class="section">
@@ -34,26 +41,9 @@
           <div id="section-series" class="section">
             <ul id="link-series" class="list"></ul>
           </div>
-          </div>
-          </div>
-
-      <!-- 
-      <div class="elements-series-comics">
-      <div id="characters-container-series" class="container-series">
-        <div class="title-container"> SERIES
-          <img src="../img/icon-series.png" class="img-icon-title">
         </div>
-        <ul id="link-series" class="ul-link-series"></ul>
       </div>
-      <div id="characters-container-comics" class="container-comics">
-        <div class="title-container">QUADRINHOS
-          <img src="../img/historia-em-quadrinhos (2).png" class="img-icon-title">
-        </div>
-        <ul id="link-comics" class="ul-link-comics"></ul>
-      </div>
-    </div>
-    -->
-  </div>
+    </main>
     <div class="container-spinner">
       <div class="spinner" id="messageLoading">
         <div class="spinner-blade"></div>
@@ -70,7 +60,8 @@
         <div class="spinner-blade"></div>
       </div>
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="../js/detail.js" type="module"></script>
   </body>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-  <script src="../js/detail.js" type="module"></script>
 </html>

@@ -1,0 +1,129 @@
+.element-menu {
+  order: 5;
+  padding: 1rem 0 1rem 0;
+  width: 100%;
+}
+
+.option-button-menu {
+  display: flex;
+  width: 40%;
+  gap: 4rem;
+}
+
+.button-menu {
+  background: transparent;
+  border-bottom: solid 1px;
+  border-color: var(--black);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  padding: 0.3rem;
+  font-size: 1rem;
+  font-weight: 400;
+  font-family: var(--font-main);
+  color: var(--black);
+}
+
+.button-menu:hover {
+  border-bottom: #780000 solid 1px;
+  cursor: pointer;
+  transform: scale(1.02);
+}
+
+.section {
+  font-family: var(--font-main);
+  font-size: 1rem;
+  justify-content: center;
+  display: none;
+  padding: 1rem 0 0 0;
+}
+.section.show {
+  display: block;
+}
+
+.button-menu.show {
+  border-bottom: #780000 solid 1px;
+  font-weight: 500;
+}
+
+a {
+  text-decoration: none;
+  font-family: var(--font-main);
+  color: var(--black);
+  line-height: 20px;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+a:hover {
+  background: linear-gradient(90deg, #780000 50%, #780000 0)
+    calc(100% - var(--_p, 0%)) / 200% 100%;
+  background-clip: text, padding-box;
+  transition: 0.5s;
+}
+
+li {
+  padding: 01rem;
+  border-color: var(--grey);
+  border-bottom: 0.3px solid;
+  border-color: var(--grey);
+  border-right: none;
+  border-left: none;
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+  font-weight: 400;
+}
+
+li img {
+  width: 4rem;
+  height: auto;
+}
+
+li:hover {
+  background-color: rgba(194, 190, 190, 0.15);
+}
+
+@media (max-width: 750px) {
+  a {
+    font-size: 0.8rem;
+  }
+
+  .button-menu {
+    font-size: 0.8rem;
+  }
+
+  li img {
+    width: 3rem;
+    height: auto;
+  }
+}
+
+@media (max-width: 500px) {
+  a {
+    font-size: 0.6rem;
+  }
+  li {
+    font-size: 0.6rem;
+  }
+
+  .button-menu {
+    font-size: 0.4rem;
+  }
+
+  .option-button-menu {
+    gap: 2rem;
+  }
+  li img {
+    width: 2rem;
+    height: auto;
+  }
+}
+
+@media (max-width: 300px) {
+  .option-button-menu {
+    width: 100%;
+    justify-content: center;
+    gap: 1rem;
+  }
+}

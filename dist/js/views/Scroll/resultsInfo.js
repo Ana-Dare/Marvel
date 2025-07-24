@@ -1,6 +1,6 @@
 export class ResultsInfoView {
     constructor() {
-        this.resultMessage = document.getElementById("resultsInfo");
+        this.resultMessage = document.querySelector(".resultsInfo");
     }
     updateProgress(atual, total) {
         this.resultMessage.style.display = "block";

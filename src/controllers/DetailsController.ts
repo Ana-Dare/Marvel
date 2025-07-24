@@ -4,12 +4,18 @@ import { requestComicsById } from "../services/requests/ComicsById.js";
 import { RenderComics } from "../views/Render/comicsRender.js";
 import { requestSeriesById } from "../services/requests/SeriesById.js";
 import { RenderSeries } from "../views/Render/seriesRender.js";
-import { DataApi } from "../interfaces/requestInterface.js";
+import {
+  Characters,
+  Comics,
+  CurrentTypeInterface,
+  DataApi,
+} from "../interfaces/requestInterface.js";
 import { setItemFavorite } from "../utils/localStorage.js";
 import { removeItemfavorite } from "../utils/localStorage.js";
 import { ObjectFavoriteInterface } from "../interfaces/favoriteInterface.js";
 import { isItemFavorite } from "../utils/localStorage.js";
 import { ScrollView } from "../views/Scroll/scrollView.js";
+import { Series } from "../interfaces/requestInterface.js";
 
 export class DetailController {
   private scrollView: ScrollView;
@@ -30,8 +36,7 @@ export class DetailController {
     });
   }
 
-  private enableEventClickFavorite(item: DataApi) {
-    const type = item.currentType;
+  private enableEventClickFavorite(item: DataApi, type: CurrentTypeInterface) {
     const id = item.id.toString() as string;
     const name = item.name as string;
     const title = item.title as string;
@@ -46,8 +51,10 @@ export class DetailController {
 
     if (isItemFavorite("favorite", type, id)) {
       imageBtnCardFavorite.src = "../img/suit-heart-fill.svg";
+      btnDetailFavorite.classList.add("favorited");
     } else {
       imageBtnCardFavorite.src = "../img/suit-heart.svg";
+      btnDetailFavorite.classList.remove("favorited");
     }
     btnDetailFavorite.addEventListener("click", () => {
       id && type && btnDetailFavorite.classList.toggle("favorited");
@@ -82,33 +89,58 @@ export class DetailController {
     const menu = document.getElementById(menuId);
     if (!menu) return;
 
-    const buttons = menu.querySelectorAll<HTMLButtonElement>('button');
-    const sections = document.querySelectorAll<HTMLElement>('.section');
+    const buttons = menu.querySelectorAll<HTMLButtonElement>("button");
+    const sections = document.querySelectorAll<HTMLElement>(".section");
 
     buttons.forEach((button) => {
-      button.addEventListener('click', () => {
+      button.addEventListener("click", () => {
         const target = button.dataset.target;
         if (!target) return;
-
-        // Ativa a seção correta
         sections.forEach((section) => {
           const isTarget = section.id === `section-${target}`;
-          section.classList.toggle('show', isTarget);
+          section.classList.toggle("show", isTarget);
         });
-
-        // Atualiza botão ativo
         buttons.forEach((btn) => {
-          btn.classList.toggle('show', btn === button);
+          btn.classList.toggle("show", btn === button);
         });
       });
     });
   }
 
+  private async fetchDataAndRender(
+    type: CurrentTypeInterface,
+    id: string,
+    request: (id: string) => Promise<Characters | Comics | Series | null>,
+    render: (data: Characters | Comics | Series) => void,
+    container: HTMLDivElement
+  ) {
+    container.classList.remove("visible");
+    this.scrollView.showLoading();
+    try {
+      const data = await request(id);
+
+      if (data) {
+        render(data);
+        this.enableEventClickFavorite(data, type);
+        console.log(this.enableEventClickFavorite);
+        this.scrollView.hideLoading();
+        container.classList.add("visible");
+      } else {
+        console.warn(`Dados para ${type} com ID ${id} não encontrados.`);
+      }
+    } catch (error) {
+      console.error(`Erro ao buscar ${type}:`, error);
+      container.innerHTML =
+        "Não foi possível carregar os dados. Tente novamente mais tarde";
+    } finally {
+      this.scrollView.hideLoading();
+    }
+  }
 
   public async initialize() {
     const container = document.querySelector(".detail") as HTMLDivElement;
     const params = new URLSearchParams(window.location.search);
-    const type = params.get("type");
+    const type = params.get("type") as CurrentTypeInterface;
     const id = params.get("id");
 
     if (!type || !id) {
@@ -117,56 +149,34 @@ export class DetailController {
     try {
       switch (type) {
         case "characters":
-          container.classList.remove("visible");
-          this.scrollView.showLoading();
-          try {
-            const character = await requestCharactersById(id);
-            if (character) this.renderCharacters.renderCharacters(character);
-            character.currentType = "characters";
-            this.enableEventClickFavorite(character);
-            this.scrollView.hideLoading();
-            container.classList.add("visible");
-          } catch (error) {
-            console.log("Erro ao buscar personagem", error);
-          } finally {
-            this.scrollView.hideLoading();
-          }
+          await this.fetchDataAndRender(
+            "characters",
+            id,
+            requestCharactersById,
+            this.renderCharacters.renderCharacters,
+            container
+          );
           break;
 
         case "comics":
-          container.classList.remove("visible");
-          this.scrollView.showLoading();
-          try {
-            const comics = await requestComicsById(id);
-            if (comics) this.renderComics.renderComics(comics);
-            comics.currentType = "comics";
-            this.enableEventClickFavorite(comics);
-            this.scrollView.hideLoading();
-            container.classList.add("visible");
-          } catch (error) {
-            console.log("Erro ao buscar quadrinho", error);
-          } finally {
-            this.scrollView.hideLoading();
-          }
+          await this.fetchDataAndRender(
+            "comics",
+            id,
+            requestComicsById,
+            this.renderComics.renderComics,
+            container
+          );
           break;
 
         case "series":
-          container.classList.remove("visible");
-          this.scrollView.showLoading();
-          try {
-            const series = await requestSeriesById(id);
-            if (series) this.renderSeries.renderSeries(series);
-            series.currentType = "series";
-            this.enableEventClickFavorite(series);
-            this.scrollView.hideLoading();
-            container.classList.add("visible");
-          } catch (error) {
-            console.log("Erro ao buscar quadrinho", error);
-          } finally {
-            this.scrollView.hideLoading();
-          }
+          await this.fetchDataAndRender(
+            "series",
+            id,
+            requestSeriesById,
+            this.renderSeries.renderSeries,
+            container
+          );
           break;
-
         default:
           console.warn("Tipo inválido:", type);
       }
@@ -175,6 +185,6 @@ export class DetailController {
     }
     this.openfavoritespage();
     this.eventBackToHome();
-    this.handleTabMenu('menu');
+    this.handleTabMenu("menu");
   }
 }

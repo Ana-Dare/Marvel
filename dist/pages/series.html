@@ -3,48 +3,58 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../img/marvel-icon.svg" type="image/svg" />
     <link rel="stylesheet" type="text/css" href="../css/style.css" />
-    <title>Document</title>
+    <title>MARVEL</title>
   </head>
   <body>
-    <div class="container-header-fixed">
-      <div class="logo-marvel">MARVEL</div>
-          <button id="favorite" class="btn-favorite-home">
-            <span class="material-symbols-outlined">favorite</span>
+    <main>
+      <div class="container-header-fixed">
+        <div class="logo-marvel">MARVEL</div>
+        <div class="tooltip-saved">Item adicionado aos favoritos!</div>
+        <div class="tooltip-not-saved">Item removido dos favoritos!</div>
+        <button id="favorite" class="btn-favorite-home">
+          <span class="material-symbols-outlined">favorite</span>
+        </button>
       </div>
-    <div id="container-details-series" class="detail">
-      <div id="series-title" class="main-title"></div>
-      <div class="elements-name-description">
-      <div id="series-image" class="main-image">
-        <img src="" />
-        <div class="tooltip">Série</div>
-      </div>
-      <div id="series-description" class="main-description"></div>
-      </div>
-      <div class="elements-info">
+      <div id="container-details-series" class="detail">
+        <div id="series-title" class="main-title"></div>
+        <div class="elements-name-description">
+          <div id="series-image" class="main-image">
+            <img src="" />
+            <div class="tooltip">Série</div>
+          </div>
+          <div id="series-description" class="main-description"></div>
+        </div>
+        <div class="elements-info">
           <div class="elements-info-years">
             <div class="main-start-year">
-               <div class="title-info">Inicio:
-              <div id="series-start-year" class="main-year">
+              <div class="title-info">
+                Inicio:
+                <div id="series-start-year" class="main-year"></div>
               </div>
             </div>
-            </div>
             <div class="main-end-year">
-              <div class="title-info">Final:
-              <div id="series-end-year" class="main-year"></div>
-            </div>
+              <div class="title-info">
+                Final:
+                <div id="series-end-year" class="main-year"></div>
+              </div>
             </div>
           </div>
-          </div>
-          <div class="text-info">Explore o universo Marvel relacionado à essa série.</div>
-
-          <div class="element-menu">
+        </div>
+        <div class="text-info">
+          Descubra o universo Marvel relacionado à essa série.
+        </div>
+        <div class="element-menu">
           <div id="menu" class="option-button-menu">
-            <button data-target="creators" class="button-menu" >Criadores</button>
-            <button data-target="characters" class="button-menu">Personagens</button>
+            <button data-target="creators" class="button-menu">
+              Criadores
+            </button>
+            <button data-target="characters" class="button-menu">
+              Personagens
+            </button>
             <button data-target="comics" class="button-menu">Quadrinhos</button>
           </div>
-
           <div id="section-characters" class="section">
             <ul id="link-characters" class="list"></ul>
           </div>
@@ -54,32 +64,9 @@
           <div id="section-comics" class="section">
             <ul id="link-comics" class="list"></ul>
           </div>
-          </div>
-          </div>
-
-
-<!-- 
-      <div class="elements-series-comics">
-        <div id="series-container-characters" class="container-characters">
-        <div class="title-container">PERSONAGENS
-          <img src="../img/super-heroi.png" class="img-icon-title">
         </div>
-        <ul id="link-characters"></ul>
       </div>
-      <div id="series-container-creators" class="container-creators">
-        <div class="title-container">CRIADORES
-          <img src="../img/redacao.png" class="img-icon-title">
-        </div>
-        <ul id="list-creators"></ul>
-      </div>
-      <div id="series-container-comics" class="container-comics">
-        <div class="title-container">QUADRINHOS
-           <img src="../img/historia-em-quadrinhos (2).png" class="img-icon-title">
-        </div>
-        <ul id="link-comics"></ul>
-      </div>
-      </div>
-      -->
+    </main>
     <div class="container-spinner">
       <div class="spinner" id="messageLoading">
         <div class="spinner-blade"></div>
@@ -96,8 +83,7 @@
         <div class="spinner-blade"></div>
       </div>
     </div>
-  </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="../js/detail.js" type="module"></script>
   </body>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-  <script src="../js/detail.js" type="module"></script>
 </html>

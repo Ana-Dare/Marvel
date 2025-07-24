@@ -2,11 +2,11 @@ import { RenderitemFavorites } from "../views/Render/favoritesRender.js";
 import { removeItemfavorite } from "../utils/localStorage.js";
 import { CurrentTypeInterface } from "../interfaces/requestInterface.js";
 
-const btnFilters = document.querySelectorAll(".filtro");
 
 export class favoriteController {
   private selectedType: CurrentTypeInterface = "characters";
   private currentTerm: string = "";
+  private btnFilters = document.querySelectorAll(".filtro");
 
   constructor(
     private renderFavorite: RenderitemFavorites,
@@ -32,12 +32,12 @@ export class favoriteController {
   }
 
   private enableFilterOnCurrentType() {
-    btnFilters.forEach((btn) => {
+    this.btnFilters.forEach((btn) => {
       btn.addEventListener("click", (e) => {
         const target = e.currentTarget as HTMLElement;
         const type = target.dataset.tipo;
         if (!type) return;
-        btnFilters.forEach((b) => b.classList.remove("ativo"));
+        this.btnFilters.forEach((b) => b.classList.remove("ativo"));
         target.classList.add("ativo");
 
         switch (type) {
@@ -82,7 +82,7 @@ export class favoriteController {
       "#btn-search-favorite"
     ) as HTMLButtonElement;
 
-    btnFilters.forEach((btn) => {
+    this.btnFilters.forEach((btn) => {
       btn.addEventListener("click", async (e) => {
         const target = e.currentTarget as HTMLElement;
         this.selectedType = target.dataset.tipo as CurrentTypeInterface;

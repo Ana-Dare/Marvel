@@ -3,8 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Marvel</title>
-    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <title>MARVEL</title>
+    <link rel="icon" href="./img/marvel-icon.svg" type="image/svg" />
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
   </head>
   <body>
     <main>
@@ -12,59 +13,74 @@
         <div class="container-header">
           <div class="container-header-fixed">
             <div class="logo-marvel">MARVEL</div>
+            <div class="tooltip-saved">Item adicionado aos favoritos!</div>
+            <div class="tooltip-not-saved">Item removido dos favoritos!</div>
             <button id="favorite" class="btn-favorite-home">
-             <span class="material-symbols-outlined">favorite</span>
+              <span class="material-symbols-outlined">favorite</span>
+            </button>
           </div>
           <div class="container-search">
-            <select id="selec-order" class="main-select-order"> 
-              <option value="Mais recente" class="option-select-order">Mais recente</option>
-              <option value="Mais antigo" class="option-select-order">Mais antigo</option>
+            <select id="selec-order" class="main-select-order">
+              <option value="Mais recentes" class="option-select-order">
+                Mais recente
+              </option>
+              <option value="Mais antigos" class="option-select-order">
+                Mais antigo
+              </option>
               <option value="A-Z" class="option-select-order">A-Z</option>
               <option value="Z-A" class="option-select-order">Z-A</option>
             </select>
             <div class="container-input-search">
-            <button id="buscar" class="btn-search"> <img src="./img/icon-search.svg" class="icon-search"> </button>
-            <input id="search" type="text" placeholder="Pesquisar" class="input-search" autocomplete="off"/>
-            <button id="reset-search" class="btn-delete"><img src="./img/icon-close.svg" class="icon-delete"></button>
+              <button id="buscar" class="btn-search">
+                <img src="./img/icon-search.svg" class="icon-search" />
+              </button>
+              <input
+                id="search"
+                type="text"
+                placeholder="Pesquisar"
+                class="input-search"
+                autocomplete="off"
+              />
+              <button id="reset-search" class="btn-delete">
+                <img src="./img/icon-close.svg" class="icon-delete" />
+              </button>
             </div>
           </div>
+        </div>
+        <div class="filters">
+          <button class="filtro" data-tipo="characters" id="personagens">
+            Personagens
+          </button>
+          <button class="filtro" data-tipo="series" id="series">Séries</button>
+          <button class="filtro" data-tipo="comics" id="quadrinhos">
+            Quadrinhos
+          </button>
+        </div>
+        <div class="resultsInfo" id="resultsInfoAmount"></div>
+        <div id="exibir" class="container"></div>
       </div>
-      <div class="filters">
-        <button class="filtro" data-tipo="characters" id="personagens">
-          Personagens
-        </button>
-        <button class="filtro" data-tipo="series" id="series">Séries</button>
-        <button class="filtro" data-tipo="comics" id="quadrinhos">
-          Quadrinhos
-        </button>
-      </div>
-      <div class="resultsInfo" id="resultsInfo"></div>
-
-      <div id="exibir" class="container"></div>
     </main>
     <footer>
       <div class="container-spinner">
-      <div class="spinner" id="messageLoading">
-        <div class="spinner-blade"></div>
-        <div class="spinner-blade"></div>
-        <div class="spinner-blade"></div>
-        <div class="spinner-blade"></div>
-        <div class="spinner-blade"></div>
-        <div class="spinner-blade"></div>
-        <div class="spinner-blade"></div>
-        <div class="spinner-blade"></div>
-        <div class="spinner-blade"></div>
-        <div class="spinner-blade"></div>
-        <div class="spinner-blade"></div>
-        <div class="spinner-blade"></div>
+        <div class="spinner" id="messageLoading">
+          <div class="spinner-blade"></div>
+          <div class="spinner-blade"></div>
+          <div class="spinner-blade"></div>
+          <div class="spinner-blade"></div>
+          <div class="spinner-blade"></div>
+          <div class="spinner-blade"></div>
+          <div class="spinner-blade"></div>
+          <div class="spinner-blade"></div>
+          <div class="spinner-blade"></div>
+          <div class="spinner-blade"></div>
+          <div class="spinner-blade"></div>
+          <div class="spinner-blade"></div>
+        </div>
       </div>
-    </div>
-      <div class="no-more-results" id="noMoreResults">
-      </div>
-      <div class="resultsInfo" id="resultsInfo"></div>
+      <div class="no-more-results" id="noMoreResults"></div>
+      <div class="resultsInfo" id="resultsInfoTotal"></div>
     </footer>
-    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script type="module" src="./js/index.js"></script>
   </body>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-  <script type="module" src="./js/index.js"></script>
 </html>

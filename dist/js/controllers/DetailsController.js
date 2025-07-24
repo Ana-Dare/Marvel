@@ -27,8 +27,7 @@ export class DetailController {
             window.location.href = "favorite.html";
         });
     }
-    enableEventClickFavorite(item) {
-        const type = item.currentType;
+    enableEventClickFavorite(item, type) {
         const id = item.id.toString();
         const name = item.name;
         const title = item.title;
@@ -37,9 +36,11 @@ export class DetailController {
         const imageBtnCardFavorite = btnDetailFavorite.querySelector(".image-btn-card");
         if (isItemFavorite("favorite", type, id)) {
             imageBtnCardFavorite.src = "../img/suit-heart-fill.svg";
+            btnDetailFavorite.classList.add("favorited");
         }
         else {
             imageBtnCardFavorite.src = "../img/suit-heart.svg";
+            btnDetailFavorite.classList.remove("favorited");
         }
         btnDetailFavorite.addEventListener("click", () => {
             id && type && btnDetailFavorite.classList.toggle("favorited");
@@ -72,21 +73,48 @@ export class DetailController {
         const menu = document.getElementById(menuId);
         if (!menu)
             return;
-        const buttons = menu.querySelectorAll('button');
-        const sections = document.querySelectorAll('.section');
+        const buttons = menu.querySelectorAll("button");
+        const sections = document.querySelectorAll(".section");
         buttons.forEach((button) => {
-            button.addEventListener('click', () => {
+            button.addEventListener("click", () => {
                 const target = button.dataset.target;
                 if (!target)
                     return;
                 sections.forEach((section) => {
                     const isTarget = section.id === `section-${target}`;
-                    section.classList.toggle('show', isTarget);
+                    section.classList.toggle("show", isTarget);
                 });
                 buttons.forEach((btn) => {
-                    btn.classList.toggle('show', btn === button);
+                    btn.classList.toggle("show", btn === button);
                 });
             });
+        });
+    }
+    fetchDataAndRender(type, id, request, render, container) {
+        return __awaiter(this, void 0, void 0, function* () {
+            container.classList.remove("visible");
+            this.scrollView.showLoading();
+            try {
+                const data = yield request(id);
+                if (data) {
+                    render(data);
+                    this.enableEventClickFavorite(data, type);
+                    console.log(this.enableEventClickFavorite);
+                    this.scrollView.hideLoading();
+                    container.classList.add("visible");
+                }
+                else {
+                    console.warn(`Dados para ${type} com ID ${id} não encontrados.`);
+                }
+            }
+            catch (error) {
+                console.error(`Erro ao buscar ${type}:`, error);
+                container.innerHTML =
+                    "Não foi possível carregar os dados. Tente novamente mais tarde";
+            }
+            finally {
+                this.scrollView.hideLoading();
+            }
         });
     }
     initialize() {
@@ -101,61 +129,13 @@ export class DetailController {
             try {
                 switch (type) {
                     case "characters":
-                        container.classList.remove("visible");
-                        this.scrollView.showLoading();
-                        try {
-                            const character = yield requestCharactersById(id);
-                            if (character)
-                                this.renderCharacters.renderCharacters(character);
-                            character.currentType = "characters";
-                            this.enableEventClickFavorite(character);
-                            this.scrollView.hideLoading();
-                            container.classList.add("visible");
-                        }
-                        catch (error) {
-                            console.log("Erro ao buscar personagem", error);
-                        }
-                        finally {
-                            this.scrollView.hideLoading();
-                        }
+                        yield this.fetchDataAndRender("characters", id, requestCharactersById, this.renderCharacters.renderCharacters, container);
                         break;
                     case "comics":
-                        container.classList.remove("visible");
-                        this.scrollView.showLoading();
-                        try {
-                            const comics = yield requestComicsById(id);
-                            if (comics)
-                                this.renderComics.renderComics(comics);
-                            comics.currentType = "comics";
-                            this.enableEventClickFavorite(comics);
-                            this.scrollView.hideLoading();
-                            container.classList.add("visible");
-                        }
-                        catch (error) {
-                            console.log("Erro ao buscar quadrinho", error);
-                        }
-                        finally {
-                            this.scrollView.hideLoading();
-                        }
+                        yield this.fetchDataAndRender("comics", id, requestComicsById, this.renderComics.renderComics, container);
                         break;
                     case "series":
-                        container.classList.remove("visible");
-                        this.scrollView.showLoading();
-                        try {
-                            const series = yield requestSeriesById(id);
-                            if (series)
-                                this.renderSeries.renderSeries(series);
-                            series.currentType = "series";
-                            this.enableEventClickFavorite(series);
-                            this.scrollView.hideLoading();
-                            container.classList.add("visible");
-                        }
-                        catch (error) {
-                            console.log("Erro ao buscar quadrinho", error);
-                        }
-                        finally {
-                            this.scrollView.hideLoading();
-                        }
+                        yield this.fetchDataAndRender("series", id, requestSeriesById, this.renderSeries.renderSeries, container);
                         break;
                     default:
                         console.warn("Tipo inválido:", type);
@@ -166,7 +146,7 @@ export class DetailController {
             }
             this.openfavoritespage();
             this.eventBackToHome();
-            this.handleTabMenu('menu');
+            this.handleTabMenu("menu");
         });
     }
 }

@@ -1,0 +1,164 @@
+.filters {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  padding: 1rem;
+  padding-top: 2rem;
+}
+
+.filtro {
+  height: 2rem;
+  width: 10rem;
+  border-radius: 3rem;
+  font-family: "Lexend";
+  font-size: 0.8rem;
+  font-weight: 300;
+  border: 0.5px solid rgba(84, 84, 84, 0.574);
+  background-color: #f1faee;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 2px 0px;
+  cursor: pointer;
+}
+
+.filtro:hover {
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 2px 0px;
+}
+
+.ativo {
+  background-color: #780000;
+  color: #ffffff;
+  font-weight: 300;
+  border: none;
+}
+
+.container-search {
+  margin-top: 6rem;
+  padding: 1rem;
+  display: flex;
+  gap: 1.5rem;
+  flex-direction: row;
+  width: 100%;
+  height: 2.5rem;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+}
+
+.container-input-search {
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(84, 84, 84, 0.574);
+  border-radius: 32px;
+  overflow: hidden;
+  width: 70%;
+  box-sizing: border-box;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+
+.input-search {
+  width: 100%;
+  height: 2.5rem;
+  border-radius: 32px;
+  border-color: #000000;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  flex: 1;
+  border: none;
+  background-color: transparent;
+}
+
+.input-search:focus {
+  outline: none;
+  background-color: transparent;
+}
+
+.btn-search {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5rem;
+  width: 3rem;
+  background-color: transparent;
+  border: none;
+  overflow: hidden;
+  cursor: pointer;
+}
+.icon-search {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.btn-delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5rem;
+  width: 3rem;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.icon-delete {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.main-select-order {
+  width: 7rem;
+  height: 2rem;
+  font-family: var(--font--main);
+  font-weight: 300;
+  justify-content: center;
+  padding: 0.2rem;
+  box-sizing: border-box;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.main-select-order:focus {
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 2px 0px;
+}
+
+.option-select-order {
+  width: 8rem;
+  height: 2rem;
+  font-family: var(--font--main);
+  font-weight: 300;
+  justify-content: center;
+  padding: 0.2rem;
+  box-sizing: border-box;
+  border-radius: 6px;
+}
+
+.option-select-order:hover {
+  background-color: #78000059;
+}
+
+@media (max-width: 660px) {
+  .filters {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .container-search {
+    gap: 0.5rem;
+  }
+  .main-select-order {
+    width: 20%;
+  }
+}
+
+@media (max-width: 320px) {
+  .container-input-search {
+    height: 2rem;
+  }
+
+  .filters {
+    padding-top: 1rem;
+    gap: 0.5rem;
+  }
+  .filtro {
+    height: 1.5rem;
+  }
+}

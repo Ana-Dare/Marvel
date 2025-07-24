@@ -1,5 +1,5 @@
-import { createUrl } from "../../utils/createurl-utils.js";
-import { CurrentTypeInterface } from "../../interfaces/requestInterface.js";
+import { createUrl } from "../utils/createurl-utils.js";
+import { CurrentTypeInterface } from "../interfaces/requestInterface.js";
 
 export async function fetchFromAPI(
   type: CurrentTypeInterface,

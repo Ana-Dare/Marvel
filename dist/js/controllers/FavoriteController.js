@@ -8,13 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { removeItemfavorite } from "../utils/localStorage.js";
-const btnFilters = document.querySelectorAll(".filtro");
 export class favoriteController {
     constructor(renderFavorite, container) {
         this.renderFavorite = renderFavorite;
         this.container = container;
         this.selectedType = "characters";
         this.currentTerm = "";
+        this.btnFilters = document.querySelectorAll(".filtro");
     }
     removeItemPageFavorite() {
         this.renderFavorite.container.addEventListener("click", (event) => {
@@ -32,13 +32,13 @@ export class favoriteController {
         });
     }
     enableFilterOnCurrentType() {
-        btnFilters.forEach((btn) => {
+        this.btnFilters.forEach((btn) => {
             btn.addEventListener("click", (e) => {
                 const target = e.currentTarget;
                 const type = target.dataset.tipo;
                 if (!type)
                     return;
-                btnFilters.forEach((b) => b.classList.remove("ativo"));
+                this.btnFilters.forEach((b) => b.classList.remove("ativo"));
                 target.classList.add("ativo");
                 switch (type) {
                     case "characters":
@@ -77,7 +77,7 @@ export class favoriteController {
     enableSearchEvent() {
         const inputSearch = document.querySelector("#input-search-favorite");
         const btnSearch = document.querySelector("#btn-search-favorite");
-        btnFilters.forEach((btn) => {
+        this.btnFilters.forEach((btn) => {
             btn.addEventListener("click", (e) => __awaiter(this, void 0, void 0, function* () {
                 const target = e.currentTarget;
                 this.selectedType = target.dataset.tipo;

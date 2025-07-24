@@ -13,8 +13,8 @@ export class RenderCharacters {
 
     const div = document.getElementById(
       "characters-image"
-    ) as HTMLDivElement | null;
-    const img = div?.querySelector("img") as HTMLImageElement | null;
+    ) as HTMLDivElement;
+    const img = div.querySelector("img") as HTMLImageElement | null;
     img?.classList.add("container-image");
     if (img && characters.thumbnail.path && characters.thumbnail.extension)
       img.src = `${characters.thumbnail.path}.${characters.thumbnail.extension}`;
@@ -42,15 +42,15 @@ export class RenderCharacters {
 
     const name = document.getElementById(
       "characters-name"
-    ) as HTMLDivElement | null;
+    ) as HTMLDivElement;
     if (name) name.textContent = characters.name || "Nome Indisponível";
 
     const description = document.getElementById(
       "characters-description"
-    ) as HTMLDivElement | null;
+    ) as HTMLDivElement;
     if (description)
       description.textContent =
-        characters.description || "Descrição indisponível";
+        characters.description || "Este personagem ainda não tem uma descrição oficial. Mas você pode explorá-lo nos quadrinhos e séries disponíveis!";
 
     const containerSeries = document.getElementById(
       "link-series"

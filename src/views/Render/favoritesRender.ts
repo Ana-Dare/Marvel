@@ -1,10 +1,11 @@
+import { CurrentTypeInterface } from "../../interfaces/requestInterface.js";
 import { isItemFavorite } from "../../utils/localStorage.js";
 
 export class RenderitemFavorites {
   constructor(public container: HTMLElement) {}
 
   public renderitemFavorites(
-    type: string,
+    type: CurrentTypeInterface,
     filtered?: Record<string, { name: string; title: string; imagem: string }>
   ) {
     this.container.innerHTML = "";
@@ -49,49 +50,47 @@ export class RenderitemFavorites {
       case "series":
         for (const id in items) {
           const item = items[id];
+          const card = document.createElement("div") as HTMLDivElement;
+            card.classList.add("item-container");
+            card.dataset.id = id;
+            card.dataset.type = type;
 
-          const card = document.createElement("div");
-          card.classList.add("item-container");
-          card.dataset.id = id;
-          card.dataset.type = type;
+            const title = document.createElement("h3");
+            title.classList.add("titulo-item-container");
+            title.textContent =
+              type === "characters"
+                ? (item.name || "Nome indisponível").toUpperCase()
+                : (item.title || "Título indisponível").toUpperCase();
 
-          const title = document.createElement("h3");
-          title.classList.add("titulo-item-container");
-          title.textContent =
-            type === "characters"
-              ? item.name || "Nome indisponível"
-              : item.title || "Título indisponível";
+            const img = document.createElement("img");
+            img.classList.add("img-item-container");
+            img.src = item.imagem || "";
+            img.alt = title.textContent || "Imagem";
+            img.width = 100;
 
-          const img = document.createElement("img");
-          img.classList.add("img-item-container");
-          img.src = item.imagem || "";
-          img.alt = title.textContent || "Imagem";
-          img.width = 100;
+            const btnCardFavorite = document.createElement("button");
+            btnCardFavorite.classList.add("favorite");
+            const imageBtnCardFavorite = document.createElement(
+              "img"
+            ) as HTMLImageElement;
+            imageBtnCardFavorite.classList.add("image-btn-card");
+            imageBtnCardFavorite.src = imageBtnCardFavorite.src =
+              "../img/suit-heart-fill.svg";
 
-          const btnCardFavorite = document.createElement("button");
-          btnCardFavorite.classList.add("favorite");
-          const imageBtnCardFavorite = document.createElement(
-            "img"
-          ) as HTMLImageElement;
-          imageBtnCardFavorite.classList.add("image-btn-card");
-          imageBtnCardFavorite.src = imageBtnCardFavorite.src =
-            "../img/suit-heart-fill.svg";
+            if (isItemFavorite("favorite", type, id)) {
+              imageBtnCardFavorite.src = "../img/suit-heart-fill.svg";
+            }
+            const elements = document.createElement("div");
+            elements.classList.add("elements-title-button");
 
-          if (isItemFavorite("favorite", type, id)) {
-            imageBtnCardFavorite.src = "../img/suit-heart-fill.svg";
-          }
-          const elements = document.createElement("div");
-          elements.classList.add("elements-title-button");
-
-          card.appendChild(img);
-          btnCardFavorite.appendChild(imageBtnCardFavorite);
-          elements.appendChild(title);
-          elements.appendChild(btnCardFavorite);
-          card.appendChild(elements);
-          this.container.appendChild(card);
+            card.appendChild(img);
+            btnCardFavorite.appendChild(imageBtnCardFavorite);
+            elements.appendChild(title);
+            elements.appendChild(btnCardFavorite);
+            card.appendChild(elements);
+            this.container.appendChild(card);
         }
         break;
-
       default:
         this.container.innerHTML = "Tipo inválido.";
     }

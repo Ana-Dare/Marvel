@@ -4,78 +4,68 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="../css/style.css" />
-    <title>Document</title>
+    <title>MARVEL</title>
+    <link rel="icon" href="../img/marvel-icon.svg" type="image/svg" />
   </head>
   <body>
-    <div class="container-header-fixed">
-      <div class="logo-marvel">MARVEL</div>
+    <main>
+      <div class="container-header-fixed">
+        <div class="logo-marvel">MARVEL</div>
+        <div class="tooltip-saved">Item adicionado aos favoritos!</div>
+        <div class="tooltip-not-saved">Item removido dos favoritos!</div>
         <button id="favorite" class="btn-favorite-home">
-           <span class="material-symbols-outlined">favorite</span>
+          <span class="material-symbols-outlined">favorite</span>
+        </button>
       </div>
-    <div id="container-details-comics" class="detail">
-      <div id="comics-title" class="main-title"></div>
-      <div class="elements-name-description">
-      <div id="comics-image" class="main-image">
-        <img src="" />
-          <div class="tooltip">Quadrinho</div>
-      </div>
-      <div id="comics-description" class="main-description"></div>
-      </div>
-      <div class="elements-info">
-      <div class="main-page-count">
-        <div class="title-info">Número de páginas:
-        <div id="comics-page-count" class="main-page-count"></div>
-      </div>
-      </div>
-      <div class="container-prices">
-        <div class="title-info">Valor:
-          <div id="comics-prices" class="container-prices"></div>
+      <div id="container-details-comics" class="detail">
+        <div id="comics-title" class="main-title"></div>
+        <div class="elements-name-description">
+          <div id="comics-image" class="main-image">
+            <img src="" />
+            <div class="tooltip">Quadrinho</div>
+          </div>
+          <div id="comics-description" class="main-description"></div>
         </div>
-      </div>
-      </div>
-    <div class="text-info">Explore o universo Marvel relacionado à esse quadrinho.</div>
-      <div class="element-menu">
+        <div class="elements-info">
+          <div class="main-page-count">
+            <div class="title-info">
+              Páginas:
+              <div id="comics-page-count" class="main-page-count"></div>
+            </div>
+          </div>
+          <div class="container-prices">
+            <div class="title-info">
+              Valor:
+              <div id="comics-prices" class="container-prices"></div>
+            </div>
+          </div>
+        </div>
+        <div class="text-info">
+          Descubra o universo Marvel relacionado à esse quadrinho.
+        </div>
+        <div class="element-menu">
           <div id="menu" class="option-button-menu">
-             <button data-target="creators" class="button-menu" >Criadores</button>
-            <button data-target="characters" class="button-menu">Personagens</button>
+            <button data-target="creators" class="button-menu">
+              Criadores
+            </button>
+            <button data-target="characters" class="button-menu">
+              Personagens
+            </button>
             <button data-target="series" class="button-menu">Séries</button>
           </div>
 
-        <div id="section-creators" class="section">
+          <div id="section-creators" class="section">
             <ul id="list-creators" class="list"></ul>
           </div>
-        <div id="section-characters" class="section">
+          <div id="section-characters" class="section">
             <ul id="link-characters" class="list"></ul>
           </div>
-        <div id="section-series" class="section">
+          <div id="section-series" class="section">
             <ul id="link-series" class="list"></ul>
           </div>
-          </div>
         </div>
-
-      <!-- 
-         <div class="elements-series-comics">
-      <div id="comics-container-creators" class="container-creators">
-        <div class="title-container">CRIADORES
-          <img src="../img/redacao.png" class="img-icon-title">
-        </div>
-        <ul id="list-creators"></ul>
       </div>
-      <div id="comics-container-characters" class="container-characters">
-        <div class="title-container">PERSONAGENS
-          <img src="../img/super-heroi.png" class="img-icon-title">
-        </div>
-        <ul id="link-characters"></ul>
-      </div>
-      <div id="comics-container-series" class="container-series">
-        <div class="title-container"> SERIES 
-          <img src="../img/icon-series.png" class="img-icon-title">
-        </div>
-      <ul id="link-series"></ul>
-      </div>
-    </div>
-    -->
-
+    </main>
     <div class="container-spinner">
       <div class="spinner" id="messageLoading">
         <div class="spinner-blade"></div>
@@ -92,7 +82,7 @@
         <div class="spinner-blade"></div>
       </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="../js/detail.js" type="module"></script>
   </body>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-  <script src="../js/detail.js" type="module"></script>
 </html>

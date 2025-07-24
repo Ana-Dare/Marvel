@@ -8,7 +8,7 @@ export class RenderCharacters {
         const containerId = document.getElementById("container-details-characters");
         containerId.dataset.id = characters.id.toString();
         const div = document.getElementById("characters-image");
-        const img = div === null || div === void 0 ? void 0 : div.querySelector("img");
+        const img = div.querySelector("img");
         img === null || img === void 0 ? void 0 : img.classList.add("container-image");
         if (img && characters.thumbnail.path && characters.thumbnail.extension)
             img.src = `${characters.thumbnail.path}.${characters.thumbnail.extension}`;
@@ -29,7 +29,7 @@ export class RenderCharacters {
         const description = document.getElementById("characters-description");
         if (description)
             description.textContent =
-                characters.description || "Descrição indisponível";
+                characters.description || "Este personagem ainda não tem uma descrição oficial. Mas você pode explorá-lo nos quadrinhos e séries disponíveis!";
         const containerSeries = document.getElementById("link-series");
         if (containerSeries) {
             const items = characters.series.items;

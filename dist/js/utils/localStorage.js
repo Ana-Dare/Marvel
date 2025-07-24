@@ -1,4 +1,5 @@
 export function setItemFavorite(favorite, objectFavorite) {
+    const tooltipSaved = document.querySelector('.tooltip-saved');
     try {
         const existingData = localStorage.getItem(favorite);
         let updateData = {};
@@ -17,6 +18,16 @@ export function setItemFavorite(favorite, objectFavorite) {
             updateData = objectFavorite;
         }
         localStorage.setItem(favorite, JSON.stringify(updateData));
+        if (tooltipSaved) {
+            tooltipSaved.style.display = "block";
+            tooltipSaved.style.opacity = "1";
+            setTimeout(() => {
+                tooltipSaved.style.opacity = "0";
+                setTimeout(() => {
+                    tooltipSaved.style.display = "none";
+                }, 200);
+            }, 1000);
+        }
     }
     catch (erro) {
         console.error("Erro ao adicionar dados", erro);
@@ -24,18 +35,30 @@ export function setItemFavorite(favorite, objectFavorite) {
     }
 }
 export function removeItemfavorite(favorite, type, id) {
+    var _a, _b;
     try {
+        const tooltipNotSaved = document.querySelector(".tooltip-not-saved");
         const existingData = localStorage.getItem(favorite);
         if (!existingData)
             return;
         const currentData = JSON.parse(existingData);
-        if (currentData[type] && currentData[type][id]) {
+        if (currentData[type] && ((_a = currentData[type]) === null || _a === void 0 ? void 0 : _a[id])) {
             delete currentData[type][id];
         }
-        if (Object.keys(currentData[type]).length === 0) {
+        if (Object.keys((_b = currentData[type]) !== null && _b !== void 0 ? _b : {}).length === 0) {
             delete currentData[type];
         }
         localStorage.setItem(favorite, JSON.stringify(currentData));
+        if (tooltipNotSaved) {
+            tooltipNotSaved.style.display = "block";
+            tooltipNotSaved.style.opacity = "1";
+            setTimeout(() => {
+                tooltipNotSaved.style.opacity = "0";
+                setTimeout(() => {
+                    tooltipNotSaved.style.display = "none";
+                }, 200);
+            }, 1000);
+        }
     }
     catch (error) {
         console.error("Erro ao remover favorito:", error);

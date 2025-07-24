@@ -13,8 +13,8 @@ export class RenderSeries {
 
     const div = document.getElementById(
       "series-image"
-    ) as HTMLDivElement | null;
-    const img = div?.querySelector("img") as HTMLImageElement | null;
+    ) as HTMLDivElement;
+    const img = div.querySelector("img") as HTMLImageElement | null;
     img?.classList.add("container-image");
     if (img && series.thumbnail.path && series.thumbnail.extension)
       img.src = `${series.thumbnail.path}.${series.thumbnail.extension}`;
@@ -38,14 +38,14 @@ export class RenderSeries {
 
     const title = document.getElementById(
       "series-title"
-    ) as HTMLDivElement | null;
+    ) as HTMLDivElement;
     if (title) title.textContent = series.title || "Titúlo Indisponível";
 
     const description = document.getElementById(
       "series-description"
-    ) as HTMLDivElement | null;
+    ) as HTMLDivElement;
     if (description)
-      description.textContent = series.description || "Descrição indisponível";
+      description.textContent = series.description || "Esta série ainda não tem uma descrição oficial. Mas você pode explorá-la nos personagens e quadrinhos disponíveis!";
 
     const startYear = document.getElementById(
       "series-start-year"
@@ -55,7 +55,7 @@ export class RenderSeries {
 
     const endYear = document.getElementById(
       "series-end-year"
-    ) as HTMLDivElement | null;
+    ) as HTMLDivElement;
     if (endYear)
       endYear.textContent =
         series.endYear || "Ano de encerramento indisponíveis";

@@ -5,12 +5,12 @@ export class RenderComics {
         this.container = container;
     }
     renderComics(comics) {
-        var _a, _b, _c;
+        var _a, _b;
         const containerId = document.getElementById("container-details-comics");
         containerId.dataset.id = comics.id.toString();
         const div = document.getElementById("comics-image");
-        const img = div === null || div === void 0 ? void 0 : div.querySelector("img");
-        img === null || img === void 0 ? void 0 : img.classList.add("container-image");
+        const img = div.querySelector("img");
+        img.classList.add("container-image");
         if (img && comics.thumbnail.path && comics.thumbnail.extension)
             img.src = `${comics.thumbnail.path}.${comics.thumbnail.extension}`;
         const btnCardfavorite = document.createElement("button");
@@ -30,7 +30,7 @@ export class RenderComics {
             title.textContent = comics.title || "Titulo Indisponível";
         const description = document.getElementById("comics-description");
         if (description)
-            description.textContent = comics.description || "Descrição indisponível";
+            description.textContent = comics.description || "Este quadrinho ainda não tem uma descrição oficial. Mas você pode explorá-lo nos personagens e séries disponíveis!";
         const pageCount = document.getElementById("comics-page-count");
         if (pageCount)
             pageCount.textContent =
@@ -53,7 +53,7 @@ export class RenderComics {
                     : "<li>Sem criadores disponíveis</li>";
         const containerCharacters = document.getElementById("link-characters");
         if (containerCharacters) {
-            const items = (_c = comics.characters) === null || _c === void 0 ? void 0 : _c.items;
+            const items = comics.characters.items;
             if (items && items.length > 0) {
                 containerCharacters.innerHTML = items
                     .map((character) => {

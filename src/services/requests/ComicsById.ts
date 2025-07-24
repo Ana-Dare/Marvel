@@ -1,7 +1,8 @@
 import { hash, ts, publicKey } from "../../utils/gerarHash.js";
 import { urlBase } from "../../utils/createurl-utils.js";
+import { Comics } from "../../interfaces/requestInterface.js";
 
-export async function requestComicsById(id: string) {
+export async function requestComicsById(id: string): Promise<Comics | null> {
   const url = `${urlBase}/comics/${id}?ts=${ts}&apikey=${publicKey}&hash=${hash}`;
 
   try {

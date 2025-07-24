@@ -48,8 +48,8 @@ export class RenderitemFavorites {
                     title.classList.add("titulo-item-container");
                     title.textContent =
                         type === "characters"
-                            ? item.name || "Nome indisponível"
-                            : item.title || "Título indisponível";
+                            ? (item.name || "Nome indisponível").toUpperCase()
+                            : (item.title || "Título indisponível").toUpperCase();
                     const img = document.createElement("img");
                     img.classList.add("img-item-container");
                     img.src = item.imagem || "";

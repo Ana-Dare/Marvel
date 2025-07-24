@@ -17,22 +17,24 @@ export class Renderer {
     cards.dataset.title = item.title || "";
     cards.dataset.thumbnailPath = item.thumbnail?.path || "";
     cards.dataset.thumbnailExtension = item.thumbnail?.extension || "";
+
     const titulo = document.createElement("h3");
     titulo.classList.add("titulo-item-container");
     titulo.textContent =
       item.currentType === "characters"
         ? (item.name || "Nome indisponível.").toUpperCase()
         : (item.title || "Título indisponível.").toUpperCase();
+        
     const btnCardfavorite = document.createElement("button");
-    const imageBtnCardFavorite = document.createElement('img');
-    imageBtnCardFavorite.classList.add('image-btn-card');
-    imageBtnCardFavorite.src = './img/suit-heart.svg'
+    const imageBtnCardFavorite = document.createElement("img");
+    imageBtnCardFavorite.classList.add("image-btn-card");
+    imageBtnCardFavorite.src = "../img/suit-heart.svg";
     btnCardfavorite.classList.add("favorite");
-    
+
     if (isItemFavorite("favorite", item.currentType, item.id.toString())) {
-      imageBtnCardFavorite.src = './img/suit-heart-fill.svg';
+      imageBtnCardFavorite.src = "../img/suit-heart-fill.svg";
     } else {
-      imageBtnCardFavorite.src = './img/suit-heart.svg'
+      imageBtnCardFavorite.src = "../img/suit-heart.svg";
     }
     const img = document.createElement("img");
     img.classList.add("img-item-container");
@@ -42,8 +44,8 @@ export class Renderer {
     img.alt = titulo.textContent || "Imagem";
     img.width = 100;
 
-    const elements = document.createElement('div');
-    elements.classList.add('elements-title-button');
+    const elements = document.createElement("div");
+    elements.classList.add("elements-title-button");
 
     cards.appendChild(img);
     btnCardfavorite.appendChild(imageBtnCardFavorite);
@@ -59,5 +61,4 @@ export class Renderer {
   public changeType(novoTipo: CurrentTypeInterface) {
     this.tipoAtual = novoTipo;
   }
-
 }

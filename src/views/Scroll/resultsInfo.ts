@@ -1,5 +1,5 @@
 export class ResultsInfoView {
-  private resultMessage = document.getElementById("resultsInfo")!;
+  private resultMessage = document.querySelector(".resultsInfo") as HTMLDivElement;
 
   updateProgress(atual: number, total: number) {
     this.resultMessage.style.display = "block";

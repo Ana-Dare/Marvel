@@ -1,33 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MARVEL</title>
+    <link rel="icon" href="../img/marvel-icon.svg" type="image/svg" />
     <link rel="stylesheet" type="text/css" href="../css/style.css" />
-</head>
-<body>
-    <div class="container-header-fixed">
+  </head>
+  <body>
+    <main>
+      <div class="container-header-fixed">
         <div class="logo-marvel">MARVEL</div>
-            <button id="favorite" class="btn-favorite-home">
-             <span class="material-symbols-outlined">favorite</span>
-          </div>
-    </div>  
-    <div class="container-search">
-        <div class="container-input-search">
-            <button id="btn-search-favorite" class="btn-search"> <img src="../img/icon-search.svg" class="icon-search"> </button>
-            <input id="input-search-favorite" type="text" placeholder="Pesquisar" class="input-search" autocomplete="off"/>
-            <button id="deletar-search-favorite" class="btn-delete"><img src="../img/icon-close.svg" class="icon-delete"></button>
-        </div>
-    </div>
-    <div class="filters">
-        <button class="filtro" data-tipo="characters" id="personagens">Personagens</button>
-        <button class="filtro" data-tipo="series" id="series">Séries</button>
-        <button class="filtro" data-tipo="comics" id="quadrinhos">Quadrinhos</button>
+        <div class="tooltip-saved">Item adicionado aos favoritos!</div>
+        <div class="tooltip-not-saved">Item removido dos favoritos!</div>
+        <button id="favorite" class="btn-favorite-home">
+          <span class="material-symbols-outlined">favorite</span>
+        </button>
       </div>
-    <div id="container-favorite" class="container"> 
-        
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-    <script src="../js/favorite.js" type="module"></script>
-</body>
+      <div class="container-search">
+        <div class="container-input-search">
+          <button id="btn-search-favorite" class="btn-search">
+            <img src="../img/icon-search.svg" class="icon-search" />
+          </button>
+          <input
+            id="input-search-favorite"
+            type="text"
+            placeholder="Pesquisar"
+            class="input-search"
+            autocomplete="off"
+          />
+          <button id="deletar-search-favorite" class="btn-delete">
+            <img src="../img/icon-close.svg" class="icon-delete" />
+          </button>
+        </div>
+      </div>
+      <div class="filters">
+        <button class="filtro" data-tipo="characters" id="personagens">
+          Personagens
+        </button>
+        <button class="filtro" data-tipo="series" id="series">Séries</button>
+        <button class="filtro" data-tipo="comics" id="quadrinhos">
+          Quadrinhos
+        </button>
+      </div>
+      <div id="container-favorite" class="container"></div>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+      <script src="../js/favorite.js" type="module"></script>
+    </main>
+  </body>
 </html>
