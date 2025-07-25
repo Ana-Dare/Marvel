@@ -99,7 +99,7 @@ export class favoriteController {
     }
     resetSearch() {
         const inputSearch = document.querySelector("#input-search-favorite");
-        const btnResetSearch = document.querySelector("#deletar-search-favorite");
+        const btnResetSearch = document.querySelector("#delete-search-favorite");
         btnResetSearch.addEventListener("click", () => {
             this.renderFavorite.renderitemFavorites(this.selectedType);
             inputSearch.value = "";

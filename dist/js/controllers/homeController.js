@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Renderer } from "../views/Render/homeRender.js";
-import { obterOrderBy } from "../utils/orderby-utils.js";
+import { obterOrderBy } from "../utils/orderby.js";
 import { ScrollDetector } from "./ScrollDetector .js";
 import { ScrollView } from "../views/Scroll/scrollView.js";
 import { LoadingUI } from "../views/Scroll/LoadingUI.js";
@@ -16,14 +16,14 @@ import { mapApiResults } from "../mappers/mapHomeResults.js";
 import { fetchFromAPI } from "../services/Api.js";
 import { ResultsInfoView } from "../views/Scroll/resultsInfo.js";
 import { cacheService } from "../models/cache.js";
-import { createUrl } from "../utils/createurl-utils.js";
+import { createUrl } from "../utils/createUrl.js";
 import { ContentDataFetcher } from "../utils/contentDataFetcher.js";
 import { PaginationController } from "../utils/pagination.js";
 import { ContentDisplay } from "../views/contentDisplay.js";
 import { setItemFavorite } from "../utils/localStorage.js";
 import { removeItemfavorite } from "../utils/localStorage.js";
-const btnFilters = Array.from(document.querySelectorAll(".filtro"));
-const btnSearch = document.querySelector("#buscar");
+const btnFilters = Array.from(document.querySelectorAll(".filter"));
+const btnSearch = document.querySelector("#btn-search");
 const inputSearch = document.querySelector("#search");
 const orderSelect = document.querySelector("#selec-order");
 export class ControllerApi {

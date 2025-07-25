@@ -6,7 +6,7 @@
   padding-top: 2rem;
 }
 
-.filtro {
+.filter {
   height: 2rem;
   width: 10rem;
   border-radius: 3rem;
@@ -19,7 +19,7 @@
   cursor: pointer;
 }
 
-.filtro:hover {
+.filter:hover {
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 2px 0px;
 }
 
@@ -104,7 +104,7 @@
 }
 
 .main-select-order {
-  width: 7rem;
+  width: 7.2rem;
   height: 2rem;
   font-family: var(--font--main);
   font-weight: 300;
@@ -158,7 +158,7 @@
     padding-top: 1rem;
     gap: 0.5rem;
   }
-  .filtro {
+  .filter {
     height: 1.5rem;
   }
 }

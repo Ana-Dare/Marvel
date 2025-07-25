@@ -1,6 +1,6 @@
 import { Renderer } from "../views/Render/homeRender.js";
 import { CurrentTypeInterface } from "../interfaces/requestInterface.js";
-import { obterOrderBy } from "../utils/orderby-utils.js";
+import { obterOrderBy } from "../utils/orderby.js";
 import { ScrollDetector } from "./ScrollDetector .js";
 import { ScrollView } from "../views/Scroll/scrollView.js";
 import { LoadingUI } from "../views/Scroll/LoadingUI.js";
@@ -9,7 +9,7 @@ import { fetchFromAPI } from "../services/Api.js";
 import { DataApi } from "../interfaces/requestInterface.js";
 import { ResultsInfoView } from "../views/Scroll/resultsInfo.js";
 import { cacheService } from "../models/cache.js";
-import { createUrl } from "../utils/createurl-utils.js";
+import { createUrl } from "../utils/createUrl.js";
 import { ContentDataFetcher } from "../utils/contentDataFetcher.js";
 import { PaginationController } from "../utils/pagination.js";
 import { ContentDisplay } from "../views/contentDisplay.js";
@@ -18,9 +18,9 @@ import { removeItemfavorite } from "../utils/localStorage.js";
 import { ObjectFavoriteInterface } from "../interfaces/favoriteInterface.js";
 
 const btnFilters = Array.from(
-  document.querySelectorAll(".filtro")
+  document.querySelectorAll(".filter")
 ) as HTMLElement[];
-const btnSearch = document.querySelector("#buscar") as HTMLButtonElement;
+const btnSearch = document.querySelector("#btn-search") as HTMLButtonElement;
 const inputSearch = document.querySelector("#search") as HTMLInputElement;
 const orderSelect = document.querySelector("#selec-order") as HTMLSelectElement;
 

@@ -1,8 +1,10 @@
 import { hash, ts, publicKey } from "../../utils/gerarHash.js";
-import { urlBase } from "../../utils/createurl-utils.js";
+import { urlBase } from "../../utils/createUrl.js";
 import { Characters } from "../../interfaces/requestInterface.js";
 
-export async function requestCharactersById(id: string): Promise<Characters | null> {
+export async function requestCharactersById(
+  id: string
+): Promise<Characters | null> {
   const url = `${urlBase}/characters/${id}?ts=${ts}&apikey=${publicKey}&hash=${hash}`;
 
   try {

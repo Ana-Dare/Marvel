@@ -119,7 +119,7 @@ export class favoriteController {
       "#input-search-favorite"
     ) as HTMLInputElement;
     const btnResetSearch = document.querySelector(
-      "#deletar-search-favorite"
+      "#delete-search-favorite"
     ) as HTMLButtonElement;
     btnResetSearch.addEventListener("click", () => {
       this.renderFavorite.renderitemFavorites(this.selectedType);

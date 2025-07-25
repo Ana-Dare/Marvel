@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { createUrl } from "../utils/createurl-utils.js";
+import { createUrl } from "../utils/createUrl.js";
 export function fetchFromAPI(type_1, term_1, offset_1, limit_1) {
     return __awaiter(this, arguments, void 0, function* (type, term, offset, limit, orderBy = "") {
         const url = createUrl(type, term, offset, limit, orderBy);

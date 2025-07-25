@@ -24,9 +24,7 @@
   opacity: 0;
   visibility: hidden;
   background: white;
-  box-shadow: rgba(0, 0, 0, 0.17) 8px  8px 20px 5px;
-    
-
+  box-shadow: rgba(0, 0, 0, 0.17) 8px 8px 20px 5px;
 }
 
 .detail.visible {
@@ -155,6 +153,7 @@
   width: 40%;
   justify-content: space-between;
   box-sizing: border-box;
+  gap: 0.6rem;
 }
 .title-info {
   display: flex;
@@ -223,12 +222,9 @@
     margin-bottom: 1rem;
   }
 
-  .main-title {
+  .main-title, .main-name {
     font-size: 1.5rem;
-  }
-
-  .main-name {
-    font-size: 1.5rem;
+    margin-top: -4.5rem;
   }
 
   .main-page-count {
@@ -256,7 +252,7 @@
   }
 
   .main-page-count {
-    font-size: 0.8rem;
+    font-size: 0.6rem;
   }
 }
 
@@ -275,7 +271,8 @@
   .main-name,
   .main-title {
     font-size: 1rem;
-    margin-left: 0;
+    display: flex;
+    align-self: center;
   }
   .main-page-count {
     font-size: 0.6rem;

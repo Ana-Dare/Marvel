@@ -1,5 +1,5 @@
 import { hash, ts, publicKey } from "../../utils/gerarHash.js";
-import { urlBase } from "../../utils/createurl-utils.js";
+import { urlBase } from "../../utils/createUrl.js";
 import { Comics } from "../../interfaces/requestInterface.js";
 
 export async function requestComicsById(id: string): Promise<Comics | null> {

@@ -67,7 +67,7 @@ export class RenderCharacters {
           })
           .join("");
       } else {
-        containerSeries.innerHTML = "<li>Series indisponíveis</li>";
+        containerSeries.innerHTML = "<li>Séries indisponíveis</li>";
       }
     }
 

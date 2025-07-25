@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { hash, ts, publicKey } from "../../utils/gerarHash.js";
-import { urlBase } from "../../utils/createurl-utils.js";
+import { urlBase } from "../../utils/createUrl.js";
 export function requestSeriesById(id) {
     return __awaiter(this, void 0, void 0, function* () {
         const url = `${urlBase}/series/${id}?ts=${ts}&apikey=${publicKey}&hash=${hash}`;

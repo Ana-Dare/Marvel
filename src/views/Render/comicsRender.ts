@@ -109,7 +109,7 @@ export class RenderComics {
           })
           .join("");
       } else {
-        containerSeries.innerHTML = "<li>Series indisponíveis</li>";
+        containerSeries.innerHTML = "<li>Séries indisponíveis</li>";
       }
     }
 

@@ -5,16 +5,15 @@
   top: 1rem;
   left: 40%;
   background: rgba(0, 0, 0, 0.8);
-  border-radius: 0.8rem;
+  border-radius: 0.6rem;
   color: #ffffff;
-  padding: 6px 12px;
+  padding: .5rem .6rem;
   font-size: 0.8rem;
   transition: opacity 0.3s ease;
   width: fit-content;
   font-family: var(--font-main);
   font-weight: 200;
   text-align: center;
-  z-index: 1000;
 }
 
 .tooltip {

@@ -1,5 +1,5 @@
 import { hash, ts, publicKey } from "../../utils/gerarHash.js";
-import { urlBase } from "../../utils/createurl-utils.js";
+import { urlBase } from "../../utils/createUrl.js";
 import { Series } from "../../interfaces/requestInterface.js";
 
 export async function requestSeriesById(id: string): Promise<Series | null> {
