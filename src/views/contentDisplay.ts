@@ -5,7 +5,7 @@ export class ContentDisplay {
     private renderer: {
       render(item: DataApi): void;
       toClean(): void;
-    },
+    }
   ) {}
 
   clearIfFirstPage(offset: number): void {

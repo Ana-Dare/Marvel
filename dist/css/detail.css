@@ -273,6 +273,7 @@
     font-size: 1rem;
     display: flex;
     align-self: center;
+    margin-left: 0;
   }
   .main-page-count {
     font-size: 0.6rem;

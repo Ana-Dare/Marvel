@@ -96,13 +96,19 @@ export class DetailController {
       button.addEventListener("click", () => {
         const target = button.dataset.target;
         if (!target) return;
-        sections.forEach((section) => {
-          const isTarget = section.id === `section-${target}`;
-          section.classList.toggle("show", isTarget);
-        });
-        buttons.forEach((btn) => {
-          btn.classList.toggle("show", btn === button);
-        });
+
+        const targetSection = document.getElementById(
+          `section-${target}`
+        ) as HTMLDivElement;
+        const isAlreadyVisible = targetSection.classList.contains("show");
+
+        sections.forEach((section) => section.classList.remove("show"));
+        buttons.forEach((btn) => btn.classList.remove("show"));
+
+        if (!isAlreadyVisible) {
+          targetSection.classList.add("show");
+          button.classList.add("show");
+        }
       });
     });
   }
