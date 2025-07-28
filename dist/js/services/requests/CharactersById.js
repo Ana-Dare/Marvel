@@ -12,18 +12,12 @@ import { urlBase } from "../../utils/createUrl.js";
 export function requestCharactersById(id) {
     return __awaiter(this, void 0, void 0, function* () {
         const url = `${urlBase}/characters/${id}?ts=${ts}&apikey=${publicKey}&hash=${hash}`;
-        try {
-            const response = yield fetch(url);
-            if (!response.ok) {
-                throw new Error(`Erro ao buscar personagem: ${response.status}`);
-            }
-            const json = yield response.json();
-            const result = json.data.results[0];
-            return result;
+        const response = yield fetch(url);
+        if (!response.ok) {
+            throw new Error(`Erro ao buscar personagem: ${response.status}`);
         }
-        catch (e) {
-            console.error("Erro ao buscar personagem por ID:", e);
-            return null;
-        }
+        const json = yield response.json();
+        const result = json.data.results[0];
+        return result;
     });
 }

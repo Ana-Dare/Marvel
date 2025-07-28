@@ -6,7 +6,7 @@ import { CurrentTypeInterface } from "../interfaces/requestInterface.js";
 export class favoriteController {
   private selectedType: CurrentTypeInterface = "characters";
   private currentTerm: string = "";
-  private btnFilters = document.querySelectorAll(".filtro");
+  private btnFilters = document.querySelectorAll(".filter");
 
   constructor(
     private renderFavorite: RenderitemFavorites,

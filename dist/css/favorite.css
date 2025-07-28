@@ -24,15 +24,3 @@
   cursor: pointer;
   width: 10%;
 }
-
-.material-symbols-outlined {
-  font-family: "Material Symbols Outlined";
-  font-variation-settings:
-    "FILL" 0,
-    "wght" 300,
-    "GRAD" 0,
-    "opsz" 24;
-  font-size: 1.5rem;
-  color: #fffefe;
-  cursor: pointer;
-}

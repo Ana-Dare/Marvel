@@ -24,9 +24,8 @@
 }
 
 .button-menu:hover {
-  border-bottom: #780000 solid 1px;
   cursor: pointer;
-  transform: scale(1.002);
+  transform: scale(1.02);
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 2px 0px;
 }
  

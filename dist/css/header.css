@@ -25,22 +25,28 @@
   pointer-events: auto;
 }
 
-.logo-marvel:hover {
-  transform: scale();
+.material-symbols-outlined {
+  font-family: "Material Symbols Outlined";
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 300,
+    "GRAD" 0,
+    "opsz" 24;
+  font-size: 1.5rem;
+  color: #fffefe;
+  cursor: pointer;
 }
 
-.resultsInfo {
-  font-family: var(--font--main);
-  font-size: 0.8rem;
-  font-weight: 300;
-  padding-left: 3.5rem;
-}
-
-.no-more-results {
-  font-family: var(--font--main);
-  font-size: 0.8rem;
-  font-weight: 300;
-  color: #000000;
+.page-favorite .material-symbols-outlined {
+  font-family: "Material Symbols Outlined";
+  font-variation-settings:
+    "FILL" 1,
+    "wght" 300,
+    "GRAD" 0,
+    "opsz" 24;
+  font-size: 1.5rem;
+  color: #fffefe;
+  cursor: pointer;
 }
 
 @media (max-width: 320px) {

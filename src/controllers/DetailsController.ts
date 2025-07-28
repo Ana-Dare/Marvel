@@ -135,9 +135,13 @@ export class DetailController {
         console.warn(`Dados para ${type} com ID ${id} não encontrados.`);
       }
     } catch (error) {
-      console.error(`Erro ao buscar ${type}:`, error);
-      container.innerHTML =
-        "Não foi possível carregar os dados. Tente novamente mais tarde";
+      container.classList.add("visible");
+      container.innerHTML = `
+      <div class = 'no-more-results'>
+        Erro ao buscar dados, tente novamente.
+      </div>
+      `;
+      throw error;
     } finally {
       this.scrollView.hideLoading();
     }

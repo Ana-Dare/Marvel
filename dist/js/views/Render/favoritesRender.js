@@ -11,7 +11,7 @@ export class RenderitemFavorites {
             if (!items || Object.keys(items).length === 0) {
                 this.container.innerHTML = `
         <div class='no-more-results'> 
-          Não há itens salvos nessa categoria.
+          Nenhum resultado encontrado para esse termo.
         </div>`;
                 return;
             }

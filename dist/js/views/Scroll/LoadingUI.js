@@ -10,13 +10,18 @@ export class LoadingUI {
             document.querySelector("#reset-search"),
         ].filter(Boolean);
         this.logoMarvel = document.querySelector('.logo-marvel');
+        this.btnHomeFavorite = document.querySelector('.btn-favorite-home');
     }
     disableUI() {
         this.elementsToDisable.forEach((el) => (el.disabled = true));
+        this.elementsToDisable.forEach((el) => (el.style.pointerEvents = 'none'));
         this.logoMarvel.style.pointerEvents = 'none';
+        this.btnHomeFavorite.style.pointerEvents = 'none';
     }
     enableUI() {
         this.elementsToDisable.forEach((el) => (el.disabled = false));
+        this.elementsToDisable.forEach((el) => (el.style.pointerEvents = 'auto'));
         this.logoMarvel.style.pointerEvents = 'auto';
+        this.btnHomeFavorite.style.pointerEvents = 'auto';
     }
 }

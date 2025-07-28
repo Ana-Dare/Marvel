@@ -1,0 +1,23 @@
+.results-info {
+  font-family: var(--font--main);
+  font-size: 0.8rem;
+  font-weight: 300;
+  padding: 1.5em 0 1.5rem 3rem ;
+  position: sticky;
+  top: 3rem;
+  z-index: 999;
+  background-color: #ffffff;
+}
+
+.no-more-results {
+  font-family: var(--font--main);
+  font-size: 0.8rem;
+  font-weight: 300;
+  padding-left: 3.5rem;
+}
+
+.icon {
+  width: 1rem;
+  height: auto;
+
+}

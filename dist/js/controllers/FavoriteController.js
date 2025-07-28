@@ -14,7 +14,7 @@ export class favoriteController {
         this.container = container;
         this.selectedType = "characters";
         this.currentTerm = "";
-        this.btnFilters = document.querySelectorAll(".filtro");
+        this.btnFilters = document.querySelectorAll(".filter");
     }
     removeItemPageFavorite() {
         this.renderFavorite.container.addEventListener("click", (event) => {

@@ -10,7 +10,7 @@ export function createUrl(
   limit: number,
   orderBy: string
 ): string {
-  let url = `${urlBase}/${type}?ts=${ts}&apikey=${publicKey}&hash=${hash}&limit=${limit}&offset=${offset}`;
+  let url = `${urlBase}${type}?ts=${ts}&apikey=${publicKey}&hash=${hash}&limit=${limit}&offset=${offset}`;
 
   if (orderBy) {
     url += `&orderBy=${orderBy}`;
