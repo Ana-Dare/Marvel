@@ -42,11 +42,11 @@ export class RenderSeries {
             Containercreators.innerHTML =
                 series.creators.items.length > 0
                     ? series.creators.items
-                        .map((creators) => `<li>${creators.name}
+                        .map((creators) => `<li class = 'li-not-hover'>${creators.name}
                 <img src='../img/marvel.svg'>
               </li>`)
                         .join("")
-                    : "<li>Criadores indisponíveis</li>";
+                    : "<li class = 'li-not-hover'>Criadores indisponíveis</li>";
         const containerCharacters = document.getElementById("link-characters");
         if (containerCharacters) {
             const items = series.characters.items;
@@ -61,7 +61,7 @@ export class RenderSeries {
                     .join("");
             }
             else {
-                containerCharacters.innerHTML = "<li>Personagens indisponíveis</li>";
+                containerCharacters.innerHTML = "<li class = 'li-not-hover'>Personagens indisponíveis</li>";
             }
         }
         const containerComics = document.getElementById("link-comics");
@@ -78,7 +78,7 @@ export class RenderSeries {
                     .join("");
             }
             else {
-                containerComics.innerHTML = "<li>Comics indisponíveis</li>";
+                containerComics.innerHTML = "<li class = 'li-not-hover'>Comics indisponíveis</li>";
             }
         }
         btnCardfavorite.appendChild(imageBtnCardFavorite);

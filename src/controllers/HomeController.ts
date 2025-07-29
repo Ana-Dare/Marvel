@@ -7,7 +7,7 @@ import { LoadingUI } from "../views/Scroll/LoadingUI.js";
 import { mapApiResults } from "../mappers/mapHomeResults.js";
 import { fetchFromAPI } from "../services/Api.js";
 import { DataApi } from "../interfaces/requestInterface.js";
-import { ResultsInfoView } from "../views/Scroll/resultsInfo.js";
+import { resultsInfo } from "../views/Scroll/resultsInfo.js";
 import { cacheService } from "../models/cache.js";
 import { createUrl } from "../utils/createUrl.js";
 import { ContentDataFetcher } from "../utils/contentDataFetcher.js";
@@ -35,7 +35,7 @@ export class ControllerApi {
   private scroll: ScrollDetector;
   private scrollView: ScrollView;
   private loadingUI: LoadingUI;
-  private resultsInfoView: ResultsInfoView;
+  private resultsInfo: resultsInfo;
   private dataFetcher: ContentDataFetcher;
   private paginationController: PaginationController;
   private displayContent: ContentDisplay;
@@ -48,7 +48,7 @@ export class ControllerApi {
     this.renderer = new Renderer(container, currentType);
     this.scrollView = new ScrollView();
     this.loadingUI = new LoadingUI();
-    this.resultsInfoView = new ResultsInfoView();
+    this.resultsInfo = new resultsInfo();
     this.dataFetcher = new ContentDataFetcher(this.getData.bind(this));
     this.paginationController = new PaginationController(this.limit);
     this.displayContent = new ContentDisplay(this.renderer);
@@ -77,7 +77,7 @@ export class ControllerApi {
           const inputTerm = inputSearch.value.trim();
           this.currentTerm = inputTerm;
           this.renderer.toClean();
-          this.resultsInfoView.hideResults();
+          this.resultsInfo.hideResults();
           this.currentType = type;
           this.renderer.changeType(type);
           const sortValue = orderSelect?.value || "";
@@ -95,7 +95,7 @@ export class ControllerApi {
         }
         this.currentTerm = inputTerm;
         this.renderer.toClean();
-        this.resultsInfoView.hideResults();
+        this.resultsInfo.hideResults();
         const sortValue = orderSelect?.value || "";
         this.currentOrder = obterOrderBy(this.currentType, sortValue);
         await this.updateContent(this.currentType, this.currentTerm, true);
@@ -112,7 +112,7 @@ export class ControllerApi {
       const inputTerm = inputSearch.value.trim();
       this.currentTerm = inputTerm;
       this.renderer.toClean();
-      this.resultsInfoView.hideResults();
+      this.resultsInfo.hideResults();
       const sortValue = orderSelect?.value || "";
       this.currentOrder = obterOrderBy(this.currentType, sortValue);
       await this.updateContent(this.currentType, this.currentTerm, true);
@@ -270,7 +270,7 @@ export class ControllerApi {
       this.isEndOfData = false;
     }
     if (this.isEndOfData) {
-      this.resultsInfoView.showAllLoaded(this.total);
+      this.resultsInfo.showAllLoaded(this.total);
       this.loadingUI.enableUI();
       return;
     }
@@ -288,13 +288,12 @@ export class ControllerApi {
       this.displayContent.renderItems(itens);
       this.total = total;
       this.offset = this.paginationController.calculateNextOffset(this.offset);
-      this.resultsInfoView.updateProgress(this.offset, this.total);
+      this.resultsInfo.updateProgress(this.offset, this.total);
 
       if (this.paginationController.hasReachedEnd(this.offset, this.total)) {
         this.isEndOfData = true;
         this.scrollView.showEndResults();
-        console.log("exibindo mensagem na hora errada");
-        this.resultsInfoView.showAllresults(this.total);
+        this.resultsInfo.showAllresults(this.total);
       }
     } catch (error) {
       console.error("Erro ao atualizar conteúdo:", error);

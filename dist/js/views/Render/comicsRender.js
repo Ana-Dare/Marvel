@@ -30,7 +30,9 @@ export class RenderComics {
             title.textContent = comics.title || "Titulo Indisponível";
         const description = document.getElementById("comics-description");
         if (description)
-            description.textContent = comics.description || "Este quadrinho ainda não tem uma descrição oficial. Mas você pode explorá-lo nos personagens e séries disponíveis!";
+            description.textContent =
+                comics.description ||
+                    "Este quadrinho ainda não tem uma descrição oficial. Mas você pode explorá-lo nos personagens e séries disponíveis!";
         const pageCount = document.getElementById("comics-page-count");
         if (pageCount)
             pageCount.textContent =
@@ -46,11 +48,11 @@ export class RenderComics {
             containerCreators.innerHTML =
                 comics.creators.items.length > 0
                     ? comics.creators.items
-                        .map((creators) => `<li>${creators.name}
+                        .map((creators) => `<li class = 'li-not-hover' >${creators.name}
                 <img src='../img/marvel.svg'>
               </li>`)
                         .join("")
-                    : "<li>Sem criadores disponíveis</li>";
+                    : "<li class = 'li-not-hover'>Sem criadores disponíveis</li>";
         const containerCharacters = document.getElementById("link-characters");
         if (containerCharacters) {
             const items = comics.characters.items;
@@ -65,7 +67,8 @@ export class RenderComics {
                     .join("");
             }
             else {
-                containerCharacters.innerHTML = "<li>Personagens indisponíveis</li>";
+                containerCharacters.innerHTML =
+                    "<li class = 'li-not-hover'>Personagens indisponíveis</li>";
             }
         }
         const containerSeries = document.getElementById("link-series");
@@ -82,7 +85,7 @@ export class RenderComics {
                     .join("");
             }
             else {
-                containerSeries.innerHTML = "<li>Séries indisponíveis</li>";
+                containerSeries.innerHTML = "<li class = 'li-not-hover'>Séries indisponíveis</li>";
             }
         }
         btnCardfavorite.appendChild(imageBtnCardFavorite);

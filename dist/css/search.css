@@ -138,6 +138,9 @@
   .filters {
     gap: 1rem;
   }
+  .page-favorite .container-input-search {
+    width: 100%;
+  }
 }
 
 @media (max-width: 500px) {

@@ -61,6 +61,10 @@ a:hover {
   transition: 0.5s;
 }
 
+.li-not-hover:hover {
+  background-color: transparent;
+}
+
 li {
   padding: 01rem;
   border-color: var(--grey);

@@ -7,6 +7,8 @@
   top: 3rem;
   z-index: 999;
   background-color: #ffffff;
+  align-items: center;
+  gap: .2rem;
 }
 
 .no-more-results {
@@ -16,8 +18,18 @@
   padding-left: 3.5rem;
 }
 
-.icon {
+.icon-eye {
   width: 1rem;
-  height: auto;
+  height: 1.2rem;
+  align-items: center;
 
+
+}
+
+@media(max-width: 320px) {
+  .results-info {
+    display: flex;
+    padding-left: 0;
+    justify-content: center;
+  }
 }

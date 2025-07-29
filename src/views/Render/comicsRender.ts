@@ -11,9 +11,7 @@ export class RenderComics {
     ) as HTMLDivElement;
     containerId.dataset.id = comics.id.toString();
 
-    const div = document.getElementById(
-      "comics-image"
-    ) as HTMLDivElement;
+    const div = document.getElementById("comics-image") as HTMLDivElement;
     const img = div.querySelector("img") as HTMLImageElement;
     img.classList.add("container-image");
     if (img && comics.thumbnail.path && comics.thumbnail.extension)
@@ -35,16 +33,16 @@ export class RenderComics {
     } else {
       imageBtnCardFavorite.src = "../img/suit-heart.svg";
     }
-    const title = document.getElementById(
-      "comics-title"
-    ) as HTMLDivElement;
+    const title = document.getElementById("comics-title") as HTMLDivElement;
     if (title) title.textContent = comics.title || "Titulo Indisponível";
 
     const description = document.getElementById(
       "comics-description"
     ) as HTMLDivElement;
     if (description)
-      description.textContent = comics.description || "Este quadrinho ainda não tem uma descrição oficial. Mas você pode explorá-lo nos personagens e séries disponíveis!";
+      description.textContent =
+        comics.description ||
+        "Este quadrinho ainda não tem uma descrição oficial. Mas você pode explorá-lo nos personagens e séries disponíveis!";
 
     const pageCount = document.getElementById(
       "comics-page-count"
@@ -53,9 +51,7 @@ export class RenderComics {
       pageCount.textContent =
         comics.pageCount ?? "número de páginas não disponível";
 
-    const prices = document.getElementById(
-      "comics-prices"
-    ) as HTMLDivElement;
+    const prices = document.getElementById("comics-prices") as HTMLDivElement;
     if (prices)
       prices.innerHTML = (comics.prices.price ?? 0).toLocaleString("pt-BR", {
         style: "currency",
@@ -69,11 +65,13 @@ export class RenderComics {
       containerCreators.innerHTML =
         comics.creators.items.length > 0
           ? comics.creators.items
-              .map((creators) => `<li>${creators.name}
+              .map(
+                (creators) => `<li class = 'li-not-hover' >${creators.name}
                 <img src='../img/marvel.svg'>
-              </li>`)
+              </li>`
+              )
               .join("")
-          : "<li>Sem criadores disponíveis</li>";
+          : "<li class = 'li-not-hover'>Sem criadores disponíveis</li>";
 
     const containerCharacters = document.getElementById(
       "link-characters"
@@ -90,7 +88,8 @@ export class RenderComics {
           })
           .join("");
       } else {
-        containerCharacters.innerHTML = "<li>Personagens indisponíveis</li>";
+        containerCharacters.innerHTML =
+          "<li class = 'li-not-hover'>Personagens indisponíveis</li>";
       }
     }
 
@@ -109,7 +108,7 @@ export class RenderComics {
           })
           .join("");
       } else {
-        containerSeries.innerHTML = "<li>Séries indisponíveis</li>";
+        containerSeries.innerHTML = "<li class = 'li-not-hover'>Séries indisponíveis</li>";
       }
     }
 
