@@ -2,8 +2,10 @@
   font-family: var(--font--main);
   font-size: 0.8rem;
   font-weight: 300;
-  padding: 1.5em 0 1.5rem 3rem ;
+  padding: 1rem;
   position: sticky;
+  justify-content: center;
+  display: flex;
   top: 3rem;
   z-index: 999;
   background-color: #ffffff;

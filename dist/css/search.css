@@ -2,8 +2,7 @@
   display: flex;
   gap: 2rem;
   justify-content: center;
-  padding: 1rem;
-  padding-top: 2rem;
+  padding: 2rem 0 1rem 0;
 }
 
 .filter {
@@ -49,7 +48,7 @@
   border: 1px solid rgba(84, 84, 84, 0.574);
   border-radius: 32px;
   overflow: hidden;
-  width: 70%;
+  width: 65%;
   box-sizing: border-box;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
 }
